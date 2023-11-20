@@ -23,26 +23,53 @@ namespace Common
          */
         public static bool RunTestItem(string dllPath)
         {
+            Assembly myDll = Assembly.LoadFile(dllPath);
+            var myTest=myDll.GetTypes().First(m=>!m.IsAbstract && m.IsClass);
+            object myObj = myDll.CreateInstance(myTest.FullName);
+            object myResult = null;
 
-            Testflow.General.WriteLog("RunTestItem", dllPath);
             try
             {
-                Assembly myDll = Assembly.LoadFile(dllPath);
-                var myTest=myDll.GetTypes().First(m=>!m.IsAbstract && m.IsClass);
-                object myObj = myDll.CreateInstance(myTest.FullName);
+                Testflow.General.WriteLog("Common", "Invoke "+dllPath+".Setup()" );
                 myTest.GetMethod("Setup").Invoke(myObj, new object[]{});            
-                object myResult = myTest.GetMethod("Run").Invoke(myObj, new object[]{});            
-                Testflow.General.WriteLog("RunTestItem", myResult.ToString());
-                myTest.GetMethod("UpdateResults").Invoke(myObj, new object[]{});            
-                myTest.GetMethod("TearDown").Invoke(myObj, new object[]{});   
-                if(myResult.ToString() == "True") return true;
-                else return false;
             }
             catch (Exception ex)
             {
-                Testflow.General.WriteLog("RunTestItem", "Common Error!!! " + ex.Message);
+                Testflow.General.WriteLog("Common", "Setup() Error!!! " + ex.Message);
+            }  
+
+            try
+            {
+                Testflow.General.WriteLog("Common", "Invoke "+dllPath+".Run()" );
+                myResult = myTest.GetMethod("Run").Invoke(myObj, new object[]{});            
+            }
+            catch (Exception ex)
+            {
+                Testflow.General.WriteLog("Common", "Run() Error!!! " + ex.Message);
             }   
-            return false;
+
+            try
+            {
+                Testflow.General.WriteLog("Common", "Invoke "+dllPath+".UpdateResults()" );
+                myTest.GetMethod("UpdateResults").Invoke(myObj, new object[]{});            
+            }
+            catch (Exception ex)
+            {
+                Testflow.General.WriteLog("Common", "UpdateResults() Error!!! " + ex.Message);
+            }   
+
+            try
+            {
+               Testflow.General.WriteLog("Common", "Invoke "+dllPath+".TearDown()" );
+               myTest.GetMethod("TearDown").Invoke(myObj, new object[]{});   
+            }   
+            catch (Exception ex)
+            {
+                Testflow.General.WriteLog("Common", "TearDown() Error!!! " + ex.Message);
+            }   
+
+            if(myResult.ToString() == "True") return true;
+            else return false;
         }
     }
     public class Testflow
@@ -72,19 +99,17 @@ namespace Common
 
         public class General
         {
+            private static string currentDirectory = Directory.GetCurrentDirectory() + '\\';
+            // private static string MyLog = currentDirectory+"MyLog\\";
+            private static string TestLog = currentDirectory+"TestLog\\";
+
             public static int WriteLog(string DllName, string content)
             {
-                string log_path = "C:\\TestManager\\ResultUpload\\" + DllName+".log";
-                // 檢查目錄是否存在，如果不存在則建立
-                if (!Directory.Exists("C:\\TestManager\\ResultUpload\\"))
-                {
-                    Directory.CreateDirectory("C:\\TestManager\\ResultUpload\\");
-                }                
-
+                string log_file = TestLog+DllName+".log";
                 try
                 {
                     // 使用 StreamWriter 打開檔案並appand內容
-                    using (StreamWriter writer = new StreamWriter(log_path, true))
+                    using (StreamWriter writer = new StreamWriter(log_file, true))
                     {
                         writer.Write("["+DateTime.Now.ToString()+"] "+content+'\n');
                     }

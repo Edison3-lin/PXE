@@ -1,27 +1,24 @@
 {
-    "TCM_ID":  3090,
-    "TR_ID":  3123,
-    "TestResult":  "PASS",
-    "TestStatus":  "DONE",
-    "TestFail_Dercription":  "",
-    "PrintLog":  [
-                     {
-                         "time":  "2023/3/28 15:21:20",
-                         "LogType":  "Info",
-                         "log":  "Find API exe path"
-                     },
-                     {
-                         "time":  "2023/3/28 15:21:20",
-                         "LogType":  "Info",
-                         "log":  "exe API"
-                     }
-                 ],
-    "Text_Log_File_Path":  [
-                               "D:\\Windows_Captain\\AP_Testing\\testLog1.txt",
-                               "D:\\Windows_Captain\\AP_Testing\\TestLoaclLog.txt"
-                           ],
-    "Image_Log_File_Path":  [
-                                "D:\\Windows_Captain\\AP_Testing\\test1.png",
-                                "D:\\Windows_Captain\\AP_Testing\\test2.png"
-                            ]
+  "TCM_ID": 2,
+  "TR_ID": 4,
+  "TestResult": "Fail",
+  "TestStatus": "DONE",
+  "TestFail_Dercription": "",
+  "PrintLog": [
+    {
+      "time": "2023/3/28 15:21:20",
+      "LogType": "Info",
+      "log": "Find API exe path"
+    },
+    {
+      "time": "2023/3/28 15:21:20",
+      "LogType": "Info",
+      "log": "exe API"
+    }
+  ],
+  "Text_Log_File_Path": [".\\TestLog\\TestManager.log", ".\\TestLog\\xxx.log"],
+  "Image_Log_File_Path": [
+    "D:\\Windows_Captain\\AP_Testing\\test1.png",
+    "D:\\Windows_Captain\\AP_Testing\\test2.png"
+  ]
 }

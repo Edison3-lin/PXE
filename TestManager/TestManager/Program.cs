@@ -30,6 +30,10 @@ namespace TestManager
                 {
                     Directory.CreateDirectory(currentDirectory+"MyLog\\");
                 }                
+                if (!Directory.Exists(currentDirectory+"TestLog\\"))
+                {
+                    Directory.CreateDirectory(currentDirectory+"TestLog\\");
+                }                
 
                 // 檢查檔案是否存在，如果不存在則建立，檔案存在內容就清空
                 if (!File.Exists(log_file))
@@ -217,7 +221,7 @@ namespace TestManager
             try
             {
                 process_log(".... Loading Common.dll ....");
-                obj.LoadAssembly("c:\\TestManager\\Common.dll");
+                obj.LoadAssembly(currentDirectory+"Common.dll");
             }
             catch (System.IO.FileNotFoundException)
             {

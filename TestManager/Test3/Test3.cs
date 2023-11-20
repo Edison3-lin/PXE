@@ -29,7 +29,7 @@ namespace Test3
              runspace.Open();
              Pipeline pipeline = runspace.CreatePipeline();
             //  pipeline.Commands.AddScript("c:\\TestManager\\Test_Item\\RunAs.ps1");             
-             pipeline.Commands.AddScript("c:\\TestManager\\ItemDownload\\Info.ps1");
+             pipeline.Commands.AddScript(".\\ItemDownload\\Info.ps1");
              pipeline.Invoke();
              runspace.Close();
             }

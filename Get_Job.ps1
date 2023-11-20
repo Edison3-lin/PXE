@@ -30,6 +30,7 @@ process_log $ftpPath
 
 $file = Get-Item $PSCommandPath
 $Directory = Split-Path -Path $PSCommandPath -Parent
+$Directory += '\MyLog'
 $baseName = $file.BaseName
 $logfile = $Directory+'\'+$baseName+"_process.log"
 $tempfile = $Directory+'\temp.log'

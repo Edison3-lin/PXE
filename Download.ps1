@@ -22,7 +22,7 @@ function Down_Common($f)
     $ftpDirectory = "/Test_Item/$attDir/"
 # process_log $attDir
 # return    
-    $commonFilePath = "C:\TestManager\ItemDownload\"
+    $commonFilePath = ".\ItemDownload\"
     if (-not (Test-Path -Path $commonFilePath -PathType Container)) {
         New-Item -Path $commonFilePath -ItemType Directory
     }
@@ -54,6 +54,7 @@ function Down_Common($f)
 
 $file = Get-Item $PSCommandPath
 $Directory = Split-Path -Path $PSCommandPath -Parent
+$Directory += '\MyLog'
 $baseName = $file.BaseName
 $logfile = $Directory+'\'+$baseName+"_process.log"
 $tempfile = $Directory+'\temp.log'
