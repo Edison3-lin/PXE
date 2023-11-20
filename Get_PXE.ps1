@@ -46,6 +46,9 @@ $DBserver   = $config.DBserver
 $DBuserName   = $config.DBuserName
 $DBpassword   = $config.DBpassword
 
+$TRPath = ".\TR_Result.json"
+$TRconfig = Get-Content -Raw -Path $TRPath | ConvertFrom-Json
+$TestStatus = $TRconfig.TestStatus
 
 #Build connect object
 $SqlConn = New-Object System.Data.SqlClient.SqlConnection
@@ -75,8 +78,9 @@ select
   ,TR.TR_ID
   ,TAC.TAC_ID
   ,TAC.TAC_Table_Index
- , TAC.TAC_Table_Name
- ,TAC.TAC_Table_Coulmn
+  , TAC.TAC_Table_Name
+  ,TAC.TAC_Table_Coulmn
+  ,TR.TR_Excute_Status
   from (
 	select TOP (1) 
 		B.*
@@ -92,7 +96,7 @@ select
  where TCM.TCM_ID = TR.TCM_ID
        and TR.TAC_ID = TAC.TAC_ID 
 	   and TAC.TAC_Table_Index is not null
-"
+       and TCM.TCM_Status is not 'DONE'"
 
 $adapter = New-Object System.Data.SqlClient.SqlDataAdapter $sqlCmd
 $dataset = New-Object System.Data.DataSet
@@ -100,11 +104,46 @@ $NULL = $adapter.Fill($dataSet)
 
 for ($i=0; $i -lt $dataSet.Tables[0].Rows.Count; $i++)
 {
+    $TCM_ID = ($dataSet.Tables[0].Rows[$i][0])
+    $TR_ID = ($dataSet.Tables[0].Rows[$i][2])
+    $TR_Excute_Status = ($dataSet.Tables[0].Rows[$i][7])
+    $TRconfig.TCM_ID = $TCM_ID
+    $TRconfig.TR_ID = $TR_ID
+    $updatedJson = $TRconfig | ConvertTo-Json -Depth 10
+    $updatedJson | Set-Content -Path $TRPath
+
     # $TCM_Status = $dataSet.Tables[0].Rows[$i][1]
-    $programs = @("common_bios_pxeboot_default.dll", "0")
+    $programs = "common_bios_pxeboot_default.dll"
+
+    if ($TR_Excute_Status -ne "Running")
+    {
+        $sqlCmd.CommandText = 
+        "update Test_Result 
+        set    TR_Excute_Status = 'Running'
+        where  TR_ID = '$TR_ID'"
+        $NULL = $SqlCmd.executenonquery()
+    }
+    elseif ($TestStatus -eq "DONE")
+    {
+        $sqlCmd.CommandText = 
+        "update Test_Control_Main 
+        set    TCM_Status = 'DONE'
+        where  TCM_ID = '$TCM_ID'"
+        $NULL = $SqlCmd.executenonquery()
+
+        $sqlCmd.CommandText = 
+        "update Test_Result 
+        set    TR_Excute_Status = 'DONE'
+        where  TR_ID = '$TR_ID'"
+        $NULL = $SqlCmd.executenonquery()
+
+        $programs = $NULL
+    }    
 }
 
 #Close Database
 $SqlConn.close()
+
+Write-Host $programs
 
 return $programs

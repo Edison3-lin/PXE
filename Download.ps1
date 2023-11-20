@@ -10,16 +10,6 @@ function result_log($log)
     $timestamp+$log | Add-Content $outputfile
 }
 
-# function download_file($file)
-# {
-#     $localFilePath = $localPath+$file
-#     $remoteFilePath = '/Test_Item/'+$file
-   
-#     # Download the file
-#     $webClient.DownloadFile("$ftpServer$remoteFilePath", $localFilePath)
-#     process_log "File downloaded to $localFilePath"
-# }
-
 function Down_Common($f)
 {
 
@@ -30,7 +20,8 @@ function Down_Common($f)
     process_log  "   === $f attached ==="
     $attDir = $f.split('.')[0]
     $ftpDirectory = "/Test_Item/$attDir/"
-    # process_log $ftpDirectory
+# process_log $attDir
+# return    
     $commonFilePath = "C:\TestManager\ItemDownload\"
     if (-not (Test-Path -Path $commonFilePath -PathType Container)) {
         New-Item -Path $commonFilePath -ItemType Directory
@@ -87,32 +78,13 @@ $webClient = New-Object System.Net.WebClient
 $webClient.Credentials = New-Object System.Net.NetworkCredential($username, $password)
 
 process_log "Download.. $remoteFile"
-# $is_ID = 0
-# foreach ($f in $remoteFile) {
-#     $is_ID++
-#     try {
-#         if(($is_ID % 2) -eq 1)
-#         {        
-#             download_file($f)
-#         }    
-#     }
-#     catch {
-#         process_log "!!!<$f>: $($_.Exception.Message)"
-#     }
-# }
+# $remoteFile = image_installation_application_default.dll
 
-$is_ID = 0
-foreach ($f in $remoteFile) {
-    $is_ID++
-    try {
-        if(($is_ID % 2) -eq 1)
-        {        
-            Down_Common($f)
-        }    
-    }
-    catch {
-        process_log "Directory not exist? <$f>: $($_.Exception.Message)"
-    }
+try {
+    Down_Common($remoteFile)
+}
+catch {
+    process_log "Directory not exist? <$f>: $($_.Exception.Message)"
 }
 
 process_log  "======Download finished======"
