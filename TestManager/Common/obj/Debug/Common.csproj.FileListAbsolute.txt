@@ -1,0 +1,12 @@
+C:\TestManager\TestManager\Common\bin\Debug\Common.dll
+C:\TestManager\TestManager\Common\bin\Debug\Common.pdb
+C:\TestManager\TestManager\Common\obj\Debug\Common.csproj.AssemblyReference.cache
+C:\TestManager\TestManager\Common\obj\Debug\Common.csproj.CoreCompileInputs.cache
+C:\TestManager\TestManager\Common\obj\Debug\Common.dll
+C:\TestManager\TestManager\Common\obj\Debug\Common.pdb
+C:\TestManager.aaa\TestManager\Common\bin\Debug\Common.dll
+C:\TestManager.aaa\TestManager\Common\bin\Debug\Common.pdb
+C:\TestManager.aaa\TestManager\Common\obj\Debug\Common.csproj.AssemblyReference.cache
+C:\TestManager.aaa\TestManager\Common\obj\Debug\Common.csproj.CoreCompileInputs.cache
+C:\TestManager.aaa\TestManager\Common\obj\Debug\Common.dll
+C:\TestManager.aaa\TestManager\Common\obj\Debug\Common.pdb

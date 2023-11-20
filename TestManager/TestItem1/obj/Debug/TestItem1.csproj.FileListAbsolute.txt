@@ -1,0 +1,16 @@
+C:\TestManager\TestManager\TestItem1\obj\Debug\TestItem1.csproj.AssemblyReference.cache
+C:\TestManager\TestManager\TestItem1\obj\Debug\TestItem1.csproj.CoreCompileInputs.cache
+C:\TestManager\TestManager\TestItem1\bin\Debug\TestItem1.dll
+C:\TestManager\TestManager\TestItem1\bin\Debug\TestItem1.pdb
+C:\TestManager\TestManager\TestItem1\bin\Debug\Common.dll
+C:\TestManager\TestManager\TestItem1\bin\Debug\Common.pdb
+C:\TestManager\TestManager\TestItem1\obj\Debug\TestItem1.csproj.CopyComplete
+C:\TestManager\TestManager\TestItem1\obj\Debug\TestItem1.dll
+C:\TestManager\TestManager\TestItem1\obj\Debug\TestItem1.pdb
+C:\TestManager.aaa\TestManager\TestItem1\bin\Debug\TestItem1.dll
+C:\TestManager.aaa\TestManager\TestItem1\bin\Debug\TestItem1.pdb
+C:\TestManager.aaa\TestManager\TestItem1\obj\Debug\TestItem1.csproj.AssemblyReference.cache
+C:\TestManager.aaa\TestManager\TestItem1\obj\Debug\TestItem1.csproj.CoreCompileInputs.cache
+C:\TestManager.aaa\TestManager\TestItem1\obj\Debug\TestItem1.csproj.CopyComplete
+C:\TestManager.aaa\TestManager\TestItem1\obj\Debug\TestItem1.dll
+C:\TestManager.aaa\TestManager\TestItem1\obj\Debug\TestItem1.pdb
