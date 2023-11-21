@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,6 +13,7 @@ namespace TestItem2
     public class TestItem2
     {
         private const string DllName = "TestItem2";
+        private static string currentDirectory = Directory.GetCurrentDirectory() + '\\';
 
         public int Setup()
         {
@@ -29,7 +31,7 @@ namespace TestItem2
              runspace.Open();
              Pipeline pipeline = runspace.CreatePipeline();
             //  pipeline.Commands.AddScript("c:\\TestManager\\Test_Item\\RunAs.ps1");             
-             pipeline.Commands.AddScript("c:\\TestManager\\ItemDownload\\Abt1.ps1");
+             pipeline.Commands.AddScript(currentDirectory+"ItemDownload\\Abt1.ps1");
              pipeline.Invoke();
              runspace.Close();
             }

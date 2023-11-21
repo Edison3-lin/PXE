@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,8 +10,9 @@ namespace Test_Collection
 {
     public class Test_Collection
     {
+        private static string currentDirectory = Directory.GetCurrentDirectory() + '\\';
         private const string DllName = "Test_Collection";
-        private const string LibsPath = "c:\\TestManager\\ItemDownload\\";
+        static string LibsPath = currentDirectory+"ItemDownload\\";
 
         public int Setup()
         {

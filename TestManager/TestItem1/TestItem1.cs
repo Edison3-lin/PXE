@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,6 +12,7 @@ namespace TestItem1
     public class TestItem1
     {
         private const string DllName = "TestItem1";
+        private static string currentDirectory = Directory.GetCurrentDirectory() + '\\';
 
         public int Setup()
         {
@@ -21,11 +23,11 @@ namespace TestItem1
 
         public int Run()
         {
-            string exeFilePath = "c:\\TestManager\\ItemDownload\\TestCase.exe";
+            string exeFilePath = currentDirectory+"ItemDownload\\TestCase.exe";
             // Create a ProcessStartInfo object with the file path
             ProcessStartInfo startInfo = new ProcessStartInfo(exeFilePath);
             // Optionally, you can set working directory, arguments, and other properties
-            startInfo.WorkingDirectory = "c:\\TestManager\\ItemDownload\\";
+            startInfo.WorkingDirectory = currentDirectory+"ItemDownload\\";
             startInfo.Arguments = "";
             // Start the process
             Process process = new Process();
