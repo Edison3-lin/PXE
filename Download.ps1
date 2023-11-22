@@ -70,7 +70,8 @@ $password = $config.password
 # $remoteFile = @("abt1.ps1","abt2.ps1","abt3.ps1")
 
 # Specify the local destination for the downloaded file
-$localPath = "c:\TestManager\ItemDownload\"
+$localPath = $Directory = Split-Path -Path $PSCommandPath -Parent
+$localPath += "\ItemDownload"
 if (-not (Test-Path -Path $localPath -PathType Container)) {
     New-Item -Path $localPath -ItemType Directory
 }
