@@ -70,6 +70,13 @@ if($TestStatus -ne "PXE BOOT")
     "
     $NULL = $SqlCmd.executenonquery()
 
+    $TRconfig.TCM_ID = ""
+    $TRconfig.TR_ID = ""
+    $TRconfig.TestResult = "???"
+    $TRconfig.TestStatus = "DONE"
+    $updatedJson = $TRconfig | ConvertTo-Json -Depth 10
+    $updatedJson | Set-Content -Path $TRPath
+
     # $sqlCmd.CommandText = 
     # "
     #     update Test_Control_Main 

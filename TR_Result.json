@@ -1,7 +1,7 @@
 {
-    "TCM_ID":  120,
-    "TR_ID":  105,
-    "TestResult":  "Fail",
+    "TCM_ID":  "",
+    "TR_ID":  "",
+    "TestResult":  "???",
     "TestStatus":  "DONE",
     "TestFail_Dercription":  "",
     "PrintLog":  [
