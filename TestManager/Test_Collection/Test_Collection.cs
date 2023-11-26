@@ -11,6 +11,7 @@ namespace Test_Collection
     public class Test_Collection
     {
         private const string ThisFileName = "Test_Collection.dll";
+        private static int DllIndex;
         private static string currentDirectory = Directory.GetCurrentDirectory() + "\\ItemDownload\\";
  
        public int Setup()
@@ -24,13 +25,16 @@ namespace Test_Collection
         public int Run()
         {
             // Testflow.Run(DllName);
+            DllIndex = 0;
 
             //********* SIT 依序填寫執行的DLL的項目 /Start/
             Execute_dll("Test3.dll");
             Execute_dll("TestItem2.dll");
             Execute_dll("TestItem1.dll");
             Execute_dll("T2.dll");
+            Execute_dll("TestItem1.dll");
             Execute_dll("T3.dll");
+            Execute_dll("TestItem1.dll");
             //********* SIT 依序填寫執行的DLL的項目 /End/
 
             HadRun("");
@@ -51,7 +55,6 @@ namespace Test_Collection
 
         public static void Execute_dll(string DllFileName)
         {
-
             try
             {
                 if(!HadRun(DllFileName))
@@ -71,6 +74,7 @@ namespace Test_Collection
         {
 
             string log_path = currentDirectory + "DoneDll.txt";
+            DllIndex++;
 
             // 檢查檔案是否存在，如果不存在則建立
             if (!File.Exists(log_path))
@@ -89,18 +93,31 @@ namespace Test_Collection
 
                 try
                 {
-                    // 使用File.ReadAllLines按行讀取文件的內容
-                    string[] lines = File.ReadAllLines(log_path);
-
-                    // 列印每一行的內容
-                    // Console.WriteLine("File Content:");
-                    foreach (string line in lines)
+                    // 使用 StreamReader 讀取檔案
+                    using (StreamReader reader = new StreamReader(log_path))
                     {
-                        if(line == DllFileName)
-                        {
+                        // 讀取檔案內容並顯示在控制台
+                        string strNumber = reader.ReadToEnd();
+                        int number = int.Parse(strNumber);
+                        if(number >= DllIndex)
                             return true;
-                        }
+                        // Console.WriteLine("檔案內容:\n" + content);
                     }
+
+
+
+                    // // 使用File.ReadAllLines按行讀取文件的內容
+                    // string[] lines = File.ReadAllLines(log_path);
+
+                    // // 列印每一行的內容
+                    // // Console.WriteLine("File Content:");
+                    // foreach (string line in lines)
+                    // {
+                    //     if(line == DllFileName)
+                    //     {
+                    //         return true;
+                    //     }
+                    // }
                 }
                 catch (FileNotFoundException)
                 {
@@ -115,9 +132,9 @@ namespace Test_Collection
             try
             {
                 // 使用 StreamWriter 打開檔案並appand內容
-                using (StreamWriter writer = new StreamWriter(log_path, true))
+                using (StreamWriter writer = new StreamWriter(log_path))
                 {
-                    writer.Write(DllFileName+'\n');
+                    writer.Write(DllIndex.ToString());
                 }
 
             }

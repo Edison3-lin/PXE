@@ -38,12 +38,15 @@ namespace TestManager
                 // 檢查檔案是否存在，如果不存在則建立，檔案存在內容就清空
                 if (!File.Exists(log_file))
                 {
-                    File.Create(log_file);
+                    using (FileStream fs = File.Create(log_file));
                 }
                 else
                 {
                     // 清空內容
-                    // File.WriteAllText(filePath, string.Empty);
+                    // using (FileStream fs = new FileStream(log_file, FileMode.OpenOrCreate, FileAccess.ReadWrite))
+                    // {
+                    //     fs.SetLength(0);
+                    // }                    
                 }
             }
             catch (Exception ex)
@@ -79,8 +82,8 @@ namespace TestManager
             Pipeline pipeline = runspace.CreatePipeline();
             try
             {
-                // pipeline.Commands.AddScript(testPath+"RunAs.ps1");
-                pipeline.Commands.AddScript(currentDirectory+"Get_PXE.ps1");
+                pipeline.Commands.AddScript(currentDirectory + "RunAs.ps1");
+                pipeline.Commands.AddScript(currentDirectory + "Get_PXE.ps1");
                 var result = pipeline.Invoke();
 
                 foreach (var psObject in result)
@@ -94,8 +97,10 @@ namespace TestManager
             }
             catch (Exception ex)
             {
-                process_log("Get_PXE"+ex.Message);
                 runspace.Close();
+                // process_log("Waiting 2 sec for Get_PXE ready"+ex.Message);
+                process_log("Waiting 2 sec for Get_PXE ready");
+                Thread.Sleep(2000);
                 return null;
             }
             return job_list;
@@ -110,7 +115,7 @@ namespace TestManager
             Pipeline pipeline = runspace.CreatePipeline();
             try
             {
-                //pipeline.Commands.AddScript(currentDirectory+"RunAs.ps1");
+                pipeline.Commands.AddScript(currentDirectory+"RunAs.ps1");
                 pipeline.Commands.AddScript(currentDirectory+"Get_Job.ps1");
                 var result = pipeline.Invoke();
                 runspace.Close();
@@ -124,8 +129,10 @@ namespace TestManager
             }    
             catch (Exception ex)
             {
-                process_log("Get_JOB "+ex.Message);
                 runspace.Close();
+                // process_log("Waiting 2 sec for Get_JOB "+ex.Message);
+                process_log("Waiting 2 sec for Get_JOB ready");
+                Thread.Sleep(2000);
                 return null;
             }
             return job_list;
@@ -140,16 +147,15 @@ namespace TestManager
 
             try
             {
-                // pipeline.Commands.AddScript(currentDirectory+"RunAs.ps1");
-                // string remoteFile = job_list;
-                process_log("$remoteFile = "+job_list);
+                pipeline.Commands.AddScript(currentDirectory+"RunAs.ps1");
+                // process_log("$remoteFile = "+job_list);
                 pipeline.Commands.AddScript("$remoteFile = \""+job_list+"\"");
                 pipeline.Commands.AddScript(currentDirectory+"Download.ps1");
                 var result = pipeline.Invoke();
             }    
             catch (Exception ex)
             {
-                process_log("Download "+ex.Message);
+                process_log("Error!!! Downloading "+ex.Message);
                 runspace.Close();
                 return;
             }
@@ -166,7 +172,7 @@ namespace TestManager
 
             try
             {
-                process_log("FTP_Upload +++ "+currentDirectory+"Upload.ps1 ");
+                // process_log("FTP_Upload --> "+currentDirectory+"Upload.ps1 ");
                 pipeline.Commands.AddScript(currentDirectory+"Upload.ps1 ");
                 var result = pipeline.Invoke();
             }    
@@ -190,7 +196,7 @@ namespace TestManager
 
             try
             {
-                // pipeline.Commands.AddScript(currentDirectory+"RunAs.ps1");
+                pipeline.Commands.AddScript(currentDirectory+"RunAs.ps1");
                 pipeline.Commands.AddScript(currentDirectory+"Update_Job_Status.ps1");
                 var result = pipeline.Invoke();
                 if(result[0].ToString() == "Unconnected_")
@@ -267,20 +273,22 @@ namespace TestManager
                 }
                 if(Job_List == null)
                 {
-                    // process_log("No job on DB");
-                    // Thread.Sleep(1000);
+                    Thread.Sleep(2000);
                     continue;
                 } 
                 else if (Job_List == "Unconnected_")
                 {
-                    process_log("!!! Refer to Get_Job_process.log");
-                    // Thread.Sleep(3000);
+                    process_log("Waiting 3 sec for DB connected !!!");
+                    Thread.Sleep(3000);
                     continue;
                 }    
 
                 // step 1. Got Job then downloading
                 process_log("<<Step 1>> Got Job then downloading");
-                FTP_Download(Job_List);
+                if (!File.Exists(ItemDownload+"DoneDll.txt"))
+                    FTP_Download(Job_List);
+                else    
+                    process_log("Skip downloading again for reboot");
 
                 startTime = DateTime.Now;
 
@@ -295,12 +303,16 @@ namespace TestManager
                     process_log("Run test Error!!! " + ex.Message);
                 }
 
-                process_log(" upload log to FTP 子目錄: "+Job_List);
+                // step 3. update test status to DB
+                process_log("<<Step 3>>  update test status to DB ");
                 Update_Job_Status();   //Update test result
+
+                // step 4. upload log to FTP
+                process_log("<<Step 4>>  upload log to FTP:  "+Job_List);
                 FTP_Upload();
 
-                // step 6. Job_List的PowerShell程式都完成，繼續Listening job status
-                process_log("<<Step 6>> Job_List 的測項完成，Keep listening job status");
+                // step 5. Job_List的PowerShell程式都完成，繼續Listening job status
+                process_log("<<Step 5>> Keep listening job status");
                 endTime = DateTime.Now;
                 timeSpan = endTime - startTime;
                 // 输出时间间隔
