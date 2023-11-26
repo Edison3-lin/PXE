@@ -95,10 +95,9 @@ namespace TestManager
                 }
                 runspace.Close();                
             }
-            catch (Exception ex)
+            catch
             {
                 runspace.Close();
-                // process_log("Waiting 2 sec for Get_PXE ready"+ex.Message);
                 process_log("Waiting 2 sec for Get_PXE ready");
                 Thread.Sleep(2000);
                 return null;
@@ -127,10 +126,9 @@ namespace TestManager
                         job_list = null;
                 }
             }    
-            catch (Exception ex)
+            catch
             {
                 runspace.Close();
-                // process_log("Waiting 2 sec for Get_JOB "+ex.Message);
                 process_log("Waiting 2 sec for Get_JOB ready");
                 Thread.Sleep(2000);
                 return null;
@@ -148,7 +146,6 @@ namespace TestManager
             try
             {
                 pipeline.Commands.AddScript(currentDirectory+"RunAs.ps1");
-                // process_log("$remoteFile = "+job_list);
                 pipeline.Commands.AddScript("$remoteFile = \""+job_list+"\"");
                 pipeline.Commands.AddScript(currentDirectory+"Download.ps1");
                 var result = pipeline.Invoke();
@@ -172,7 +169,6 @@ namespace TestManager
 
             try
             {
-                // process_log("FTP_Upload --> "+currentDirectory+"Upload.ps1 ");
                 pipeline.Commands.AddScript(currentDirectory+"Upload.ps1 ");
                 var result = pipeline.Invoke();
             }    
@@ -278,8 +274,8 @@ namespace TestManager
                 } 
                 else if (Job_List == "Unconnected_")
                 {
-                    process_log("Waiting 3 sec for DB connected !!!");
-                    Thread.Sleep(3000);
+                    process_log("Waiting 5 sec for DB connected !!!");
+                    Thread.Sleep(5000);
                     continue;
                 }    
 
@@ -312,7 +308,7 @@ namespace TestManager
                 FTP_Upload();
 
                 // step 5. Job_List的PowerShell程式都完成，繼續Listening job status
-                process_log("<<Step 5>> Keep listening job status");
+                process_log("<<Step 5>>  Keep listening job status");
                 endTime = DateTime.Now;
                 timeSpan = endTime - startTime;
                 // 输出时间间隔

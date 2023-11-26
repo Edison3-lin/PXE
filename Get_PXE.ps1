@@ -62,7 +62,7 @@ try {
     $SqlConn.open()
 }
 catch {
-    process_log "!!!<Exception>: $($_.Exception.Message)"
+    process_log "Waiting 5 sec for DB connected !!!"
     return "Unconnected_"
 }
 

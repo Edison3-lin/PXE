@@ -17,8 +17,6 @@ namespace Test_Collection
        public int Setup()
         {
             // common.Setup
-            // Console.WriteLine("collect setup~~~~~~~~~~~~~~~~~~~");
-
             return 81;
         }
 
@@ -30,11 +28,11 @@ namespace Test_Collection
             //********* SIT 依序填寫執行的DLL的項目 /Start/
             Execute_dll("Test3.dll");
             Execute_dll("TestItem2.dll");
-            Execute_dll("TestItem1.dll");
+            Execute_dll("TestItem1.dll");   //reboot
             Execute_dll("T2.dll");
-            Execute_dll("TestItem1.dll");
+            Execute_dll("TestItem1.dll");   //reboot
             Execute_dll("T3.dll");
-            Execute_dll("TestItem1.dll");
+            Execute_dll("TestItem1.dll");   //reboot
             //********* SIT 依序填寫執行的DLL的項目 /End/
 
             HadRun("");
@@ -44,7 +42,6 @@ namespace Test_Collection
         public int UpdateResults()
         {
 
-            // Return the test results from 'Run'
             return 83;
         }
 
@@ -59,8 +56,6 @@ namespace Test_Collection
             {
                 if(!HadRun(DllFileName))
                 {
-                    // Console.WriteLine(DllFileName+" XXXXXX");
-                    // Console.ReadKey();
                     Common.Runnner.RunTestItem(currentDirectory+DllFileName);
                 }    
             }
@@ -72,7 +67,7 @@ namespace Test_Collection
 
         public static bool HadRun(string DllFileName)
         {
-
+            // DoneDll.txt 紀錄已執行到第幾個DLL
             string log_path = currentDirectory + "DoneDll.txt";
             DllIndex++;
 
@@ -93,31 +88,15 @@ namespace Test_Collection
 
                 try
                 {
-                    // 使用 StreamReader 讀取檔案
+                    // 跳過已經執行的DLL
                     using (StreamReader reader = new StreamReader(log_path))
                     {
-                        // 讀取檔案內容並顯示在控制台
                         string strNumber = reader.ReadToEnd();
                         int number = int.Parse(strNumber);
+                        // 如果Dll index小於紀錄的值，表示已執行過
                         if(number >= DllIndex)
                             return true;
-                        // Console.WriteLine("檔案內容:\n" + content);
                     }
-
-
-
-                    // // 使用File.ReadAllLines按行讀取文件的內容
-                    // string[] lines = File.ReadAllLines(log_path);
-
-                    // // 列印每一行的內容
-                    // // Console.WriteLine("File Content:");
-                    // foreach (string line in lines)
-                    // {
-                    //     if(line == DllFileName)
-                    //     {
-                    //         return true;
-                    //     }
-                    // }
                 }
                 catch (FileNotFoundException)
                 {
@@ -131,7 +110,7 @@ namespace Test_Collection
 
             try
             {
-                // 使用 StreamWriter 打開檔案並appand內容
+                // 紀錄執行到第DllIndex個DLL
                 using (StreamWriter writer = new StreamWriter(log_path))
                 {
                     writer.Write(DllIndex.ToString());

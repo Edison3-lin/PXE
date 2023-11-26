@@ -16,7 +16,7 @@ function CreateDir($directoryName)
     $ftpRequest = [System.Net.FtpWebRequest]::Create($ftpPath)
     $ftpRequest.Credentials = New-Object System.Net.NetworkCredential($username, $password)
     $ftpRequest.Method = [System.Net.WebRequestMethods+Ftp]::MakeDirectory
-process_log $ftpPath
+    # process_log $ftpPath
     try {
         $ftpResponse = $ftpRequest.GetResponse()
     } catch {
@@ -61,7 +61,7 @@ try {
     $SqlConn.open()
 }
 catch {
-    process_log "!!!<Exception>: $($_.Exception.Message)"
+    process_log "Waiting 5 sec for DB connected !!!"
     return "Unconnected_"
 }
 
@@ -147,7 +147,6 @@ if($TRconfig.TestStatus -ne "PXE BOOT" )
         CreateDir($directoryName)
         $directoryName = "/Test_Log/$UUID/$TCM_ID/$TR_ID"
         CreateDir($directoryName)
-        process_log $TA_Execute_Path
         return $TA_Execute_Path
     }    
 }
