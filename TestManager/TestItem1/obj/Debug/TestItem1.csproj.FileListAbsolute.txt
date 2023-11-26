@@ -14,3 +14,12 @@ C:\TestManager.aaa\TestManager\TestItem1\obj\Debug\TestItem1.csproj.CoreCompileI
 C:\TestManager.aaa\TestManager\TestItem1\obj\Debug\TestItem1.csproj.CopyComplete
 C:\TestManager.aaa\TestManager\TestItem1\obj\Debug\TestItem1.dll
 C:\TestManager.aaa\TestManager\TestItem1\obj\Debug\TestItem1.pdb
+C:\Users\ediso\Downloads\FTP\PXE\TestManager\TestItem1\bin\Debug\TestItem1.dll
+C:\Users\ediso\Downloads\FTP\PXE\TestManager\TestItem1\bin\Debug\TestItem1.pdb
+C:\Users\ediso\Downloads\FTP\PXE\TestManager\TestItem1\bin\Debug\Common.dll
+C:\Users\ediso\Downloads\FTP\PXE\TestManager\TestItem1\obj\Debug\TestItem1.csproj.AssemblyReference.cache
+C:\Users\ediso\Downloads\FTP\PXE\TestManager\TestItem1\obj\Debug\TestItem1.csproj.CoreCompileInputs.cache
+C:\Users\ediso\Downloads\FTP\PXE\TestManager\TestItem1\obj\Debug\TestItem1.csproj.CopyComplete
+C:\Users\ediso\Downloads\FTP\PXE\TestManager\TestItem1\obj\Debug\TestItem1.dll
+C:\Users\ediso\Downloads\FTP\PXE\TestManager\TestItem1\obj\Debug\TestItem1.pdb
+C:\Users\ediso\Downloads\FTP\PXE\TestManager\TestItem1\bin\Debug\Common.pdb

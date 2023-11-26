@@ -72,7 +72,7 @@ if($TestStatus -ne "PXE BOOT")
 
     $TRconfig.TCM_ID = ""
     $TRconfig.TR_ID = ""
-    $TRconfig.TestResult = "???"
+    $TRconfig.TestResult = "Pass"
     $TRconfig.TestStatus = "DONE"
     $updatedJson = $TRconfig | ConvertTo-Json -Depth 10
     $updatedJson | Set-Content -Path $TRPath

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,23 +11,22 @@ namespace TestItem1
     public class TestItem1
     {
         private const string DllName = "TestItem1";
-        private static string currentDirectory = Directory.GetCurrentDirectory() + '\\';
 
         public int Setup()
         {
             // common.Setup
-            Testflow.Setup(DllName);
             return 11;
         }
 
         public int Run()
         {
-            string exeFilePath = currentDirectory+"ItemDownload\\TestCase.exe";
+            // common.Setup
+            string exeFilePath = "shutdown";
             // Create a ProcessStartInfo object with the file path
             ProcessStartInfo startInfo = new ProcessStartInfo(exeFilePath);
             // Optionally, you can set working directory, arguments, and other properties
-            startInfo.WorkingDirectory = currentDirectory+"ItemDownload\\";
-            startInfo.Arguments = "";
+            startInfo.WorkingDirectory = ".\\";
+            startInfo.Arguments = "/r /t 0";
             // Start the process
             Process process = new Process();
             process.StartInfo = startInfo;
@@ -37,20 +35,18 @@ namespace TestItem1
             // Optionally, you can wait for the process to exit
             process.WaitForExit();
 
-            // common.Setup
-            Testflow.Run("TestCase");
+            while (true){}
+
             return 12;
         }
 
         public int UpdateResults()
         {
-            Testflow.UpdateResults(DllName, true);
             return 13;
         }
 
         public int TearDown()
         {
-            Testflow.TearDown(DllName);
             return 14;
         }
     }

@@ -46,13 +46,11 @@ namespace Test3
 
         public int UpdateResults()
         {
-            Testflow.UpdateResults(DllName, true);
             return 33;
         }
 
         public int TearDown()
         {
-            Testflow.TearDown(DllName);
             return 34;
         }
 
