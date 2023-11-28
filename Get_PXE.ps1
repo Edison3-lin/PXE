@@ -152,5 +152,4 @@ for ($i=0; $i -lt $dataSet.Tables[0].Rows.Count; $i++)
 $SqlConn.close()
 
 Write-Host $programs
-
 return $programs
