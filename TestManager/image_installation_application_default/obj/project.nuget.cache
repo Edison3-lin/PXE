@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "4GgDgPGjdgxGjwvbdeL2PMST0jaZbKKXZhUIENy+RIggrYlrgrkxUe3vZy0z77yXAs4s5ZWao1ofU3ugm1AgfQ==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\k\\source\\repos\\image_installation_application_default\\image_installation_application_default.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\k\\.nuget\\packages\\microsoft.office.interop.excel\\15.0.4795.1001\\microsoft.office.interop.excel.15.0.4795.1001.nupkg.sha512"
+  ],
+  "logs": []
+}

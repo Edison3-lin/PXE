@@ -49,22 +49,17 @@ catch {
     return "Unconnected_"
 }
 
-Write-Host $TestResult $TestStatus $TR_ID
-# return
-
 $SqlCmd = New-Object System.Data.SqlClient.SqlCommand
 $SqlCmd.connection = $SqlConn
 # $UUID = Get-WmiObject Win32_ComputerSystemProduct | Select-Object -ExpandProperty UUID 
 
 
 # Read SQL data
-if($TestStatus -ne "pxe boot") 
-{
     $sqlCmd.CommandText = 
     "
         update Test_Result 
-        set    TR_Test_Result   = '$TestResult' , 
-               TR_Excute_Status = '$TestStatus' ,
+        set    TR_Test_Result   = 'Pass',
+               TR_Excute_Status = 'DONE' ,
                TR_TestEndTime   = SYSDATETIME()
         where  TR_ID = '$TR_ID'
     "
@@ -72,8 +67,8 @@ if($TestStatus -ne "pxe boot")
 
     $TRconfig.TCM_ID = ""
     $TRconfig.TR_ID = ""
-    # $TRconfig.TestResult = "Pass"
-    # $TRconfig.TestStatus = "DONE"
+    $TRconfig.TestResult = ""
+    $TRconfig.TestStatus = ""
     $updatedJson = $TRconfig | ConvertTo-Json -Depth 10
     $updatedJson | Set-Content -Path $TRPath
 
@@ -85,7 +80,6 @@ if($TestStatus -ne "pxe boot")
     #     where TCM_ID = '$TR_ID'
     # "
     # $NULL = $SqlCmd.executenonquery()
-}
 
 #Close DB
 $SqlConn.close()

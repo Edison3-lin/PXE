@@ -49,7 +49,6 @@ $DBpassword   = $config.DBpassword
 
 $TRPath = ".\TR_Result.json"
 $TRconfig = Get-Content -Raw -Path $TRPath | ConvertFrom-Json
-$TestStatus = $TRconfig.TestStatus
 
 #Build connect object
 $SqlConn = New-Object System.Data.SqlClient.SqlConnection
@@ -117,7 +116,11 @@ for ($i=0; $i -lt $dataSet.Tables[0].Rows.Count; $i++)
     # $TCM_Status = $dataSet.Tables[0].Rows[$i][1]
     $programs = "common_bios_pxeboot_default.dll"
 
-    if ($TR_Excute_Status -ne "Running")
+    # Write-Host "55555555($TR_Excute_Status)111"
+
+    # $TR_Excute_Status = $NULL
+    # 第一次PXE boot (NULL)
+    if ( '' -eq $TR_Excute_Status )
     {
         $TRconfig.TestStatus = "New"
         $updatedJson = $TRconfig | ConvertTo-Json -Depth 10
@@ -135,43 +138,42 @@ for ($i=0; $i -lt $dataSet.Tables[0].Rows.Count; $i++)
         where  TCM_ID = '$TCM_ID'"
         $NULL = $SqlCmd.executenonquery()
     }
-    elseif ($TestStatus -eq "DONE") 
+    # 非第一次跑PXE (Running)
+    elseif ( $TR_Excute_Status -eq "Running" ) 
     {
-        $sqlCmd.CommandText = 
-        "update Test_Result 
-        set    TR_Excute_Status = 'DONE'
-        where  TR_ID = '$TR_ID'"
-        $NULL = $SqlCmd.executenonquery()
-
         $sqlCmd.CommandText = 
         "update Test_Control_Main 
         set    TCM_Status = 'DONE'
         where  TCM_ID = '$TCM_ID'"
         $NULL = $SqlCmd.executenonquery()
-    }
-    elseif ($TestStatus -eq "pxe boot") {
-        process_log "pxe fail"
-        # $TRconfig.TestStatus = "pxe Fail"
-        # $updatedJson = $TRconfig | ConvertTo-Json -Depth 10
-        # $updatedJson | Set-Content -Path $TRPath
 
-        $sqlCmd.CommandText = 
-        "update Test_Result 
-        set    TR_Excute_Status = 'Fail'
-        where  TR_ID = '$TR_ID'"
-        $NULL = $SqlCmd.executenonquery()
-
-        $sqlCmd.CommandText = 
-        "update Test_Control_Main 
-        set    TCM_Status = 'Fail'
-        where  TCM_ID = '$TCM_ID'"
-        $NULL = $SqlCmd.executenonquery()
+        if( $TRconfig.TestStatus -eq "DONE" )
+        {
+            $sqlCmd.CommandText = 
+            "update Test_Result 
+            set    TR_Excute_Status = 'DONE',
+                   TR_Test_Result = 'Pass'
+            where  TR_ID = '$TR_ID'"
+            $NULL = $SqlCmd.executenonquery()
+            $TRconfig.TestResult = "Pass"
+        }
+        else 
+        {
+            $sqlCmd.CommandText = 
+            "update Test_Result 
+            set    TR_Excute_Status = 'DONE',
+                   TR_Test_Result = 'Fail'
+            where  TR_ID = '$TR_ID'"
+            $NULL = $SqlCmd.executenonquery()
+            $TRconfig.TestResult = "Fail"
+        }  
+        $TRconfig.TestStatus = "DONE"
+        $updatedJson = $TRconfig | ConvertTo-Json -Depth 10
+        $updatedJson | Set-Content -Path $TRPath
     }
 }
 
 #Close Database
 $SqlConn.close()
 
-Write-Host $programs
-Write-Host "xxxxxxxxxx"
 return $programs

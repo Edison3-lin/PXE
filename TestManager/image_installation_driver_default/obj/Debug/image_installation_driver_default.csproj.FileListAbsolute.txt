@@ -1,0 +1,8 @@
+C:\Users\k\source\repos\image_installation_driver_default\bin\Debug\image_installation_driver_default.dll
+C:\Users\k\source\repos\image_installation_driver_default\bin\Debug\image_installation_driver_default.pdb
+C:\Users\k\source\repos\image_installation_driver_default\bin\Debug\Microsoft.Office.Interop.Excel.dll
+C:\Users\k\source\repos\image_installation_driver_default\obj\Debug\image_installation_driver_default.csproj.AssemblyReference.cache
+C:\Users\k\source\repos\image_installation_driver_default\obj\Debug\image_installation_driver_default.csproj.CoreCompileInputs.cache
+C:\Users\k\source\repos\image_installation_driver_default\obj\Debug\image_installation_driver_default.csproj.CopyComplete
+C:\Users\k\source\repos\image_installation_driver_default\obj\Debug\image_installation_driver_default.dll
+C:\Users\k\source\repos\image_installation_driver_default\obj\Debug\image_installation_driver_default.pdb
