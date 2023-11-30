@@ -287,7 +287,6 @@ namespace TestManager
                     process_log("Skip downloading again for reboot");
 
                 startTime = DateTime.Now;
-
                 try
                 {
                     // step 2. 執行Dll程式
@@ -298,7 +297,6 @@ namespace TestManager
                 {
                     process_log("Run test Error!!! " + ex.Message);
                 }
-
                 // step 3. update test status to DB
                 process_log("<<Step 3>>  update test status to DB ");
                 Update_Job_Status();   //Update test result

@@ -1,6 +1,6 @@
 {
-    "TCM_ID":  "",
-    "TR_ID":  "",
+    "TCM_ID":  12,
+    "TR_ID":  13,
     "TestResult":  "Pass",
     "TestStatus":  "DONE",
     "TestFail_Dercription":  "",
