@@ -119,6 +119,10 @@ for ($i=0; $i -lt $dataSet.Tables[0].Rows.Count; $i++)
 
     if ($TR_Excute_Status -ne "Running")
     {
+        $TRconfig.TestStatus = "New"
+        $updatedJson = $TRconfig | ConvertTo-Json -Depth 10
+        $updatedJson | Set-Content -Path $TRPath
+
         $sqlCmd.CommandText = 
         "update Test_Result 
         set    TR_Excute_Status = 'Running'
@@ -144,7 +148,24 @@ for ($i=0; $i -lt $dataSet.Tables[0].Rows.Count; $i++)
         set    TCM_Status = 'DONE'
         where  TCM_ID = '$TCM_ID'"
         $NULL = $SqlCmd.executenonquery()
-        $programs = $NULL
+    }
+    elseif ($TestStatus -eq "pxe boot") {
+        process_log "pxe fail"
+        # $TRconfig.TestStatus = "pxe Fail"
+        # $updatedJson = $TRconfig | ConvertTo-Json -Depth 10
+        # $updatedJson | Set-Content -Path $TRPath
+
+        $sqlCmd.CommandText = 
+        "update Test_Result 
+        set    TR_Excute_Status = 'Fail'
+        where  TR_ID = '$TR_ID'"
+        $NULL = $SqlCmd.executenonquery()
+
+        $sqlCmd.CommandText = 
+        "update Test_Control_Main 
+        set    TCM_Status = 'Fail'
+        where  TCM_ID = '$TCM_ID'"
+        $NULL = $SqlCmd.executenonquery()
     }
 }
 
@@ -152,4 +173,5 @@ for ($i=0; $i -lt $dataSet.Tables[0].Rows.Count; $i++)
 $SqlConn.close()
 
 Write-Host $programs
+Write-Host "xxxxxxxxxx"
 return $programs

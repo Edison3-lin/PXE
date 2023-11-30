@@ -58,7 +58,7 @@ $SqlCmd.connection = $SqlConn
 
 
 # Read SQL data
-if($TestStatus -ne "PXE BOOT")
+if($TestStatus -ne "pxe boot") 
 {
     $sqlCmd.CommandText = 
     "
@@ -72,8 +72,8 @@ if($TestStatus -ne "PXE BOOT")
 
     $TRconfig.TCM_ID = ""
     $TRconfig.TR_ID = ""
-    $TRconfig.TestResult = "Pass"
-    $TRconfig.TestStatus = "DONE"
+    # $TRconfig.TestResult = "Pass"
+    # $TRconfig.TestStatus = "DONE"
     $updatedJson = $TRconfig | ConvertTo-Json -Depth 10
     $updatedJson | Set-Content -Path $TRPath
 

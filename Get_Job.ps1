@@ -73,7 +73,7 @@ $TCM_ID = $NULL
 $TR_ID = $NULL
 $TA_Execute_Path = $NULL
 
-if($TRconfig.TestStatus -ne "PXE BOOT" )
+if($TRconfig.TestStatus -ne "pxe boot" )
 {
     # Read SQL data
     $sqlCmd.CommandText = "
