@@ -261,614 +261,613 @@ namespace image_installation_application_default
 
             GetinstalledinformationFromPC(gInstalledSoftware);
 
-            // if (sub_brand_name_cellValue == PCInformation[0])
-            // {
-            //     Console.WriteLine("----- DUMP tag exist and match apps in this PC ------");
-            //     foreach (string items in New_applications_list_SCL)
-            //     {
-            //         Console.WriteLine(items);
-            //     }
-            //     Console.WriteLine();
-            // }
+            if (sub_brand_name_cellValue == PCInformation[0])
+            {
+                Console.WriteLine("----- DUMP tag exist and match apps in this PC ------");
+                foreach (string items in New_applications_list_SCL)
+                {
+                    Console.WriteLine(items);
+                }
+                Console.WriteLine();
+            }
 
 
-            // //Dump all applications info in OS
-            // StreamWriter sw = new StreamWriter(root_path + "installedapplist.txt");
-            // foreach (var key in gInstalledSoftware)
-            // {
-            //     sw.Write(key.ToString());
-            //     sw.Write('\n');
-            // }
-            // sw.Close();
+            //Dump all applications info in OS
+            StreamWriter sw = new StreamWriter(root_path + "installedapplist.txt");
+            foreach (var key in gInstalledSoftware)
+            {
+                sw.Write(key.ToString());
+                sw.Write('\n');
+            }
+            sw.Close();
 
-            // //Dump all application list in SCL 
-            // Console.WriteLine("DUMP ALL applications in SCL file");
-            // Console.WriteLine("---------------------------------");
+            //Dump all application list in SCL 
+            Console.WriteLine("DUMP ALL applications in SCL file");
+            Console.WriteLine("---------------------------------");
             
-            // string correctString = " ";
-            // //Try to do comparing between SCL list and all applications list
-            // string filePath = root_path + "installedapplist.txt"; // Replace with the path to your text file
+            string correctString = " ";
+            //Try to do comparing between SCL list and all applications list
+            string filePath = root_path + "installedapplist.txt"; // Replace with the path to your text file
                                                                   
-            // foreach (string appname in New_applications_list_SCL)
-            // {
-            //     Console.WriteLine("----------------------");
-            //     Console.WriteLine($"{appname}");
+            foreach (string appname in New_applications_list_SCL)
+            {
+                Console.WriteLine("----------------------");
+                Console.WriteLine($"{appname}");
 
-            //     if (!string.IsNullOrWhiteSpace(appname))
-            //     {
-            //         string[] applist = appname.Split(',');
-            //         //Mapping Application name ....
-            //         if (applist[0] == "Dropbox Promotion")
-            //         {
-            //             correctString = applist[0].Replace("Dropbox Promotion", "DropboxOEM");
-            //         }
-            //         else if (applist[0] == "Acer Product Registration")
-            //         {
-            //             correctString = applist[0].Replace("Acer Product Registration", "AcerRegistration");
-            //             if (applist[1].IndexOf(".00") >= 0)
-            //             {
-            //                 applist[1] = applist[1].Replace(".00", ".0");
-            //             }
-            //         }
-            //         else if (applist[0] == "Acer Care Center V4")
-            //         {
-            //             correctString = applist[0].Replace("Acer Care Center V4", "Care Center");
-            //             int skip_char = applist[1].IndexOf("_");
-            //             if (skip_char > 0)
-            //             {
-            //                 applist[1] = applist[1].Substring(0, skip_char);
-            //             }
-            //         }
-            //         else if (applist[0] == "Acer Configuration Manager")
-            //         {
-            //             correctString = applist[0].Replace("Acer Configuration Manager", "Acer Configuration Manager");
-            //             int skip_char = applist[1].IndexOf("r");
-            //             if (skip_char > 0)
-            //             {
-            //                 applist[1] = applist[1].Substring(0, skip_char);
-            //                 //Console.WriteLine(applist[0] + " " + applist[1]);
-            //             }
-            //         }
-            //         else if (applist[0] == "McAfee LiveSafe P1")
-            //         {
-            //             correctString = applist[0].Replace("McAfee LiveSafe P1", "McAfee LiveSafe");
-            //             applist[1] = applist[1].Replace(".R", " R");
-            //             //Console.WriteLine(applist[1]);
-            //         }
-            //         else if (applist[0] == "User Behavior Tracking Framework")
-            //         {
-            //             if (applist[1].IndexOf(".00") >= 0)
-            //             {
-            //                 applist[1] = applist[1].Replace(".00", ".0");
-            //             }
-            //             correctString = applist[0].Replace("User Behavior Tracking Framework", "UserExperienceImprovementProgram");
-            //         }
-            //         else if (applist[0] == "Google Play Games")
-            //         {
-            //             correctString = applist[0].Replace("Google Play Games", "Google Play Games");
-            //         }
-            //         else if (applist[0] == "Booking.com Weblink")//Booking suite
-            //         {
-            //             correctString = applist[0].Replace("Booking.com Weblink", "Booking.com.url");
-            //         }
-            //         else if (applist[0] == "Booking.com_Favorite")//Booking suite
-            //         {
-            //             correctString = applist[0].Replace("Booking.com_Favorite", "Booking.com.url");
-            //         }
-            //         else if (applist[0] == "Hao123 Weblink" || applist[0] == "Hao123_Favorite")
-            //         {
-            //             correctString = applist[0].Replace("Hao123 Weblink", "hao123");
-            //             correctString = applist[0].Replace("Hao123_Favorite", "hao123");
-            //         }
-            //         else if (applist[0] == "Acer legal portal")
-            //         {
-            //             correctString = applist[0].Replace("Acer legal portal", "Acer Legal Information");
-            //         }
-            //         else if (applist[0] == "Baidu Net Disk")
-            //         {
-            //             correctString = applist[0].Replace("Baidu Net Disk", "百度网盘");
-            //         }
-            //         else if (applist[0] == "Software Picks")
-            //         {
-            //             correctString = applist[0].Replace("Software Picks", "软件精选");
-            //         }
-            //         else if (applist[0] == "Amazon Weblink")
-            //         {
-            //             correctString = applist[0].Replace("Amazon Weblink", "Amazon.url");
-            //         }
-            //         else if (applist[0] == "Intel Multi-Device Experience")
-            //         {
-            //             correctString = applist[0].Replace("Intel Multi-Device Experience", "IntelTechnologyMDE");
-            //         }
-            //         else if (applist[0] == "Microsoft Office")//MS Office suite
-            //         {
-            //             correctString = applist[0].Replace("Microsoft Office", "Microsoft 365");
-            //         }
-            //         else if (applist[0] == "Microsoft Office Installer")//MS Office suite
-            //         {
-            //             correctString = applist[0].Replace("Microsoft Office Installer", "Microsoft OneNote");
-            //         }
-            //         else if (applist[0] == "MyOffice_Spreadsheet")//MyOffice suite
-            //         {
-            //             correctString = applist[0].Replace("MyOffice_Spreadsheet", "MyOffice");
-            //         }
-            //         else if (applist[0] == "MyOffice_Text")//MyOffice suite
-            //         {
-            //             correctString = applist[0].Replace("MyOffice_Text", "MyOffice");
-            //         }
-            //         else if (applist[0] == "Morpho Camera Effects")
-            //         {
-            //             correctString = applist[0].Replace("Morpho Camera Effects", "Morpho Inc.");
-            //         }
-            //         else if (applist[0] == "Power Management Setting")
-            //         {
-            //             correctString = applist[0].Replace("Power Management Setting", "PowerManagementSetting.tag");
-            //         }
-            //         else if (applist[0] == "Storage Utilities")
-            //         {
-            //             correctString = applist[0].Replace("Storage Utilities", "StorageUtilities.tag");
-            //         }
-            //         else if (applist[0] == "Planet9")
-            //         {
-            //             correctString = applist[0].Replace("Planet9", "Planet9_Version.txt");
-            //         }
-            //         else if (applist[0] == "Solitaire")
-            //         {
-            //             correctString = applist[0].Replace("Solitaire", "RandomSaladGamesLLC");
-            //         }
-            //         else if (applist[0] == "WPS China")
-            //         {
-            //             correctString = applist[0].Replace("WPS China", "WPS Office");
-            //             int skip_char = applist[1].IndexOf("r");
-            //             if (skip_char > 0)
-            //             {
-            //                 applist[1] = applist[1].Substring(0, skip_char);
-            //             }
-            //         }
-            //         else if (applist[0] == "Baidu Weblink" || applist[0] == "Baidu_Favorite")
-            //         {
-            //             correctString = applist[0].Replace("Baidu Weblink", "百度一下");
-            //             correctString = applist[0].Replace("Baidu_Favorite", "百度一下");
+                if (!string.IsNullOrWhiteSpace(appname))
+                {
+                    string[] applist = appname.Split(',');
+                    //Mapping Application name ....
+                    if (applist[0] == "Dropbox Promotion")
+                    {
+                        correctString = applist[0].Replace("Dropbox Promotion", "DropboxOEM");
+                    }
+                    else if (applist[0] == "Acer Product Registration")
+                    {
+                        correctString = applist[0].Replace("Acer Product Registration", "AcerRegistration");
+                        if (applist[1].IndexOf(".00") >= 0)
+                        {
+                            applist[1] = applist[1].Replace(".00", ".0");
+                        }
+                    }
+                    else if (applist[0] == "Acer Care Center V4")
+                    {
+                        correctString = applist[0].Replace("Acer Care Center V4", "Care Center");
+                        int skip_char = applist[1].IndexOf("_");
+                        if (skip_char > 0)
+                        {
+                            applist[1] = applist[1].Substring(0, skip_char);
+                        }
+                    }
+                    else if (applist[0] == "Acer Configuration Manager")
+                    {
+                        correctString = applist[0].Replace("Acer Configuration Manager", "Acer Configuration Manager");
+                        int skip_char = applist[1].IndexOf("r");
+                        if (skip_char > 0)
+                        {
+                            applist[1] = applist[1].Substring(0, skip_char);
+                            //Console.WriteLine(applist[0] + " " + applist[1]);
+                        }
+                    }
+                    else if (applist[0] == "McAfee LiveSafe P1")
+                    {
+                        correctString = applist[0].Replace("McAfee LiveSafe P1", "McAfee LiveSafe");
+                        applist[1] = applist[1].Replace(".R", " R");
+                        //Console.WriteLine(applist[1]);
+                    }
+                    else if (applist[0] == "User Behavior Tracking Framework")
+                    {
+                        if (applist[1].IndexOf(".00") >= 0)
+                        {
+                            applist[1] = applist[1].Replace(".00", ".0");
+                        }
+                        correctString = applist[0].Replace("User Behavior Tracking Framework", "UserExperienceImprovementProgram");
+                    }
+                    else if (applist[0] == "Google Play Games")
+                    {
+                        correctString = applist[0].Replace("Google Play Games", "Google Play Games");
+                    }
+                    else if (applist[0] == "Booking.com Weblink")//Booking suite
+                    {
+                        correctString = applist[0].Replace("Booking.com Weblink", "Booking.com.url");
+                    }
+                    else if (applist[0] == "Booking.com_Favorite")//Booking suite
+                    {
+                        correctString = applist[0].Replace("Booking.com_Favorite", "Booking.com.url");
+                    }
+                    else if (applist[0] == "Hao123 Weblink" || applist[0] == "Hao123_Favorite")
+                    {
+                        correctString = applist[0].Replace("Hao123 Weblink", "hao123");
+                        correctString = applist[0].Replace("Hao123_Favorite", "hao123");
+                    }
+                    else if (applist[0] == "Acer legal portal")
+                    {
+                        correctString = applist[0].Replace("Acer legal portal", "Acer Legal Information");
+                    }
+                    else if (applist[0] == "Baidu Net Disk")
+                    {
+                        correctString = applist[0].Replace("Baidu Net Disk", "百度网盘");
+                    }
+                    else if (applist[0] == "Software Picks")
+                    {
+                        correctString = applist[0].Replace("Software Picks", "软件精选");
+                    }
+                    else if (applist[0] == "Amazon Weblink")
+                    {
+                        correctString = applist[0].Replace("Amazon Weblink", "Amazon.url");
+                    }
+                    else if (applist[0] == "Intel Multi-Device Experience")
+                    {
+                        correctString = applist[0].Replace("Intel Multi-Device Experience", "IntelTechnologyMDE");
+                    }
+                    else if (applist[0] == "Microsoft Office")//MS Office suite
+                    {
+                        correctString = applist[0].Replace("Microsoft Office", "Microsoft 365");
+                    }
+                    else if (applist[0] == "Microsoft Office Installer")//MS Office suite
+                    {
+                        correctString = applist[0].Replace("Microsoft Office Installer", "Microsoft OneNote");
+                    }
+                    else if (applist[0] == "MyOffice_Spreadsheet")//MyOffice suite
+                    {
+                        correctString = applist[0].Replace("MyOffice_Spreadsheet", "MyOffice");
+                    }
+                    else if (applist[0] == "MyOffice_Text")//MyOffice suite
+                    {
+                        correctString = applist[0].Replace("MyOffice_Text", "MyOffice");
+                    }
+                    else if (applist[0] == "Morpho Camera Effects")
+                    {
+                        correctString = applist[0].Replace("Morpho Camera Effects", "Morpho Inc.");
+                    }
+                    else if (applist[0] == "Power Management Setting")
+                    {
+                        correctString = applist[0].Replace("Power Management Setting", "PowerManagementSetting.tag");
+                    }
+                    else if (applist[0] == "Storage Utilities")
+                    {
+                        correctString = applist[0].Replace("Storage Utilities", "StorageUtilities.tag");
+                    }
+                    else if (applist[0] == "Planet9")
+                    {
+                        correctString = applist[0].Replace("Planet9", "Planet9_Version.txt");
+                    }
+                    else if (applist[0] == "Solitaire")
+                    {
+                        correctString = applist[0].Replace("Solitaire", "RandomSaladGamesLLC");
+                    }
+                    else if (applist[0] == "WPS China")
+                    {
+                        correctString = applist[0].Replace("WPS China", "WPS Office");
+                        int skip_char = applist[1].IndexOf("r");
+                        if (skip_char > 0)
+                        {
+                            applist[1] = applist[1].Substring(0, skip_char);
+                        }
+                    }
+                    else if (applist[0] == "Baidu Weblink" || applist[0] == "Baidu_Favorite")
+                    {
+                        correctString = applist[0].Replace("Baidu Weblink", "百度一下");
+                        correctString = applist[0].Replace("Baidu_Favorite", "百度一下");
 
-            //         }
-            //         else if (applist[0] == "Yandex Browser")
-            //         {
-            //             correctString = applist[0].Replace("Yandex Browser", "Yandex");
-            //         }
-            //         else if (applist[0] == "Yandex Weblink")
-            //         {
-            //             correctString = applist[0].Replace("Yandex Weblink", "Yandex");
-            //         }
-            //         else if (applist[0] == "Yandex_Favorite")
-            //         {
-            //             correctString = applist[0].Replace("Yandex_Favorite", "Yandex");
-            //         }
-            //         else
-            //         {
-            //             correctString = applist[0];
-            //         }
+                    }
+                    else if (applist[0] == "Yandex Browser")
+                    {
+                        correctString = applist[0].Replace("Yandex Browser", "Yandex");
+                    }
+                    else if (applist[0] == "Yandex Weblink")
+                    {
+                        correctString = applist[0].Replace("Yandex Weblink", "Yandex");
+                    }
+                    else if (applist[0] == "Yandex_Favorite")
+                    {
+                        correctString = applist[0].Replace("Yandex_Favorite", "Yandex");
+                    }
+                    else
+                    {
+                        correctString = applist[0];
+                    }
 
-            //         try
-            //         {
-            //             // Read the file line by line
-            //             using (StreamReader reader = new StreamReader(filePath))
-            //             {
-            //                 int lineNumber = 1;
-            //                 string line;
+                    try
+                    {
+                        // Read the file line by line
+                        using (StreamReader reader = new StreamReader(filePath))
+                        {
+                            int lineNumber = 1;
+                            string line;
 
-            //                 while ((line = reader.ReadLine()) != null)
-            //                 {
-            //                     if (line.IndexOf(correctString, StringComparison.CurrentCultureIgnoreCase) >= 0)
-            //                     {
-            //                         if (correctString == "Care Center" ||
-            //                             correctString == "Acer Configuration Manager" ||
-            //                             correctString == "AcerRegistration" ||
-            //                             correctString == "AcerSense" ||
-            //                             correctString == "App Explorer" ||
-            //                             correctString == "百度网盘" ||
-            //                             correctString == "软件精选" ||
-            //                             correctString == "WPS Office" ||
-            //                             correctString == "DropboxOEM" ||
-            //                             correctString == "Evernote" ||
-            //                             correctString == "Google Play Games" ||
-            //                             correctString == "IntelTechnologyMDE" ||
-            //                             correctString == "McAfee LiveSafe" ||
-            //                             correctString == "Microsoft 365" ||
-            //                             correctString == "MyOffice" ||
-            //                             correctString == "Spades" ||
-            //                             correctString == "UserExperienceImprovementProgram")
-            //                         {
-            //                             if (line.IndexOf(applist[1]) >= 0)//check version correct
-            //                             {
-            //                                 int index = -1;//index pos for string "not check" or "checked"
-            //                                 switch (correctString)
-            //                                 {
-            //                                     case "Care Center":
-            //                                         AcerCareCenterV4 = "checked";
-            //                                         index = result_applications_list.FindIndex(s => s == "Acer Care Center V4,not check");
-            //                                         if (index != -1)
-            //                                         {
-            //                                             // Modify the value at the found index
-            //                                             result_applications_list[index] = "Acer Care Center V4,checked";
-            //                                         }
-            //                                         //result_applications_list.Add("AcerCareCenterV4" + "," + AcerCareCenterV4);
-            //                                         break;
-            //                                     case "Acer Configuration Manager":
-            //                                         AcerConfigurationManager = "checked";
-            //                                         index = result_applications_list.FindIndex(s => s == "Acer Configuration Manager,not check");
-            //                                         if (index != -1)
-            //                                         {
-            //                                             // Modify the value at the found index
-            //                                             result_applications_list[index] = "Acer Configuration Manager,checked";
-            //                                         }
-            //                                         break;
-            //                                     case "AcerRegistration":
-            //                                         AcerProductRegistration = "checked";
-            //                                         index = result_applications_list.FindIndex(s => s == "Acer Product Registration,not check");
-            //                                         if (index != -1)
-            //                                         {
-            //                                             // Modify the value at the found index
-            //                                             result_applications_list[index] = "Acer Product Registration,checked";
-            //                                         }
-            //                                         break;
-            //                                     case "AcerSense":
-            //                                         AcerSense = "checked";
-            //                                         index = result_applications_list.FindIndex(s => s == "AcerSense,not check");
-            //                                         if (index != -1)
-            //                                         {
-            //                                             // Modify the value at the found index
-            //                                             result_applications_list[index] = "AcerSense,checked";
-            //                                         }
-            //                                         break;
-            //                                     case "App Explorer":
-            //                                         AppExplorer = "checked";
-            //                                         index = result_applications_list.FindIndex(s => s == "App Explorer,not check");
-            //                                         if (index != -1)
-            //                                         {
-            //                                             // Modify the value at the found index
-            //                                             result_applications_list[index] = "App Explorer,checked";
-            //                                         }
-            //                                         break;
-            //                                     case "百度网盘":
-            //                                         BaiduNetDisk = "checked";
-            //                                         index = result_applications_list.FindIndex(s => s == "Baidu Net Disk,not check");
-            //                                         if (index != -1)
-            //                                         {
-            //                                             // Modify the value at the found index
-            //                                             result_applications_list[index] = "Baidu Net Disk,checked";
-            //                                         }
-            //                                         break;
-            //                                     case "软件精选":
-            //                                         SoftwarePicks = "checked";
-            //                                         index = result_applications_list.FindIndex(s => s == "Software Picks,not check");
-            //                                         if (index != -1)
-            //                                         {
-            //                                             // Modify the value at the found index
-            //                                             result_applications_list[index] = "Software Picks,checked";
-            //                                         }
-            //                                         break;
-            //                                     case "DropboxOEM":
-            //                                         DropboxPromotion = "checked";
-            //                                         index = result_applications_list.FindIndex(s => s == "Dropbox Promotion,not check");
-            //                                         if (index != -1)
-            //                                         {
-            //                                             // Modify the value at the found index
-            //                                             result_applications_list[index] = "Dropbox Promotion,checked";
-            //                                         }
-            //                                         break;
-            //                                     case "Evernote":
-            //                                         Evernote = "checked";
-            //                                         index = result_applications_list.FindIndex(s => s == "Evernote,not check");
-            //                                         if (index != -1)
-            //                                         {
-            //                                             // Modify the value at the found index
-            //                                             result_applications_list[index] = "Evernote,checked";
-            //                                         }
-            //                                         break;
-            //                                     case "Google Play Games":
-            //                                         GooglePlayGames = "checked";
-            //                                         index = result_applications_list.FindIndex(s => s == "Google Play Games,not check");
-            //                                         if (index != -1)
-            //                                         {
-            //                                             // Modify the value at the found index
-            //                                             result_applications_list[index] = "Google Play Games,checked";
-            //                                         }
-            //                                         break;
-            //                                     case "IntelTechnologyMDE":
-            //                                         IntelMultiDeviceExperience = "checked";
-            //                                         index = result_applications_list.FindIndex(s => s == "Intel Multi-Device Experience,not check");
-            //                                         if (index != -1)
-            //                                         {
-            //                                             // Modify the value at the found index
-            //                                             result_applications_list[index] = "Intel Multi-Device Experience,checked";
-            //                                         }
-            //                                         break;
-            //                                     case "McAfee LiveSafe":
-            //                                         McAfeeLiveSafeP1 = "checked";
-            //                                         index = result_applications_list.FindIndex(s => s == "McAfee LiveSafe P1,not check");
-            //                                         if (index != -1)
-            //                                         {
-            //                                             // Modify the value at the found index
-            //                                             result_applications_list[index] = "McAfee LiveSafe P1,checked";
-            //                                         }
-            //                                         break;
-            //                                     case "Microsoft 365":
-            //                                         MicrosoftOffice = "checked";
-            //                                         index = result_applications_list.FindIndex(s => s == "Microsoft Office,not check");
-            //                                         if (index != -1)
-            //                                         {
-            //                                             // Modify the value at the found index
-            //                                             result_applications_list[index] = "Microsoft Office,checked";
-            //                                         }
-            //                                         break;
-            //                                     case "MyOffice":
-            //                                         MyOfficesuite = "checked";
-            //                                         index = result_applications_list.FindIndex(s => s == "MyOffice_Spreadsheet,not check");
-            //                                         if (index != -1)
-            //                                         {
-            //                                             // Modify the value at the found index
-            //                                             result_applications_list[index] = "MyOffice_Spreadsheet,checked";
-            //                                         }
+                            while ((line = reader.ReadLine()) != null)
+                            {
+                                if (line.IndexOf(correctString, StringComparison.CurrentCultureIgnoreCase) >= 0)
+                                {
+                                    if (correctString == "Care Center" ||
+                                        correctString == "Acer Configuration Manager" ||
+                                        correctString == "AcerRegistration" ||
+                                        correctString == "AcerSense" ||
+                                        correctString == "App Explorer" ||
+                                        correctString == "百度网盘" ||
+                                        correctString == "软件精选" ||
+                                        correctString == "WPS Office" ||
+                                        correctString == "DropboxOEM" ||
+                                        correctString == "Evernote" ||
+                                        correctString == "Google Play Games" ||
+                                        correctString == "IntelTechnologyMDE" ||
+                                        correctString == "McAfee LiveSafe" ||
+                                        correctString == "Microsoft 365" ||
+                                        correctString == "MyOffice" ||
+                                        correctString == "Spades" ||
+                                        correctString == "UserExperienceImprovementProgram")
+                                    {
+                                        if (line.IndexOf(applist[1]) >= 0)//check version correct
+                                        {
+                                            int index = -1;//index pos for string "not check" or "checked"
+                                            switch (correctString)
+                                            {
+                                                case "Care Center":
+                                                    AcerCareCenterV4 = "checked";
+                                                    index = result_applications_list.FindIndex(s => s == "Acer Care Center V4,not check");
+                                                    if (index != -1)
+                                                    {
+                                                        // Modify the value at the found index
+                                                        result_applications_list[index] = "Acer Care Center V4,checked";
+                                                    }
+                                                    //result_applications_list.Add("AcerCareCenterV4" + "," + AcerCareCenterV4);
+                                                    break;
+                                                case "Acer Configuration Manager":
+                                                    AcerConfigurationManager = "checked";
+                                                    index = result_applications_list.FindIndex(s => s == "Acer Configuration Manager,not check");
+                                                    if (index != -1)
+                                                    {
+                                                        // Modify the value at the found index
+                                                        result_applications_list[index] = "Acer Configuration Manager,checked";
+                                                    }
+                                                    break;
+                                                case "AcerRegistration":
+                                                    AcerProductRegistration = "checked";
+                                                    index = result_applications_list.FindIndex(s => s == "Acer Product Registration,not check");
+                                                    if (index != -1)
+                                                    {
+                                                        // Modify the value at the found index
+                                                        result_applications_list[index] = "Acer Product Registration,checked";
+                                                    }
+                                                    break;
+                                                case "AcerSense":
+                                                    AcerSense = "checked";
+                                                    index = result_applications_list.FindIndex(s => s == "AcerSense,not check");
+                                                    if (index != -1)
+                                                    {
+                                                        // Modify the value at the found index
+                                                        result_applications_list[index] = "AcerSense,checked";
+                                                    }
+                                                    break;
+                                                case "App Explorer":
+                                                    AppExplorer = "checked";
+                                                    index = result_applications_list.FindIndex(s => s == "App Explorer,not check");
+                                                    if (index != -1)
+                                                    {
+                                                        // Modify the value at the found index
+                                                        result_applications_list[index] = "App Explorer,checked";
+                                                    }
+                                                    break;
+                                                case "百度网盘":
+                                                    BaiduNetDisk = "checked";
+                                                    index = result_applications_list.FindIndex(s => s == "Baidu Net Disk,not check");
+                                                    if (index != -1)
+                                                    {
+                                                        // Modify the value at the found index
+                                                        result_applications_list[index] = "Baidu Net Disk,checked";
+                                                    }
+                                                    break;
+                                                case "软件精选":
+                                                    SoftwarePicks = "checked";
+                                                    index = result_applications_list.FindIndex(s => s == "Software Picks,not check");
+                                                    if (index != -1)
+                                                    {
+                                                        // Modify the value at the found index
+                                                        result_applications_list[index] = "Software Picks,checked";
+                                                    }
+                                                    break;
+                                                case "DropboxOEM":
+                                                    DropboxPromotion = "checked";
+                                                    index = result_applications_list.FindIndex(s => s == "Dropbox Promotion,not check");
+                                                    if (index != -1)
+                                                    {
+                                                        // Modify the value at the found index
+                                                        result_applications_list[index] = "Dropbox Promotion,checked";
+                                                    }
+                                                    break;
+                                                case "Evernote":
+                                                    Evernote = "checked";
+                                                    index = result_applications_list.FindIndex(s => s == "Evernote,not check");
+                                                    if (index != -1)
+                                                    {
+                                                        // Modify the value at the found index
+                                                        result_applications_list[index] = "Evernote,checked";
+                                                    }
+                                                    break;
+                                                case "Google Play Games":
+                                                    GooglePlayGames = "checked";
+                                                    index = result_applications_list.FindIndex(s => s == "Google Play Games,not check");
+                                                    if (index != -1)
+                                                    {
+                                                        // Modify the value at the found index
+                                                        result_applications_list[index] = "Google Play Games,checked";
+                                                    }
+                                                    break;
+                                                case "IntelTechnologyMDE":
+                                                    IntelMultiDeviceExperience = "checked";
+                                                    index = result_applications_list.FindIndex(s => s == "Intel Multi-Device Experience,not check");
+                                                    if (index != -1)
+                                                    {
+                                                        // Modify the value at the found index
+                                                        result_applications_list[index] = "Intel Multi-Device Experience,checked";
+                                                    }
+                                                    break;
+                                                case "McAfee LiveSafe":
+                                                    McAfeeLiveSafeP1 = "checked";
+                                                    index = result_applications_list.FindIndex(s => s == "McAfee LiveSafe P1,not check");
+                                                    if (index != -1)
+                                                    {
+                                                        // Modify the value at the found index
+                                                        result_applications_list[index] = "McAfee LiveSafe P1,checked";
+                                                    }
+                                                    break;
+                                                case "Microsoft 365":
+                                                    MicrosoftOffice = "checked";
+                                                    index = result_applications_list.FindIndex(s => s == "Microsoft Office,not check");
+                                                    if (index != -1)
+                                                    {
+                                                        // Modify the value at the found index
+                                                        result_applications_list[index] = "Microsoft Office,checked";
+                                                    }
+                                                    break;
+                                                case "MyOffice":
+                                                    MyOfficesuite = "checked";
+                                                    index = result_applications_list.FindIndex(s => s == "MyOffice_Spreadsheet,not check");
+                                                    if (index != -1)
+                                                    {
+                                                        // Modify the value at the found index
+                                                        result_applications_list[index] = "MyOffice_Spreadsheet,checked";
+                                                    }
 
-            //                                         index = result_applications_list.FindIndex(s => s == "MyOffice_Text,not check");
-            //                                         if (index != -1)
-            //                                         {
-            //                                             // Modify the value at the found index
-            //                                             result_applications_list[index] = "MyOffice_Text,checked";
-            //                                         }
-            //                                         break;
-            //                                     case "WPS Office":
-            //                                         WPSChina = "checked";
-            //                                         index = result_applications_list.FindIndex(s => s == "WPS China,not check");
-            //                                         if (index != -1)
-            //                                         {
-            //                                             // Modify the value at the found index
-            //                                             result_applications_list[index] = "WPS China,checked";
-            //                                         }
-            //                                         break;
-            //                                     case "Spades":
-            //                                         Spades = "checked";
-            //                                         index = result_applications_list.FindIndex(s => s == "Spades,not check");
-            //                                         if (index != -1)
-            //                                         {
-            //                                             // Modify the value at the found index
-            //                                             result_applications_list[index] = "Spades,checked";
-            //                                         }
-            //                                         break;
-            //                                     case "UserExperienceImprovementProgram":
-            //                                         UserBehaviorTrackingFramework = "checked";
-            //                                         index = result_applications_list.FindIndex(s => s == "User Behavior Tracking Framework,not check");
-            //                                         if (index != -1)
-            //                                         {
-            //                                             // Modify the value at the found index
-            //                                             result_applications_list[index] = "User Behavior Tracking Framework,checked";
-            //                                         }
-            //                                         break;
-            //                                     default://no case mapping, do nothing here
-            //                                         break;
-            //                                 };
+                                                    index = result_applications_list.FindIndex(s => s == "MyOffice_Text,not check");
+                                                    if (index != -1)
+                                                    {
+                                                        // Modify the value at the found index
+                                                        result_applications_list[index] = "MyOffice_Text,checked";
+                                                    }
+                                                    break;
+                                                case "WPS Office":
+                                                    WPSChina = "checked";
+                                                    index = result_applications_list.FindIndex(s => s == "WPS China,not check");
+                                                    if (index != -1)
+                                                    {
+                                                        // Modify the value at the found index
+                                                        result_applications_list[index] = "WPS China,checked";
+                                                    }
+                                                    break;
+                                                case "Spades":
+                                                    Spades = "checked";
+                                                    index = result_applications_list.FindIndex(s => s == "Spades,not check");
+                                                    if (index != -1)
+                                                    {
+                                                        // Modify the value at the found index
+                                                        result_applications_list[index] = "Spades,checked";
+                                                    }
+                                                    break;
+                                                case "UserExperienceImprovementProgram":
+                                                    UserBehaviorTrackingFramework = "checked";
+                                                    index = result_applications_list.FindIndex(s => s == "User Behavior Tracking Framework,not check");
+                                                    if (index != -1)
+                                                    {
+                                                        // Modify the value at the found index
+                                                        result_applications_list[index] = "User Behavior Tracking Framework,checked";
+                                                    }
+                                                    break;
+                                                default://no case mapping, do nothing here
+                                                    break;
+                                            };
 
-            //                                 Console.WriteLine($"Found '{applist[0]}'-->mapping name '{correctString}', '{applist[1]}' in line {lineNumber}: {line}");
-            //                             }
-            //                         }
-            //                         else if (correctString == "Acer Legal Information" ||
-            //                             correctString == "Amazon.url" ||
-            //                             correctString == "Booking.com.url" ||
-            //                             correctString == "hao123" ||
-            //                             correctString == "百度一下" ||
-            //                             correctString == "Forge of Empires" ||
-            //                             correctString == "Microsoft OneNote" ||
-            //                             correctString == "Morpho Inc." ||
-            //                             correctString == "Planet9_Version.txt" ||
-            //                             correctString == "PowerManagementSetting.tag" ||
-            //                             correctString == "StorageUtilities.tag")
-            //                         {
-            //                             int index = -1;
-            //                             switch (correctString)//case does not need to check version
-            //                             {
-            //                                 case "Acer Legal Information":
-            //                                     Acerlegalportal = "checked";
-            //                                     index = result_applications_list.FindIndex(s => s == "Acer legal portal,not check");
-            //                                     if (index != -1)
-            //                                     {
-            //                                         // Modify the value at the found index
-            //                                         result_applications_list[index] = "Acer legal portal,checked";
-            //                                     }
-            //                                     break;
-            //                                 case "Amazon.url":
-            //                                     AmazonWeblink = "checked";
-            //                                     index = result_applications_list.FindIndex(s => s == "Amazon Weblink,not check");
-            //                                     if (index != -1)
-            //                                     {
-            //                                         // Modify the value at the found index
-            //                                         result_applications_list[index] = "Amazon Weblink,checked";
-            //                                     }
-            //                                     break;
-            //                                 case "Booking.com.url":
-            //                                     BookingWeblink = "checked";
-            //                                     index = result_applications_list.FindIndex(s => s == "Booking.com Weblink,not check");
-            //                                     if (index != -1)
-            //                                     {
-            //                                         // Modify the value at the found index
-            //                                         result_applications_list[index] = "Booking.com Weblink,checked";
-            //                                     }
-            //                                     BookingFavorite = "checked";
-            //                                     index = result_applications_list.FindIndex(s => s == "Booking.com_Favorite,not check");
-            //                                     if (index != -1)
-            //                                     {
-            //                                         // Modify the value at the found index
-            //                                         result_applications_list[index] = "Booking.com_Favorite,checked";
-            //                                     }
-            //                                     break;
-            //                                 case "hao123":
-            //                                     Hao123Weblink = "checked";
-            //                                     index = result_applications_list.FindIndex(s => s == "Hao123 Weblink,not check");
-            //                                     if (index != -1)
-            //                                     {
-            //                                         // Modify the value at the found index
-            //                                         result_applications_list[index] = "Hao123 Weblink,checked";
-            //                                     }
-            //                                     Hao123Favorite = "checked";
-            //                                     index = result_applications_list.FindIndex(s => s == "Hao123_Favorite,not check");
-            //                                     if (index != -1)
-            //                                     {
-            //                                         // Modify the value at the found index
-            //                                         result_applications_list[index] = "Hao123_Favorite,checked";
-            //                                     }
-            //                                     break;
-            //                                 case "百度一下":
-            //                                     BaiduWeblink = "checked";
-            //                                     index = result_applications_list.FindIndex(s => s == "Baidu Weblink,not check");
-            //                                     if (index != -1)
-            //                                     {
-            //                                         // Modify the value at the found index
-            //                                         result_applications_list[index] = "Baidu Weblink,checked";
-            //                                     }
-            //                                     BaiduFavorite = "checked";
-            //                                     index = result_applications_list.FindIndex(s => s == "Baidu_Favorite,not check");
-            //                                     if (index != -1)
-            //                                     {
-            //                                         // Modify the value at the found index
-            //                                         result_applications_list[index] = "Baidu_Favorite,checked";
-            //                                     }
-            //                                     break;
-            //                                 case "Forge of Empires":
-            //                                     ForgeofEmpires = "checked";
-            //                                     index = result_applications_list.FindIndex(s => s == "Forge of Empires,not check");
-            //                                     if (index != -1)
-            //                                     {
-            //                                         // Modify the value at the found index
-            //                                         result_applications_list[index] = "Forge of Empires,checked";
-            //                                     }
-            //                                     break;
-            //                                 case "Microsoft OneNote":
-            //                                     MicrosoftOfficeInstaller = "checked";
-            //                                     index = result_applications_list.FindIndex(s => s == "Microsoft Office Installer,not check");
-            //                                     if (index != -1)
-            //                                     {
-            //                                         // Modify the value at the found index
-            //                                         result_applications_list[index] = "Microsoft Office Installer,checked";
-            //                                     }
-            //                                     break;
-            //                                 case "Morpho Inc.":
-            //                                     MorphoCameraEffects = "checked";
-            //                                     index = result_applications_list.FindIndex(s => s == "Morpho Camera Effects,not check");
-            //                                     if (index != -1)
-            //                                     {
-            //                                         // Modify the value at the found index
-            //                                         result_applications_list[index] = "Morpho Camera Effects,checked";
-            //                                     }
-            //                                     break;
-            //                                 case "Planet9_Version.txt":
-            //                                     Planet9 = "checked";
-            //                                     index = result_applications_list.FindIndex(s => s == "Planet9,not check");
-            //                                     if (index != -1)
-            //                                     {
-            //                                         // Modify the value at the found index
-            //                                         result_applications_list[index] = "Planet9,checked";
-            //                                     }
-            //                                     break;
-            //                                 case "PowerManagementSetting.tag":
-            //                                     PowerManagementSetting = "checked";
-            //                                     index = result_applications_list.FindIndex(s => s == "Power Management Setting,not check");
-            //                                     if (index != -1)
-            //                                     {
-            //                                         // Modify the value at the found index
-            //                                         result_applications_list[index] = "Power Management Setting,checked";
-            //                                     }
-            //                                     break;
-            //                                 case "StorageUtilities.tag":
-            //                                     StorageUtilities = "checked";
-            //                                     index = result_applications_list.FindIndex(s => s == "Storage Utilities,not check");
-            //                                     if (index != -1)
-            //                                     {
-            //                                         // Modify the value at the found index
-            //                                         result_applications_list[index] = "Storage Utilities,checked";
-            //                                     }
-            //                                     break;
-            //                                 default://no case mapping, do nothing here 
-            //                                     break;
-            //                             };
-            //                             Console.WriteLine($"Found '{applist[0]}'-->mapping name '{correctString}' in line {lineNumber}: {line}");
-            //                         }
-            //                         //language/Region is not en-US 
-            //                         else if (correctString == "RandomSaladGamesLLC")//Solitaire, ru-RU
-            //                         {
-            //                             if (line.IndexOf(applist[1]) >= 0)
-            //                             {
-            //                                 Solitaire = "checked";
-            //                                 int index = -1;
-            //                                 index = result_applications_list.FindIndex(s => s == "Solitaire,not check");
-            //                                 if (index != -1)
-            //                                 {
-            //                                     // Modify the value at the found index
-            //                                     result_applications_list[index] = "Solitaire,checked";
-            //                                 }
-            //                                 Console.WriteLine($"Found '{applist[0]}'-->mapping name '{correctString}', '{applist[1]}' in line {lineNumber}: {line}");
-            //                             }
-            //                         }
-            //                         else if (correctString == "Yandex" && ci.Name == "ru-RU")
-            //                         {
-            //                             Yandex = "checked";
-            //                             int index = -1; int index2 = -1; int index3 = -1;
-            //                             index = result_applications_list.FindIndex(s => s == "Yandex Browser,not check");
-            //                             if (index != -1)
-            //                             {
-            //                                 // Modify the value at the found index
-            //                                 result_applications_list[index] = "Yandex Browser,checked";
-            //                             }
-            //                             index2 = result_applications_list.FindIndex(s => s == "Yandex Weblink,not check");
-            //                             if (index2 != -1)
-            //                             {
-            //                                 // Modify the value at the found index
-            //                                 result_applications_list[index2] = "Yandex Weblink,checked";
-            //                             }
-            //                             index3 = result_applications_list.FindIndex(s => s == "Yandex_Favorite,not check");
-            //                             if (index3 != -1)
-            //                             {
-            //                                 // Modify the value at the found index
-            //                                 result_applications_list[index3] = "Yandex_Favorite,checked";
-            //                             }
-            //                         }
-            //                         else
-            //                         {
-            //                             Console.WriteLine("Error !! Not in the installed applist" + " " + correctString);
-            //                         }
+                                            Console.WriteLine($"Found '{applist[0]}'-->mapping name '{correctString}', '{applist[1]}' in line {lineNumber}: {line}");
+                                        }
+                                    }
+                                    else if (correctString == "Acer Legal Information" ||
+                                        correctString == "Amazon.url" ||
+                                        correctString == "Booking.com.url" ||
+                                        correctString == "hao123" ||
+                                        correctString == "百度一下" ||
+                                        correctString == "Forge of Empires" ||
+                                        correctString == "Microsoft OneNote" ||
+                                        correctString == "Morpho Inc." ||
+                                        correctString == "Planet9_Version.txt" ||
+                                        correctString == "PowerManagementSetting.tag" ||
+                                        correctString == "StorageUtilities.tag")
+                                    {
+                                        int index = -1;
+                                        switch (correctString)//case does not need to check version
+                                        {
+                                            case "Acer Legal Information":
+                                                Acerlegalportal = "checked";
+                                                index = result_applications_list.FindIndex(s => s == "Acer legal portal,not check");
+                                                if (index != -1)
+                                                {
+                                                    // Modify the value at the found index
+                                                    result_applications_list[index] = "Acer legal portal,checked";
+                                                }
+                                                break;
+                                            case "Amazon.url":
+                                                AmazonWeblink = "checked";
+                                                index = result_applications_list.FindIndex(s => s == "Amazon Weblink,not check");
+                                                if (index != -1)
+                                                {
+                                                    // Modify the value at the found index
+                                                    result_applications_list[index] = "Amazon Weblink,checked";
+                                                }
+                                                break;
+                                            case "Booking.com.url":
+                                                BookingWeblink = "checked";
+                                                index = result_applications_list.FindIndex(s => s == "Booking.com Weblink,not check");
+                                                if (index != -1)
+                                                {
+                                                    // Modify the value at the found index
+                                                    result_applications_list[index] = "Booking.com Weblink,checked";
+                                                }
+                                                BookingFavorite = "checked";
+                                                index = result_applications_list.FindIndex(s => s == "Booking.com_Favorite,not check");
+                                                if (index != -1)
+                                                {
+                                                    // Modify the value at the found index
+                                                    result_applications_list[index] = "Booking.com_Favorite,checked";
+                                                }
+                                                break;
+                                            case "hao123":
+                                                Hao123Weblink = "checked";
+                                                index = result_applications_list.FindIndex(s => s == "Hao123 Weblink,not check");
+                                                if (index != -1)
+                                                {
+                                                    // Modify the value at the found index
+                                                    result_applications_list[index] = "Hao123 Weblink,checked";
+                                                }
+                                                Hao123Favorite = "checked";
+                                                index = result_applications_list.FindIndex(s => s == "Hao123_Favorite,not check");
+                                                if (index != -1)
+                                                {
+                                                    // Modify the value at the found index
+                                                    result_applications_list[index] = "Hao123_Favorite,checked";
+                                                }
+                                                break;
+                                            case "百度一下":
+                                                BaiduWeblink = "checked";
+                                                index = result_applications_list.FindIndex(s => s == "Baidu Weblink,not check");
+                                                if (index != -1)
+                                                {
+                                                    // Modify the value at the found index
+                                                    result_applications_list[index] = "Baidu Weblink,checked";
+                                                }
+                                                BaiduFavorite = "checked";
+                                                index = result_applications_list.FindIndex(s => s == "Baidu_Favorite,not check");
+                                                if (index != -1)
+                                                {
+                                                    // Modify the value at the found index
+                                                    result_applications_list[index] = "Baidu_Favorite,checked";
+                                                }
+                                                break;
+                                            case "Forge of Empires":
+                                                ForgeofEmpires = "checked";
+                                                index = result_applications_list.FindIndex(s => s == "Forge of Empires,not check");
+                                                if (index != -1)
+                                                {
+                                                    // Modify the value at the found index
+                                                    result_applications_list[index] = "Forge of Empires,checked";
+                                                }
+                                                break;
+                                            case "Microsoft OneNote":
+                                                MicrosoftOfficeInstaller = "checked";
+                                                index = result_applications_list.FindIndex(s => s == "Microsoft Office Installer,not check");
+                                                if (index != -1)
+                                                {
+                                                    // Modify the value at the found index
+                                                    result_applications_list[index] = "Microsoft Office Installer,checked";
+                                                }
+                                                break;
+                                            case "Morpho Inc.":
+                                                MorphoCameraEffects = "checked";
+                                                index = result_applications_list.FindIndex(s => s == "Morpho Camera Effects,not check");
+                                                if (index != -1)
+                                                {
+                                                    // Modify the value at the found index
+                                                    result_applications_list[index] = "Morpho Camera Effects,checked";
+                                                }
+                                                break;
+                                            case "Planet9_Version.txt":
+                                                Planet9 = "checked";
+                                                index = result_applications_list.FindIndex(s => s == "Planet9,not check");
+                                                if (index != -1)
+                                                {
+                                                    // Modify the value at the found index
+                                                    result_applications_list[index] = "Planet9,checked";
+                                                }
+                                                break;
+                                            case "PowerManagementSetting.tag":
+                                                PowerManagementSetting = "checked";
+                                                index = result_applications_list.FindIndex(s => s == "Power Management Setting,not check");
+                                                if (index != -1)
+                                                {
+                                                    // Modify the value at the found index
+                                                    result_applications_list[index] = "Power Management Setting,checked";
+                                                }
+                                                break;
+                                            case "StorageUtilities.tag":
+                                                StorageUtilities = "checked";
+                                                index = result_applications_list.FindIndex(s => s == "Storage Utilities,not check");
+                                                if (index != -1)
+                                                {
+                                                    // Modify the value at the found index
+                                                    result_applications_list[index] = "Storage Utilities,checked";
+                                                }
+                                                break;
+                                            default://no case mapping, do nothing here 
+                                                break;
+                                        };
+                                        Console.WriteLine($"Found '{applist[0]}'-->mapping name '{correctString}' in line {lineNumber}: {line}");
+                                    }
+                                    //language/Region is not en-US 
+                                    else if (correctString == "RandomSaladGamesLLC")//Solitaire, ru-RU
+                                    {
+                                        if (line.IndexOf(applist[1]) >= 0)
+                                        {
+                                            Solitaire = "checked";
+                                            int index = -1;
+                                            index = result_applications_list.FindIndex(s => s == "Solitaire,not check");
+                                            if (index != -1)
+                                            {
+                                                // Modify the value at the found index
+                                                result_applications_list[index] = "Solitaire,checked";
+                                            }
+                                            Console.WriteLine($"Found '{applist[0]}'-->mapping name '{correctString}', '{applist[1]}' in line {lineNumber}: {line}");
+                                        }
+                                    }
+                                    else if (correctString == "Yandex" && ci.Name == "ru-RU")
+                                    {
+                                        Yandex = "checked";
+                                        int index = -1; int index2 = -1; int index3 = -1;
+                                        index = result_applications_list.FindIndex(s => s == "Yandex Browser,not check");
+                                        if (index != -1)
+                                        {
+                                            // Modify the value at the found index
+                                            result_applications_list[index] = "Yandex Browser,checked";
+                                        }
+                                        index2 = result_applications_list.FindIndex(s => s == "Yandex Weblink,not check");
+                                        if (index2 != -1)
+                                        {
+                                            // Modify the value at the found index
+                                            result_applications_list[index2] = "Yandex Weblink,checked";
+                                        }
+                                        index3 = result_applications_list.FindIndex(s => s == "Yandex_Favorite,not check");
+                                        if (index3 != -1)
+                                        {
+                                            // Modify the value at the found index
+                                            result_applications_list[index3] = "Yandex_Favorite,checked";
+                                        }
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine("Error !! Not in the installed applist" + " " + correctString);
+                                    }
 
-            //                     }
-            //                     lineNumber++;
-            //                 }
-            //             }
-            //         }
-            //         catch (Exception ex)
-            //         {
-            //             Console.WriteLine($"An error occurred: {ex.Message}");
-            //         }
-            //     }
-            // }
+                                }
+                                lineNumber++;
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"An error occurred: {ex.Message}");
+                    }
+                }
+            }
 
-            // foreach (string item in result_applications_list)
-            // {
-            //     if (item.IndexOf("not check") >0)
-            //     {
-            //         fail++;
-            //         Console.WriteLine($"{item} error!");
-            //     }
+            foreach (string item in result_applications_list)
+            {
+                if (item.IndexOf("not check") >0)
+                {
+                    fail++;
+                    Console.WriteLine($"{item} error!");
+                }
 
-            // }
+            }
 
-            // if (fail > 0)
-            // {
-            //     Console.WriteLine("Not all apps checked OK Fail!");
-            //     return false;
-            // }
-            // else 
-            // {
-            //     //Console.WriteLine($"fail:{fail}");
-            //     Console.WriteLine("All apps checked OK Success !!");
-            //     return true;
-            // }
-            return true;
+            if (fail > 0)
+            {
+                Console.WriteLine("Not all apps checked OK Fail!");
+                return false;
+            }
+            else 
+            {
+                //Console.WriteLine($"fail:{fail}");
+                Console.WriteLine("All apps checked OK Success !!");
+                return true;
+            }
         }
         
 

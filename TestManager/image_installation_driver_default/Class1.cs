@@ -13,6 +13,7 @@ using System.Runtime.Remoting.Metadata.W3cXsd2001;
 using System.Text;
 using System.Threading.Tasks;
 using Excel = Microsoft.Office.Interop.Excel;
+using Common;
 
 namespace image_installation_driver_default
 {
@@ -325,6 +326,13 @@ namespace image_installation_driver_default
                 Console.WriteLine("An error occurred: " + ex.Message);
             }
             return setupvalues;
+        }
+
+        public int Setup()
+        {
+            // common.Setup
+            Testflow.Setup("xxx");
+            return 11;
         }
 
         public static bool Run()
@@ -1652,5 +1660,15 @@ namespace image_installation_driver_default
             }
             return false;
         }
+
+        public static void UpdateResults() 
+        {
+            Console.WriteLine("UpdateResults");
+        }
+        public static void TearDown() 
+        {
+            Console.WriteLine("TearDown");
+        }
+
     }
 }
