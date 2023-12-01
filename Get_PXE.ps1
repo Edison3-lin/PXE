@@ -171,6 +171,7 @@ for ($i=0; $i -lt $dataSet.Tables[0].Rows.Count; $i++)
         $TRconfig.TestStatus = "DONE"
         $updatedJson = $TRconfig | ConvertTo-Json -Depth 10
         $updatedJson | Set-Content -Path $TRPath
+        $programs = $NULL
     }
 }
 

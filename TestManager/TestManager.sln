@@ -17,7 +17,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "image_installation_applicat
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "image_installation_driver_default", "image_installation_driver_default\image_installation_driver_default.csproj", "{CDB2923D-A1AB-492F-A2A5-2C4681B8A441}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TM1001", "TestManager\TM1001.csproj", "{DB0A7A31-7F79-4C6F-810C-8D67171B59D8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TM1002", "TestManager\TM1002.csproj", "{DB0A7A31-7F79-4C6F-810C-8D67171B59D8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
