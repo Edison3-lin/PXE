@@ -9,7 +9,7 @@ using System.Management.Automation.Runspaces;   //手動加入參考
 using System.Threading;
 using System.Reflection;
 
-namespace TestManager
+namespace TM1001
 {
     public class Program
     {
@@ -219,7 +219,7 @@ namespace TestManager
             string callingDomainName = AppDomain.CurrentDomain.FriendlyName;//Thread.GetDomain().FriendlyName;
             string basePath = AppDomain.CurrentDomain.BaseDirectory;
             AppDomain ad = AppDomain.CreateDomain("TestManager DLL");
-            ProxyObject obj = (ProxyObject)ad.CreateInstanceFromAndUnwrap(basePath+callingDomainName, "TestManager.ProxyObject");
+            ProxyObject obj = (ProxyObject)ad.CreateInstanceFromAndUnwrap(basePath+callingDomainName, "TM1001.ProxyObject");
             try
             {
                 process_log(".... Loading Common.dll ....");

@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.7.34202.233
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestManager", "TestManager\TestManager.csproj", "{DB0A7A31-7F79-4C6F-810C-8D67171B59D8}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common", "Common\Common.csproj", "{E5130002-79DC-4839-A48A-0205729C8172}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestItem2", "TestItem2\TestItem2.csproj", "{F71F8D19-F1F1-493B-8308-B43B76FBFC9E}"
@@ -19,16 +17,14 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "image_installation_applicat
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "image_installation_driver_default", "image_installation_driver_default\image_installation_driver_default.csproj", "{CDB2923D-A1AB-492F-A2A5-2C4681B8A441}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TM1001", "TestManager\TM1001.csproj", "{DB0A7A31-7F79-4C6F-810C-8D67171B59D8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{DB0A7A31-7F79-4C6F-810C-8D67171B59D8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{DB0A7A31-7F79-4C6F-810C-8D67171B59D8}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{DB0A7A31-7F79-4C6F-810C-8D67171B59D8}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{DB0A7A31-7F79-4C6F-810C-8D67171B59D8}.Release|Any CPU.Build.0 = Release|Any CPU
 		{E5130002-79DC-4839-A48A-0205729C8172}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{E5130002-79DC-4839-A48A-0205729C8172}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E5130002-79DC-4839-A48A-0205729C8172}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -57,6 +53,10 @@ Global
 		{CDB2923D-A1AB-492F-A2A5-2C4681B8A441}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CDB2923D-A1AB-492F-A2A5-2C4681B8A441}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CDB2923D-A1AB-492F-A2A5-2C4681B8A441}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DB0A7A31-7F79-4C6F-810C-8D67171B59D8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DB0A7A31-7F79-4C6F-810C-8D67171B59D8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DB0A7A31-7F79-4C6F-810C-8D67171B59D8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DB0A7A31-7F79-4C6F-810C-8D67171B59D8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
