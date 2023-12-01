@@ -120,7 +120,7 @@ for ($i=0; $i -lt $dataSet.Tables[0].Rows.Count; $i++)
 
     # $TR_Excute_Status = $NULL
     # 第一次PXE boot (NULL)
-    if ( '' -eq $TR_Excute_Status )
+    if ( '' -eq $TCM_Status )
     {
         $TRconfig.TestStatus = "New"
         $updatedJson = $TRconfig | ConvertTo-Json -Depth 10
@@ -146,7 +146,7 @@ for ($i=0; $i -lt $dataSet.Tables[0].Rows.Count; $i++)
         set    TCM_Status = 'DONE'
         where  TCM_ID = '$TCM_ID'"
         $NULL = $SqlCmd.executenonquery()
-
+        # image patch 有寫"Done"到TR_Resulte.json
         if( $TRconfig.TestStatus -eq "DONE" )
         {
             $sqlCmd.CommandText = 
@@ -159,6 +159,7 @@ for ($i=0; $i -lt $dataSet.Tables[0].Rows.Count; $i++)
         }
         else 
         {
+            # image 沒有完成
             $sqlCmd.CommandText = 
             "update Test_Result 
             set    TR_Excute_Status = 'DONE',

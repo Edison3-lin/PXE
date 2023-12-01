@@ -1,0 +1,9 @@
+{
+  "ftpServer": "ftp://172.0.0.9:2121",
+  "username": "sit001",
+  "password": "sit1234",
+  "Database": "SIT_TEST",
+  "DBserver": "'172.0.0.9'",
+  "DBuserName": "Captain001",
+  "DBpassword": "Captaintest2023@SIT"
+}

@@ -65,21 +65,21 @@ $SqlCmd.connection = $SqlConn
     "
     $NULL = $SqlCmd.executenonquery()
 
-    $TRconfig.TCM_ID = ""
-    $TRconfig.TR_ID = ""
-    $TRconfig.TestResult = ""
-    $TRconfig.TestStatus = ""
-    $updatedJson = $TRconfig | ConvertTo-Json -Depth 10
-    $updatedJson | Set-Content -Path $TRPath
+    # $TRconfig.TCM_ID = ""
+    # $TRconfig.TR_ID = ""
+    # $TRconfig.TestResult = ""
+    # $TRconfig.TestStatus = ""
+    # $updatedJson = $TRconfig | ConvertTo-Json -Depth 10
+    # $updatedJson | Set-Content -Path $TRPath
 
-    # $sqlCmd.CommandText = 
-    # "
-    #     update Test_Control_Main 
-    #     set    TCM_Status = 'Done',  
-    #            TCM_FinishDate = SYSDATETIME() 
-    #     where TCM_ID = '$TR_ID'
-    # "
-    # $NULL = $SqlCmd.executenonquery()
+    $sqlCmd.CommandText = 
+    "
+        update Test_Control_Main 
+        set    TCM_Status = 'DONE',  
+               TCM_FinishDate = SYSDATETIME() 
+        where TCM_ID = '$TR_ID'
+    "
+    $NULL = $SqlCmd.executenonquery()
 
 #Close DB
 $SqlConn.close()
