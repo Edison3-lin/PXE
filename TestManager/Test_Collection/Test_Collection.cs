@@ -22,17 +22,18 @@ namespace Test_Collection
 
         public int Run()
         {
-            // Testflow.Run(DllName);
+            Testflow.Run("TEST");
             DllIndex = 0;
 
             //********* SIT 依序填寫執行的DLL的項目 /Start/
-            Execute_dll("Test3.dll");
-            Execute_dll("TestItem2.dll");
-            Execute_dll("TestItem1.dll");   //reboot
-            Execute_dll("T2.dll");
-            Execute_dll("TestItem1.dll");   //reboot
-            Execute_dll("T3.dll");
-            Execute_dll("TestItem1.dll");   //reboot
+            Execute_dll("Test3.dll", new object[]{}, new object[]{}, new object[]{}, new object[]{});
+            Execute_dll("TestItem2.dll", new object[]{}, new object[]{}, new object[]{}, new object[]{});
+            Execute_dll("TestItem1.dll", new object[]{}, new object[]{}, new object[]{}, new object[]{});   //reboot
+            // Execute_dll("T2.dll", new object[]{}, new object[]{}, new object[]{}, new object[]{});
+            // Execute_dll("TestItem1.dll", new object[]{}, new object[]{}, new object[]{}, new object[]{});   //reboot
+            // Execute_dll("T3.dll", new object[]{}, new object[]{}, new object[]{}, new object[]{});
+            // Execute_dll("TestItem1.dll", new object[]{}, new object[]{}, new object[]{}, new object[]{});   //reboot
+            Execute_dll("C1.dll",  new object[] { 22, "Grace" }, new object[] { 20, 30, "Edison" }, new object[]{"林淑芳", 77}, new object[]{'a', "林宏斌"});
             //********* SIT 依序填寫執行的DLL的項目 /End/
 
             HadRun("");
@@ -50,13 +51,13 @@ namespace Test_Collection
             return 84;
         }
 
-        public static void Execute_dll(string DllFileName)
+        public static void Execute_dll(string DllFileName, object[] S, object[] R, object[] U, object[] T)
         {
             try
             {
                 if(!HadRun(DllFileName))
                 {
-                    Common.Runnner.RunTestItem(currentDirectory+DllFileName);
+                    Common.Runnner.RunTestItem(currentDirectory+DllFileName, S, R, U, T);
                 }    
             }
             catch (Exception ex)

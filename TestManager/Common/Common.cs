@@ -21,7 +21,7 @@ namespace Common
          * DllName: the unique file name (without '.dll') of the test dll. For example: MyTestItem_1
          * 
          */
-        public static bool RunTestItem(string dllPath)
+        public static bool RunTestItem(string dllPath, object[] S, object[] R, object[] U, object[] T )
         {
             Assembly myDll = Assembly.LoadFile(dllPath);
             var myTest=myDll.GetTypes().First(m=>!m.IsAbstract && m.IsClass);
@@ -31,7 +31,7 @@ namespace Common
             try
             {
                 Testflow.General.WriteLog("Common", "Invoke "+dllPath+".Setup()" );
-                myTest.GetMethod("Setup").Invoke(myObj, new object[]{});            
+                myTest.GetMethod("Setup").Invoke(myObj, S);            
             }
             catch (Exception ex)
             {
@@ -41,7 +41,7 @@ namespace Common
             try
             {
                 Testflow.General.WriteLog("Common", "Invoke "+dllPath+".Run()" );
-                myResult = myTest.GetMethod("Run").Invoke(myObj, new object[]{});            
+                myResult = myTest.GetMethod("Run").Invoke(myObj, R);            
             }
             catch (Exception ex)
             {
@@ -51,7 +51,7 @@ namespace Common
             try
             {
                 Testflow.General.WriteLog("Common", "Invoke "+dllPath+".UpdateResults()" );
-                myTest.GetMethod("UpdateResults").Invoke(myObj, new object[]{});            
+                myTest.GetMethod("UpdateResults").Invoke(myObj, U);            
             }
             catch (Exception ex)
             {
@@ -61,7 +61,7 @@ namespace Common
             try
             {
                Testflow.General.WriteLog("Common", "Invoke "+dllPath+".TearDown()" );
-               myTest.GetMethod("TearDown").Invoke(myObj, new object[]{});   
+               myTest.GetMethod("TearDown").Invoke(myObj, T);   
             }   
             catch (Exception ex)
             {
