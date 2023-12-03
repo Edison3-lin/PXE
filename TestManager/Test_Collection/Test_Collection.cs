@@ -28,7 +28,7 @@ namespace Test_Collection
             //********* SIT 依序填寫執行的DLL的項目 /Start/
             Execute_dll("Test3.dll", new object[]{}, new object[]{}, new object[]{}, new object[]{});
             Execute_dll("TestItem2.dll", new object[]{}, new object[]{}, new object[]{}, new object[]{});
-            Execute_dll("TestItem1.dll", new object[]{}, new object[]{}, new object[]{}, new object[]{});   //reboot
+            // Execute_dll("TestItem1.dll", new object[]{}, new object[]{}, new object[]{}, new object[]{});   //reboot
             // Execute_dll("T2.dll", new object[]{}, new object[]{}, new object[]{}, new object[]{});
             // Execute_dll("TestItem1.dll", new object[]{}, new object[]{}, new object[]{}, new object[]{});   //reboot
             // Execute_dll("T3.dll", new object[]{}, new object[]{}, new object[]{}, new object[]{});

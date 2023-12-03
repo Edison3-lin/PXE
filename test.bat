@@ -2,6 +2,6 @@
 powershell set-executionpolicy Bypass -scope CurrentUser
 powershell set-executionpolicy Bypass -scope process
 @REM powershell start-process c:\TestManager\TestManager.exe -WindowStyle Hidden -verb RunAs
-reg add HKCU\Software\Microsoft\Windows\CurrentVersion\Run /v "TestManager.exe" /t REG_SZ /d "C:\TestManager\TestManager.exe" /f
+@REM reg add HKCU\Software\Microsoft\Windows\CurrentVersion\Run /v "TestManager.exe" /t REG_SZ /d "C:\TestManager\TestManager.exe" /f
 powershell start-process .\TM1002.exe -verb RunAs
 exit

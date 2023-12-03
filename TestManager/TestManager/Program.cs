@@ -8,6 +8,7 @@ using System.Management.Automation;             //手動加入參考
 using System.Management.Automation.Runspaces;   //手動加入參考
 using System.Threading;
 using System.Reflection;
+using System.Diagnostics;
 
 namespace TM1002
 {
@@ -16,6 +17,7 @@ namespace TM1002
         private static string currentDirectory = Directory.GetCurrentDirectory() + '\\';
         private static string ItemDownload = currentDirectory+"ItemDownload\\";
         private static string log_file = currentDirectory+"MyLog\\TestManager.log";
+        static Stopwatch ItemWatch = new Stopwatch();
         // **** 創建log file ****
         static void CreateDirectoryAndFile()
         {
@@ -230,10 +232,17 @@ namespace TM1002
                 process_log("!!! 找不到 Common.dll");
                 return false;
             }
+            // 启动计时器
+ItemWatch = new Stopwatch();
+ItemWatch.Start();
 
             process_log(".... Loading "+dllPath+" ....");
             Object[] p = new object[]{ dllPath, new object[]{}, new object[]{}, new object[]{}, new object[]{} };
             var result = obj.Invoke("RunTestItem",p);
+
+// 停止计时器
+ItemWatch.Stop();
+			
             // process_log("             Invoke .Setup()");
             // obj.Invoke("Setup", p);
             // process_log("             Invoke .Run()");
@@ -249,6 +258,25 @@ namespace TM1002
             else return false;
         }
 
+        static void MonitorExecutionTime(object param)
+        {
+            int timeout = (int)param;
+            // 模拟监测线程的一些工作
+            do
+            {
+                Thread.Sleep(1000); // 每隔一秒输出一次当前执行时间
+                if( (ItemWatch.Elapsed.TotalSeconds >= timeout) && (ItemWatch.Elapsed.TotalSeconds < 7 ))
+                {
+                    Console.WriteLine($"Elapsed time: {ItemWatch.Elapsed.TotalSeconds} milliseconds");
+                    // // 停止计时器
+                    // ItemWatch.Stop();
+                    // break;
+                }
+                // 添加一些退出条件
+            } while (!(Console.KeyAvailable && Console.ReadKey(true).Key == ConsoleKey.Tab));
+            
+        }
+
 
         // ============== MAIN ==============
 
@@ -259,6 +287,12 @@ namespace TM1002
             TimeSpan timeSpan;
             bool result = true;
             CreateDirectoryAndFile();
+			
+// 启动一个新线程来监测主程序的执行时间
+object tout = 5;
+Thread monitoringThread = new Thread(new ParameterizedThreadStart(MonitorExecutionTime));
+monitoringThread.Start(tout);
+			
             do
             {
                 // step 1. Listening job status from DB
