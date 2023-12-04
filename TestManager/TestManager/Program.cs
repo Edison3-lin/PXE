@@ -22,6 +22,50 @@ namespace TM1002
         static string TR_FilePath = currentDirectory+"TR_Result.json";
         static Stopwatch ItemWatch = new Stopwatch();
         private static int timeout = 9999;
+
+        // **** Update TestManager ****
+        static void UpdateT()
+        {
+            // 取得目前程式的進程 ID
+            int currentProcessId = Process.GetCurrentProcess().Id;
+
+            // PowerShell 指令
+            string scriptCommand = $"Start-Process powershell -ArgumentList '-NoExit -File C:\\TestManager\\UpdateT.ps1' -WindowStyle Hidden; Stop-Process -Id {currentProcessId}";
+
+            // 建立 ProcessStartInfo object，設定要啟動的進程資訊
+             ProcessStartInfo psi = new ProcessStartInfo
+             {
+                 FileName = "powershell.exe", // 指定要啟動的程式（PowerShell）
+                 Arguments = $"-Command \"{scriptCommand}\"",
+                 RedirectStandardOutput = true,
+                 UseShellExecute = false,
+                 CreateNoWindow = true
+             };
+
+             // 建立 Process object，表示要啟動的進程
+             Process process = new Process
+             {
+                 StartInfo = psi
+             };
+
+             // 啟動進程
+             process.Start();
+
+             // 等待 PowerShell 執行完畢
+             process.WaitForExit();
+
+             // 讀取 PowerShell 輸出
+             string output = process.StandardOutput.ReadToEnd();
+             Console.WriteLine(output);
+
+             // 關閉行程
+             process.Close();
+
+             // 關閉目前程式
+             Environment.Exit(0);       
+
+        }
+
         // **** 創建log file ****
         static void CreateDirectoryAndFile()
         {
@@ -287,6 +331,7 @@ namespace TM1002
 
         static void Main(string[] args)
         {
+            UpdateT();
             string Job_List;
             DateTime startTime, endTime;
             TimeSpan timeSpan;
