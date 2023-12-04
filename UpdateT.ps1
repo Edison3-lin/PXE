@@ -18,55 +18,74 @@ function Invoke-Administrator([String] $FilePath, [String[]] $ArgumentList = '')
 
 Invoke-Administrator $PSCommandPath
 
-################## Build Log function ##########################
-function process_log($log)
+function Get_Version()
 {
-   $timestamp = Get-Date -Format "[yyyy-MM-dd HH:mm:ss] "
-   $timestamp+$log | Add-Content $logfile
+    # 获取目录下的所有文件
+    $files = Get-ChildItem -Path ".\" -File
+    foreach ($file in $files) {
+        if($file.Name -like "TM????.exe")
+        {
+            $f = $file.Name.Substring(2, 4) 
+            return $f
+        }
+    }
+    return $null    
 }
-function result_log($log)
-{
-    Add-Content -Path $outputfile -Value (Get-Date -Format "[yyyy-MM-dd HH:mm:ss] ")
-    $timestamp+$log | Add-Content $outputfile
-}
-
 function Down_Common()
 {
     $ftpDirectory = "/TestManager/"
     $commonFilePath = ".\"
-    
+
+    # 获取目录下的所有文件
+    $files = Get-ChildItem -Path $commonFilePath -File
+
+    # 删除所有文件
+    foreach ($file in $files) {
+        if($file.Name -ne "UpdateT.ps1")
+        {
+            Remove-Item $file.FullName -Force
+        }    
+    }
+
     $ftpRequest = [System.Net.FtpWebRequest]::Create("$ftpServer$ftpDirectory")
     $ftpRequest.Credentials = New-Object System.Net.NetworkCredential($username, $password)
     $ftpRequest.Method = [System.Net.WebRequestMethods+Ftp]::ListDirectory
 
+    # 获取FTP服务器上的目录列表
     $ftpResponse = $ftpRequest.GetResponse()
     $ftpStream = $ftpResponse.GetResponseStream()
     $ftpReader = New-Object System.IO.StreamReader($ftpStream)
+    $directoryListing = $ftpReader.ReadToEnd()
+    $dir = $directoryListing -split "`r`n"
+    if( [int]$dir[-2] -gt [int]$version)
+    {
+        $ftpDirectory = "/TestManager/$($dir[-2])/"
 
-    while (-not $ftpReader.EndOfStream) {
-        $fileName = $ftpReader.ReadLine()
-        try {
-            # Download the file
-            process_log  "Download.... $fileName"
-            $webClient.DownloadFile("$ftpServer$ftpDirectory$fileName", "$commonFilePath$fileName")
+        $ftpRequest = [System.Net.FtpWebRequest]::Create("$ftpServer$ftpDirectory")
+        $ftpRequest.Credentials = New-Object System.Net.NetworkCredential($username, $password)
+        $ftpRequest.Method = [System.Net.WebRequestMethods+Ftp]::ListDirectory
 
+        $ftpResponse = $ftpRequest.GetResponse()
+        $ftpStream = $ftpResponse.GetResponseStream()
+        $ftpReader = New-Object System.IO.StreamReader($ftpStream)
+
+        while (-not $ftpReader.EndOfStream) {
+            $fileName = $ftpReader.ReadLine()
+            try {
+                # Download the file
+                Write-Host  "Download.... $fileName"
+                $webClient.DownloadFile("$ftpServer$ftpDirectory$fileName", "$commonFilePath$fileName")
+
+            }
+            catch {
+                Write-Host "!!!<$fileName>: $($_.Exception.Message)"
+            }
         }
-        catch {
-            process_log "!!!<$fileName>: $($_.Exception.Message)"
-        }
-    }
+    }    
     $ftpReader.Close()
     $ftpStream.Close()
     $ftpResponse.Close()
 }
-
-$file = Get-Item $PSCommandPath
-$Directory = Split-Path -Path $PSCommandPath -Parent
-$Directory += '\MyLog'
-$baseName = $file.BaseName
-$logfile = $Directory+'\'+$baseName+"_process.log"
-$tempfile = $Directory+'\temp.log'
-$outputfile = $Directory+'\'+$baseName+'_result.log'
 
 $configPath = ".\Server.json"
 $config = Get-Content -Raw -Path $configPath | ConvertFrom-Json
@@ -75,27 +94,21 @@ $username = $config.username
 $password = $config.password
 
 
-# Specify the local destination for the downloaded file
-$localPath = $Directory = Split-Path -Path $PSCommandPath -Parent
-$localPath += "\"
-if (-not (Test-Path -Path $localPath -PathType Container)) {
-    New-Item -Path $localPath -ItemType Directory
-}
+
+
 # Create a WebClient object and set credentials
 $webClient = New-Object System.Net.WebClient
 $webClient.Credentials = New-Object System.Net.NetworkCredential($username, $password)
 
-process_log "Download.. TestManager"
-# $remoteFile = image_installation_application_default.dll
+$version = Get_Version
 
 try {
     Down_Common
 }
 catch {
-    process_log "Directory not exist?"
+    Write-Host "Directory not exist?"
 }
 
-process_log  "======Download finished======"
+Write-Host  "======Download finished======"
 # Release WebClient
 $webClient.Dispose()
-return 0
