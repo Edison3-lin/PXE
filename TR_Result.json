@@ -1,8 +1,9 @@
 {
-    "TCM_ID":  2,
-    "TR_ID":  4,
+    "TCM_ID":  7,
+    "TR_ID":  7,
     "TestResult":  "Fail",
     "TestStatus":  "DONE",
+    "Test_TimeOut":  5,
     "TestFail_Dercription":  "",
     "PrintLog":  [
                      {

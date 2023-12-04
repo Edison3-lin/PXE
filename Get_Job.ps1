@@ -130,6 +130,7 @@ for ($i=0; $i -lt $dataSet.Tables[0].Rows.Count; $i++)
         $TA_Execute_Path = $dataSet.Tables[0].Rows[$i][12]
         $TRconfig.TCM_ID = $TCM_ID
         $TRconfig.TR_ID = $TR_ID
+        $TRconfig.Test_TimeOut = $dataSet.Tables[0].Rows[$i][9]
         $updatedJson = $TRconfig | ConvertTo-Json -Depth 10
         $updatedJson | Set-Content -Path $TRPath
         break

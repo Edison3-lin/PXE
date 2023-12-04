@@ -9,6 +9,8 @@ using System.Management.Automation.Runspaces;   //手動加入參考
 using System.Threading;
 using System.Reflection;
 using System.Diagnostics;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace TM1002
 {
@@ -17,7 +19,9 @@ namespace TM1002
         private static string currentDirectory = Directory.GetCurrentDirectory() + '\\';
         private static string ItemDownload = currentDirectory+"ItemDownload\\";
         private static string log_file = currentDirectory+"MyLog\\TestManager.log";
+        static string TR_FilePath = currentDirectory+"TR_Result.json";
         static Stopwatch ItemWatch = new Stopwatch();
+        private static int timeout = 0;
         // **** 創建log file ****
         static void CreateDirectoryAndFile()
         {
@@ -232,48 +236,51 @@ namespace TM1002
                 process_log("!!! 找不到 Common.dll");
                 return false;
             }
-            // 启动计时器
-ItemWatch = new Stopwatch();
-ItemWatch.Start();
+
+            // 啟動計時器
+            ItemWatch = new Stopwatch();
+            ItemWatch.Start();
 
             process_log(".... Loading "+dllPath+" ....");
             Object[] p = new object[]{ dllPath, new object[]{}, new object[]{}, new object[]{}, new object[]{} };
             var result = obj.Invoke("RunTestItem",p);
 
-// 停止计时器
-ItemWatch.Stop();
+            // 停止計時器
+            ItemWatch.Stop();
 			
-            // process_log("             Invoke .Setup()");
-            // obj.Invoke("Setup", p);
-            // process_log("             Invoke .Run()");
-            // obj.Invoke("Run", p);
-            // process_log("             Invoke .UpdateResults()");
-            // obj.Invoke("UpdateResults", p);
-            // process_log("             Invoke .TearDown()");
-            // obj.Invoke("TearDown", p);
-            // process_log("             Unload "+dllPath);
             AppDomain.Unload(ad);
             obj = null;
             if(result.ToString() == "True") return true;
             else return false;
         }
 
-        static void MonitorExecutionTime(object param)
+        // ******* New Thread to monitor TimeOut *********
+        static void MonitorExecutionTime()
         {
-            int timeout = (int)param;
-            // 模拟监测线程的一些工作
+            bool NewWatch = true;
             do
             {
-                Thread.Sleep(1000); // 每隔一秒输出一次当前执行时间
-                if( (ItemWatch.Elapsed.TotalSeconds >= timeout) && (ItemWatch.Elapsed.TotalSeconds < 7 ))
+                Thread.Sleep(1000);
+                // Console.WriteLine($"{ItemWatch.Elapsed.TotalSeconds} .... {NewWatch}");
+
+                if( NewWatch )
                 {
-                    Console.WriteLine($"Elapsed time: {ItemWatch.Elapsed.TotalSeconds} milliseconds");
-                    // // 停止计时器
-                    // ItemWatch.Stop();
-                    // break;
+                    if(ItemWatch.Elapsed.TotalSeconds >= timeout)
+                    {
+                        Console.WriteLine($"Time Out!!!!: {ItemWatch.Elapsed.TotalSeconds} seconds");
+                        NewWatch = false;
+                        // ItemWatch.Stop();
+                        // break;
+                    }
                 }
-                // 添加一些退出条件
-            } while (!(Console.KeyAvailable && Console.ReadKey(true).Key == ConsoleKey.Tab));
+                else
+                {
+                    if(ItemWatch.Elapsed.TotalSeconds < timeout)
+                    {
+                        NewWatch = true;
+                    }                    
+                }
+            } while (!(Console.KeyAvailable && Console.ReadKey(true).Key == ConsoleKey.Escape));
             
         }
 
@@ -287,12 +294,9 @@ ItemWatch.Stop();
             TimeSpan timeSpan;
             bool result = true;
             CreateDirectoryAndFile();
-			
-// 启动一个新线程来监测主程序的执行时间
-object tout = 5;
-Thread monitoringThread = new Thread(new ParameterizedThreadStart(MonitorExecutionTime));
-monitoringThread.Start(tout);
-			
+            // 啟動一個執行緒來監測主程式的執行時間
+            Thread monitoringThread = new Thread(MonitorExecutionTime);
+            monitoringThread.Start();
             do
             {
                 // step 1. Listening job status from DB
@@ -321,6 +325,12 @@ monitoringThread.Start(tout);
                     process_log("Skip downloading again for reboot");
 
                 startTime = DateTime.Now;
+
+                // 讀取 TR_Result.json timeout 内容
+                string jsonString = System.IO.File.ReadAllText(TR_FilePath);
+                JObject json = JObject.Parse(jsonString);
+                timeout = (int)json["Test_TimeOut"];
+
                 try
                 {
                     // step 2. 執行Dll程式

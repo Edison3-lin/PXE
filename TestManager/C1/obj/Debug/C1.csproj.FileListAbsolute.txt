@@ -1,0 +1,6 @@
+C:\TestManager\TestManager\C1\bin\Debug\C1.dll
+C:\TestManager\TestManager\C1\bin\Debug\C1.pdb
+C:\TestManager\TestManager\C1\obj\Debug\C1.csproj.AssemblyReference.cache
+C:\TestManager\TestManager\C1\obj\Debug\C1.csproj.CoreCompileInputs.cache
+C:\TestManager\TestManager\C1\obj\Debug\C1.dll
+C:\TestManager\TestManager\C1\obj\Debug\C1.pdb

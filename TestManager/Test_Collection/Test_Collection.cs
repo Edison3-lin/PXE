@@ -26,14 +26,18 @@ namespace Test_Collection
             DllIndex = 0;
 
             //********* SIT 依序填寫執行的DLL的項目 /Start/
-            Execute_dll("Test3.dll", new object[]{}, new object[]{}, new object[]{}, new object[]{});
-            Execute_dll("TestItem2.dll", new object[]{}, new object[]{}, new object[]{}, new object[]{});
+            // Execute_dll("Test3.dll", new object[]{}, new object[]{}, new object[]{}, new object[]{});
+            // Execute_dll("TestItem2.dll", new object[]{}, new object[]{}, new object[]{}, new object[]{});
             // Execute_dll("TestItem1.dll", new object[]{}, new object[]{}, new object[]{}, new object[]{});   //reboot
             // Execute_dll("T2.dll", new object[]{}, new object[]{}, new object[]{}, new object[]{});
             // Execute_dll("TestItem1.dll", new object[]{}, new object[]{}, new object[]{}, new object[]{});   //reboot
             // Execute_dll("T3.dll", new object[]{}, new object[]{}, new object[]{}, new object[]{});
             // Execute_dll("TestItem1.dll", new object[]{}, new object[]{}, new object[]{}, new object[]{});   //reboot
-            Execute_dll("C1.dll",  new object[] { 22, "Grace" }, new object[] { 20, 30, "Edison" }, new object[]{"林淑芳", 77}, new object[]{'a', "林宏斌"});
+            Execute_dll("C1.dll",  new object[] { 22, "G1" }, new object[] { 10, 10, "Edison" }, new object[]{"林芳", 77}, new object[]{'a', "林宏斌"});
+            // Execute_dll("C1.dll",  new object[] { 22, "G2" }, new object[] { 20, 20, "Edison" }, new object[]{"淑芳", 77}, new object[]{'c', "宏斌"});
+            // Execute_dll("C1.dll",  new object[] { 22, "G3" }, new object[] { 30, 30, "Edison" }, new object[]{"林芳", 77}, new object[]{'g', "斌"});
+            // Execute_dll("C1.dll",  new object[] { 22, "G4" }, new object[] { 40, 40, "Edison" }, new object[]{"林", 77}, new object[]{'h', "林"});
+            // Execute_dll("C1.dll",  new object[] { 22, "G5" }, new object[] { 50, 50, "Edison" }, new object[]{"淑", 77}, new object[]{'j', "林宏"});
             //********* SIT 依序填寫執行的DLL的項目 /End/
 
             HadRun("");
