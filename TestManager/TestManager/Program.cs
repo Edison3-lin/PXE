@@ -21,7 +21,7 @@ namespace TM1002
         private static string log_file = currentDirectory+"MyLog\\TestManager.log";
         static string TR_FilePath = currentDirectory+"TR_Result.json";
         static Stopwatch ItemWatch = new Stopwatch();
-        private static int timeout = 0;
+        private static int timeout = 9999;
         // **** 創建log file ****
         static void CreateDirectoryAndFile()
         {
@@ -269,8 +269,6 @@ namespace TM1002
                     {
                         Console.WriteLine($"Time Out!!!!: {ItemWatch.Elapsed.TotalSeconds} seconds");
                         NewWatch = false;
-                        // ItemWatch.Stop();
-                        // break;
                     }
                 }
                 else

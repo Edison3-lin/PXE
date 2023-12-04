@@ -3,7 +3,7 @@
     "TR_ID":  7,
     "TestResult":  "Fail",
     "TestStatus":  "DONE",
-    "Test_TimeOut":  5,
+    "Test_TimeOut":  10,
     "TestFail_Dercription":  "",
     "PrintLog":  [
                      {
