@@ -38,8 +38,6 @@ namespace TM1002
                 {
                     if(psObject != null)
                     {
-                        psObject.ToString();
-                        Console.WriteLine(psObject.ToString()); 
                         if(psObject.ToString() == "True") 
                             return true;
                         else 
@@ -367,19 +365,10 @@ namespace TM1002
 
         static void Main(string[] args)
         {
-            if( Check_Need_Update() )
-            {
-                Console.WriteLine("Need update!!");
-                UpdateT();
-            }    
-
-
-//(EdisonLin-20231205-)>>
-            // Console.WriteLine("**** Exit ****"); 
-            // Console.ReadKey();
-            // Environment.Exit(0);            
-//(EdisonLin-20231205-)<<
-
+            // if( Check_Need_Update() )
+            // {
+            //     UpdateT();
+            // }    
             string Job_List;
             DateTime startTime, endTime;
             TimeSpan timeSpan;
@@ -390,6 +379,10 @@ namespace TM1002
             monitoringThread.Start();
             do
             {
+                if( Check_Need_Update() )
+                {
+                    UpdateT();
+                }    
                 // step 1. Listening job status from DB
                 Job_List = Get_PXE();
                 if(Job_List == null)

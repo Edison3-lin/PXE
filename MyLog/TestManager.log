@@ -55,3 +55,42 @@
 [2023/12/4 PM 03:06:24] **** Exit ****
 [2023/12/4 PM 03:47:58] **** Exit ****
 [2023/12/5 AM 09:17:41] **** Exit ****
+[2023/12/5 AM 10:44:00] <<Step 1>> Got Job then downloading
+[2023/12/5 AM 10:44:00] <<Step 2>> Executing C:\TestManager\ItemDownload\Test_Collection.dll
+[2023/12/5 AM 10:44:00] .... Loading Common.dll ....
+[2023/12/5 AM 10:44:00] .... Loading C:\TestManager\ItemDownload\Test_Collection.dll ....
+[2023/12/5 AM 10:44:23] <<Step 3>>  update test status to DB 
+[2023/12/5 AM 10:44:23] <<Step 4>>  upload log to FTP:  Test_Collection.dll
+[2023/12/5 AM 10:44:24] <<Step 5>>  Keep listening job status
+[2023/12/5 AM 10:44:24] 執行花費時間: 0分鐘 23秒
+[2023/12/5 AM 10:44:24] =================Completed================
+[2023/12/5 AM 10:44:32] <<Step 1>> Got Job then downloading
+[2023/12/5 AM 10:44:32] <<Step 2>> Executing C:\TestManager\ItemDownload\Test_Collection.dll
+[2023/12/5 AM 10:44:32] .... Loading Common.dll ....
+[2023/12/5 AM 10:44:32] .... Loading C:\TestManager\ItemDownload\Test_Collection.dll ....
+[2023/12/5 AM 10:44:51] <<Step 3>>  update test status to DB 
+[2023/12/5 AM 10:44:51] <<Step 4>>  upload log to FTP:  Test_Collection.dll
+[2023/12/5 AM 10:44:51] <<Step 5>>  Keep listening job status
+[2023/12/5 AM 10:44:51] 執行花費時間: 0分鐘 18秒
+[2023/12/5 AM 10:44:51] =================Completed================
+[2023/12/5 AM 10:44:57] <<Step 1>> Got Job then downloading
+[2023/12/5 AM 10:44:57] <<Step 2>> Executing C:\TestManager\ItemDownload\Test_Collection.dll
+[2023/12/5 AM 10:44:57] .... Loading Common.dll ....
+[2023/12/5 AM 10:44:57] .... Loading C:\TestManager\ItemDownload\Test_Collection.dll ....
+[2023/12/5 AM 10:45:12] <<Step 3>>  update test status to DB 
+[2023/12/5 AM 10:45:12] <<Step 4>>  upload log to FTP:  Test_Collection.dll
+[2023/12/5 AM 10:45:12] <<Step 5>>  Keep listening job status
+[2023/12/5 AM 10:45:12] 執行花費時間: 0分鐘 14秒
+[2023/12/5 AM 10:45:12] =================Completed================
+[2023/12/5 AM 10:45:14] **** Exit ****
+[2023/12/5 AM 10:49:45] <<Step 1>> Got Job then downloading
+[2023/12/5 AM 10:49:46] <<Step 2>> Executing C:\TestManager\ItemDownload\Test_Collection.dll
+[2023/12/5 AM 10:49:46] .... Loading Common.dll ....
+[2023/12/5 AM 10:49:46] .... Loading C:\TestManager\ItemDownload\Test_Collection.dll ....
+[2023/12/5 AM 10:49:59] <<Step 3>>  update test status to DB 
+[2023/12/5 AM 10:49:59] <<Step 4>>  upload log to FTP:  Test_Collection.dll
+[2023/12/5 AM 10:49:59] <<Step 5>>  Keep listening job status
+[2023/12/5 AM 10:49:59] 執行花費時間: 0分鐘 13秒
+[2023/12/5 AM 10:49:59] =================Completed================
+[2023/12/5 AM 10:50:01] **** Exit ****
+[2023/12/5 AM 10:51:51] **** Exit ****

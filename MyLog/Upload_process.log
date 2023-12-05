@@ -28,3 +28,23 @@
 [2023-12-04 15:06:22] .\TestLog\Common.log to ftp://127.0.0.1:21/Test_Log/96D4AD84-158A-7144-AA29-C01850D3E814/7/7/Common.log
 [2023-12-04 15:06:22] <C:\TestManager\TestLog\Common.log> upload to 
 [2023-12-04 15:06:22] ======Upload finished======
+[2023-12-05 10:44:24] .\MyLog\TestManager.log to ftp://127.0.0.1:21/Test_Log/96D4AD84-158A-7144-AA29-C01850D3E814/7/7/TestManager.log
+[2023-12-05 10:44:24] <C:\TestManager\MyLog\TestManager.log> upload to 
+[2023-12-05 10:44:24] .\TestLog\Common.log to ftp://127.0.0.1:21/Test_Log/96D4AD84-158A-7144-AA29-C01850D3E814/7/7/Common.log
+[2023-12-05 10:44:24] <C:\TestManager\TestLog\Common.log> upload to 
+[2023-12-05 10:44:24] ======Upload finished======
+[2023-12-05 10:44:51] .\MyLog\TestManager.log to ftp://127.0.0.1:21/Test_Log/96D4AD84-158A-7144-AA29-C01850D3E814/7/7/TestManager.log
+[2023-12-05 10:44:51] <C:\TestManager\MyLog\TestManager.log> upload to 
+[2023-12-05 10:44:51] .\TestLog\Common.log to ftp://127.0.0.1:21/Test_Log/96D4AD84-158A-7144-AA29-C01850D3E814/7/7/Common.log
+[2023-12-05 10:44:51] <C:\TestManager\TestLog\Common.log> upload to 
+[2023-12-05 10:44:51] ======Upload finished======
+[2023-12-05 10:45:12] .\MyLog\TestManager.log to ftp://127.0.0.1:21/Test_Log/96D4AD84-158A-7144-AA29-C01850D3E814/7/7/TestManager.log
+[2023-12-05 10:45:12] <C:\TestManager\MyLog\TestManager.log> upload to 
+[2023-12-05 10:45:12] .\TestLog\Common.log to ftp://127.0.0.1:21/Test_Log/96D4AD84-158A-7144-AA29-C01850D3E814/7/7/Common.log
+[2023-12-05 10:45:12] <C:\TestManager\TestLog\Common.log> upload to 
+[2023-12-05 10:45:12] ======Upload finished======
+[2023-12-05 10:49:59] .\MyLog\TestManager.log to ftp://127.0.0.1:21/Test_Log/96D4AD84-158A-7144-AA29-C01850D3E814/7/7/TestManager.log
+[2023-12-05 10:49:59] <C:\TestManager\MyLog\TestManager.log> upload to 
+[2023-12-05 10:49:59] .\TestLog\Common.log to ftp://127.0.0.1:21/Test_Log/96D4AD84-158A-7144-AA29-C01850D3E814/7/7/Common.log
+[2023-12-05 10:49:59] <C:\TestManager\TestLog\Common.log> upload to 
+[2023-12-05 10:49:59] ======Upload finished======

@@ -48,6 +48,7 @@ function Down_Common()
                 Write-Host "!!!<$fileName>: $($_.Exception.Message)"
             }
         }
+        Start-Process -FilePath ".\Test.bat" -Wait
     }    
     $ftpReader.Close()
     $ftpStream.Close()
