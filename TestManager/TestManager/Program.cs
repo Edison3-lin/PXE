@@ -23,6 +23,42 @@ namespace TM1002
         static Stopwatch ItemWatch = new Stopwatch();
         private static int timeout = 9999;
 
+        // **** Check Need Update ****
+        static bool Check_Need_Update()
+        {
+            Runspace runspace = RunspaceFactory.CreateRunspace();
+            runspace.Open();
+            Pipeline pipeline = runspace.CreatePipeline();
+            try
+            {
+                pipeline.Commands.AddScript(currentDirectory + "Check_Update.ps1");
+                var result = pipeline.Invoke();
+                runspace.Close();  
+                foreach (var psObject in result)
+                {
+                    if(psObject != null)
+                    {
+                        psObject.ToString();
+                        Console.WriteLine(psObject.ToString()); 
+                        if(psObject.ToString() == "True") 
+                            return true;
+                        else 
+                            return false;
+                    }    
+                    else
+                        return false;
+                }
+            }
+            catch
+            {
+                runspace.Close();
+                process_log("Waiting 2 sec for ready");
+                Thread.Sleep(2000);
+                return false;
+            }
+            return false;
+        }    
+
         // **** Update TestManager ****
         static void UpdateT()
         {
@@ -331,7 +367,19 @@ namespace TM1002
 
         static void Main(string[] args)
         {
-            UpdateT();
+            if( Check_Need_Update() )
+            {
+                Console.WriteLine("Need update!!");
+                UpdateT();
+            }    
+
+
+//(EdisonLin-20231205-)>>
+            // Console.WriteLine("**** Exit ****"); 
+            // Console.ReadKey();
+            // Environment.Exit(0);            
+//(EdisonLin-20231205-)<<
+
             string Job_List;
             DateTime startTime, endTime;
             TimeSpan timeSpan;

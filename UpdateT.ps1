@@ -1,36 +1,3 @@
-Set-StrictMode -Version Latest
-function Invoke-Administrator([String] $FilePath, [String[]] $ArgumentList = '') 
-{
-  $Current = [Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()
-  $Administrator = [Security.Principal.WindowsBuiltInRole]::Administrator
-  if (-not $Current.IsInRole($Administrator)) 
-  {
-    $PowerShellPath = (Get-Process -Id $PID).Path
-    $Command = "" + $FilePath + "$ArgumentList" + ""
-    Start-Process $PowerShellPath "-NoProfile -ExecutionPolicy Bypass -File $Command" -Verb RunAs
-    exit
-  } 
-  else 
-  {
-    Set-ExecutionPolicy -Scope Process -ExecutionPolicy ByPass
-  }
-}
-
-Invoke-Administrator $PSCommandPath
-
-function Get_Version()
-{
-    # 获取目录下的所有文件
-    $files = Get-ChildItem -Path ".\" -File
-    foreach ($file in $files) {
-        if($file.Name -like "TM????.exe")
-        {
-            $f = $file.Name.Substring(2, 4) 
-            return $f
-        }
-    }
-    return $null    
-}
 function Down_Common()
 {
     $ftpDirectory = "/TestManager/"
@@ -93,14 +60,9 @@ $ftpServer = $config.ftpServer
 $username = $config.username
 $password = $config.password
 
-
-
-
 # Create a WebClient object and set credentials
 $webClient = New-Object System.Net.WebClient
 $webClient.Credentials = New-Object System.Net.NetworkCredential($username, $password)
-
-$version = Get_Version
 
 try {
     Down_Common
@@ -109,6 +71,6 @@ catch {
     Write-Host "Directory not exist?"
 }
 
-Write-Host  "======Download finished======"
+Write-Host  "@@@ Update finished @@@"
 # Release WebClient
 $webClient.Dispose()
