@@ -16,7 +16,7 @@ namespace TM1002
 {
     public class Program
     {
-        private static string currentDirectory = Directory.GetCurrentDirectory() + '\\';
+        private static string currentDirectory = "C:\\TestManager\\";
         private static string ItemDownload = currentDirectory+"ItemDownload\\";
         private static string log_file = currentDirectory+"MyLog\\TestManager.log";
         static string TR_FilePath = currentDirectory+"TR_Result.json";
@@ -166,7 +166,7 @@ namespace TM1002
             Pipeline pipeline = runspace.CreatePipeline();
             try
             {
-                pipeline.Commands.AddScript(currentDirectory + "RunAs.ps1");
+                // pipeline.Commands.AddScript(currentDirectory + "RunAs.ps1");
                 pipeline.Commands.AddScript(currentDirectory + "Get_PXE.ps1");
                 var result = pipeline.Invoke();
 
@@ -198,7 +198,7 @@ namespace TM1002
             Pipeline pipeline = runspace.CreatePipeline();
             try
             {
-                pipeline.Commands.AddScript(currentDirectory+"RunAs.ps1");
+                // pipeline.Commands.AddScript(currentDirectory+"RunAs.ps1");
                 pipeline.Commands.AddScript(currentDirectory+"Get_Job.ps1");
                 var result = pipeline.Invoke();
                 runspace.Close();
@@ -229,7 +229,7 @@ namespace TM1002
 
             try
             {
-                pipeline.Commands.AddScript(currentDirectory+"RunAs.ps1");
+                // pipeline.Commands.AddScript(currentDirectory+"RunAs.ps1");
                 pipeline.Commands.AddScript("$remoteFile = \""+job_list+"\"");
                 pipeline.Commands.AddScript(currentDirectory+"Download.ps1");
                 var result = pipeline.Invoke();
@@ -276,7 +276,7 @@ namespace TM1002
 
             try
             {
-                pipeline.Commands.AddScript(currentDirectory+"RunAs.ps1");
+                // pipeline.Commands.AddScript(currentDirectory+"RunAs.ps1");
                 pipeline.Commands.AddScript(currentDirectory+"Update_Job_Status.ps1");
                 var result = pipeline.Invoke();
                 if(result[0].ToString() == "Unconnected_")
@@ -365,10 +365,6 @@ namespace TM1002
 
         static void Main(string[] args)
         {
-            // if( Check_Need_Update() )
-            // {
-            //     UpdateT();
-            // }    
             string Job_List;
             DateTime startTime, endTime;
             TimeSpan timeSpan;
