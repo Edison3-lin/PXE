@@ -1,5 +1,0 @@
-[2023-12-05 16:34:16] .\MyLog\TestManager.log to ftp://127.0.0.1:21/Test_Log/96D4AD84-158A-7144-AA29-C01850D3E814/7/7/TestManager.log
-[2023-12-05 16:34:16] <C:\TestManager\MyLog\TestManager.log> upload to 
-[2023-12-05 16:34:16] .\TestLog\Common.log to ftp://127.0.0.1:21/Test_Log/96D4AD84-158A-7144-AA29-C01850D3E814/7/7/Common.log
-[2023-12-05 16:34:16] <C:\TestManager\TestLog\Common.log> upload to 
-[2023-12-05 16:34:16] ======Upload finished======

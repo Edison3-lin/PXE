@@ -26,14 +26,14 @@ namespace Test_Collection
             DllIndex = 0;
 
             //********* SIT 依序填寫執行的DLL的項目 /Start/
-            // Execute_dll("Test3.dll", new object[]{}, new object[]{}, new object[]{}, new object[]{});
-            // Execute_dll("TestItem2.dll", new object[]{}, new object[]{}, new object[]{}, new object[]{});
+            Execute_dll("Test3.dll", new object[]{}, new object[]{}, new object[]{}, new object[]{});
+            Execute_dll("TestItem2.dll", new object[]{}, new object[]{}, new object[]{}, new object[]{});
             // Execute_dll("TestItem1.dll", new object[]{}, new object[]{}, new object[]{}, new object[]{});   //reboot
             // Execute_dll("T2.dll", new object[]{}, new object[]{}, new object[]{}, new object[]{});
             // Execute_dll("TestItem1.dll", new object[]{}, new object[]{}, new object[]{}, new object[]{});   //reboot
             // Execute_dll("T3.dll", new object[]{}, new object[]{}, new object[]{}, new object[]{});
             // Execute_dll("TestItem1.dll", new object[]{}, new object[]{}, new object[]{}, new object[]{});   //reboot
-            Execute_dll("C1.dll",  new object[] { 1122, "林" }, new object[] { 13, 61, "Edison" }, new object[]{"斌", 77}, new object[]{'a', "==== tear down 結束 ===="});
+            // Execute_dll("C1.dll",  new object[] { 1122, "林" }, new object[] { 13, 61, "Edison" }, new object[]{"斌", 77}, new object[]{'a', "==== tear down 結束 ===="});
             // Execute_dll("C1.dll",  new object[] { 22, "G2" }, new object[] { 20, 20, "Edison" }, new object[]{"淑芳", 77}, new object[]{'c', "宏斌"});
             // Execute_dll("C1.dll",  new object[] { 22, "G3" }, new object[] { 30, 30, "Edison" }, new object[]{"林芳", 77}, new object[]{'g', "斌"});
             // Execute_dll("C1.dll",  new object[] { 22, "G4" }, new object[] { 40, 40, "Edison" }, new object[]{"林", 77}, new object[]{'h', "林"});
