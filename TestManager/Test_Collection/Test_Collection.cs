@@ -12,7 +12,7 @@ namespace Test_Collection
     {
         private const string ThisFileName = "Test_Collection.dll";
         private static int DllIndex;
-        private static string currentDirectory = Directory.GetCurrentDirectory() + "\\ItemDownload\\";
+        private static string ItemDownload = "C:\\TestManager\\ItemDownload\\";
  
        public int Setup()
         {
@@ -40,7 +40,7 @@ namespace Test_Collection
             // Execute_dll("C1.dll",  new object[] { 22, "G5" }, new object[] { 50, 50, "Edison" }, new object[]{"淑", 77}, new object[]{'j', "林宏"});
             //********* SIT 依序填寫執行的DLL的項目 /End/
 
-            HadRun("");
+            HadRun("_kIll_");
             return 82;
         }
 
@@ -61,7 +61,7 @@ namespace Test_Collection
             {
                 if(!HadRun(DllFileName))
                 {
-                    Common.Runnner.RunTestItem(currentDirectory+DllFileName, S, R, U, T);
+                    Common.Runnner.RunTestItem(ItemDownload+DllFileName, S, R, U, T);
                 }    
             }
             catch (Exception ex)
@@ -73,7 +73,7 @@ namespace Test_Collection
         public static bool HadRun(string DllFileName)
         {
             // DoneDll.txt 紀錄已執行到第幾個DLL
-            string log_path = currentDirectory + "DoneDll.txt";
+            string log_path = ItemDownload + "DoneDll.txt";
             DllIndex++;
 
             // 檢查檔案是否存在，如果不存在則建立
@@ -84,7 +84,7 @@ namespace Test_Collection
             else
             {
                     
-                if(DllFileName == "")
+                if(DllFileName == "_kIll_")
                 {
                     // 使用File.Delete删除文件
                     File.Delete(log_path);
