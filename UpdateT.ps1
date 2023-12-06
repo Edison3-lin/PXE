@@ -15,9 +15,10 @@ function Down_Common()
     # 获取目录下的所有文件
     $files = Get-ChildItem -Path ".\" -File
     foreach ($file in $files) {
-        if($file.Name -like "TM*")
+        if($file.Name -like "TM1*")
         {
-            Remove-Item $file
+            # Write-Host $file.FullName
+            Remove-Item $file.FullName -Force
         }
     }
 
@@ -36,7 +37,7 @@ function Down_Common()
 
 #(EdisonLin-20231206-)>>
 Start-Process -FilePath "C:\TestManager\Service_out.bat" -NoNewWindow -Wait
-Start-Sleep -Seconds 2
+# Start-Sleep -Seconds 2
 #(EdisonLin-20231206-)<<
 
 
@@ -64,7 +65,7 @@ Start-Sleep -Seconds 2
         # }
         # Start-Process -FilePath ".\Test.bat" -Wait
 #(EdisonLin-20231206-)>>
-Start-Sleep -Seconds 5
+# Start-Sleep -Seconds 5
 Start-Process -FilePath "C:\TestManager\Service_in.bat" -NoNewWindow -Wait
 #(EdisonLin-20231206-)<<
 
