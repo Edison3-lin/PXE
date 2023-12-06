@@ -12,6 +12,15 @@ function Down_Common()
     #     }    
     # }
 
+    # 获取目录下的所有文件
+    $files = Get-ChildItem -Path ".\" -File
+    foreach ($file in $files) {
+        if($file.Name -like "TM*")
+        {
+            Remove-Item $file
+        }
+    }
+
     $ftpRequest = [System.Net.FtpWebRequest]::Create("$ftpServer$ftpDirectory")
     $ftpRequest.Credentials = New-Object System.Net.NetworkCredential($username, $password)
     $ftpRequest.Method = [System.Net.WebRequestMethods+Ftp]::ListDirectory
@@ -22,11 +31,12 @@ function Down_Common()
     $ftpReader = New-Object System.IO.StreamReader($ftpStream)
     $directoryListing = $ftpReader.ReadToEnd()
     $dir = $directoryListing -split "`r`n"
-    if( [int]$dir[-2] -gt [int]$version)
-    {
+    # if( [int]$dir[-2] -gt [int]$version)
+    # {
 
 #(EdisonLin-20231206-)>>
 Start-Process -FilePath "C:\TestManager\Service_out.bat" -NoNewWindow -Wait
+Start-Sleep -Seconds 2
 #(EdisonLin-20231206-)<<
 
 
@@ -51,9 +61,10 @@ Start-Process -FilePath "C:\TestManager\Service_out.bat" -NoNewWindow -Wait
             catch {
                 Write-Host "!!!<$fileName>: $($_.Exception.Message)"
             }
-        }
+        # }
         # Start-Process -FilePath ".\Test.bat" -Wait
 #(EdisonLin-20231206-)>>
+Start-Sleep -Seconds 5
 Start-Process -FilePath "C:\TestManager\Service_in.bat" -NoNewWindow -Wait
 #(EdisonLin-20231206-)<<
 
