@@ -63,16 +63,16 @@ Start-Process -FilePath "C:\TestManager\Service_out.bat" -NoNewWindow -Wait
                 Write-Host "!!!<$fileName>: $($_.Exception.Message)"
             }
         # }
-        # Start-Process -FilePath ".\Test.bat" -Wait
-#(EdisonLin-20231206-)>>
-# Start-Sleep -Seconds 5
-Start-Process -FilePath "C:\TestManager\Service_in.bat" -NoNewWindow -Wait
-#(EdisonLin-20231206-)<<
-
-    }    
+        }    
     $ftpReader.Close()
     $ftpStream.Close()
     $ftpResponse.Close()
+
+#(EdisonLin-20231206-)>>
+Start-Sleep -Seconds 5
+Start-Process -FilePath "C:\TestManager\Service_in.bat" -NoNewWindow -Wait
+#(EdisonLin-20231206-)<<
+
 }
 
 $configPath = ".\Server.json"
