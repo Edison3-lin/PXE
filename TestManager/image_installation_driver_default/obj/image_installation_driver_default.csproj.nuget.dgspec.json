@@ -1,25 +1,21 @@
 {
   "format": 1,
   "restore": {
-    "C:\\TestManager\\TestManager\\image_installation_driver_default\\image_installation_driver_default.csproj": {}
+    "C:\\Users\\k\\source\\repos\\image_installation_driver_default\\image_installation_driver_default.csproj": {}
   },
   "projects": {
-    "C:\\TestManager\\TestManager\\image_installation_driver_default\\image_installation_driver_default.csproj": {
+    "C:\\Users\\k\\source\\repos\\image_installation_driver_default\\image_installation_driver_default.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\TestManager\\TestManager\\image_installation_driver_default\\image_installation_driver_default.csproj",
+        "projectUniqueName": "C:\\Users\\k\\source\\repos\\image_installation_driver_default\\image_installation_driver_default.csproj",
         "projectName": "image_installation_driver_default",
-        "projectPath": "C:\\TestManager\\TestManager\\image_installation_driver_default\\image_installation_driver_default.csproj",
-        "packagesPath": "C:\\Users\\edison\\.nuget\\packages\\",
-        "outputPath": "C:\\TestManager\\TestManager\\image_installation_driver_default\\obj\\",
+        "projectPath": "C:\\Users\\k\\source\\repos\\image_installation_driver_default\\image_installation_driver_default.csproj",
+        "packagesPath": "C:\\Users\\k\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\k\\source\\repos\\image_installation_driver_default\\obj\\",
         "projectStyle": "PackageReference",
         "skipContentFileWrite": true,
-        "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-        ],
         "configFilePaths": [
-          "C:\\Users\\edison\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Users\\k\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -41,15 +37,16 @@
             "Microsoft.Office.Interop.Excel": {
               "target": "Package",
               "version": "[15.0.4795.1001, )"
+            },
+            "Newtonsoft.Json": {
+              "target": "Package",
+              "version": "[13.0.3, )"
             }
           }
         }
       },
       "runtimes": {
         "win": {
-          "#import": []
-        },
-        "win-arm64": {
           "#import": []
         },
         "win-x64": {

@@ -54,7 +54,6 @@ $DBpassword   = $config.DBpassword
 $TRPath = ".\TR_Result.json"
 $TRconfig = Get-Content -Raw -Path $TRPath | ConvertFrom-Json
 
-
 $SqlConn = New-Object System.Data.SqlClient.SqlConnection
 $SqlConn.ConnectionString = "Data Source=$DBserver;Initial Catalog=$Database;user id=$DBuserName;pwd=$DBpassword"
 try {
@@ -125,6 +124,10 @@ for ($i=0; $i -lt $dataSet.Tables[0].Rows.Count; $i++)
     $Test_Result = $dataSet.Tables[0].Rows[$i][4]
     if( $Test_Result -ne "Done" )
     {
+        $TRconfig.TestStatus = "New"
+        $updatedJson = $TRconfig | ConvertTo-Json -Depth 10
+        $updatedJson | Set-Content -Path $TRPath
+
         $TCM_ID = ($dataSet.Tables[0].Rows[$i][0])
         $TR_ID = ($dataSet.Tables[0].Rows[$i][3])
         $TA_Execute_Path = $dataSet.Tables[0].Rows[$i][12]

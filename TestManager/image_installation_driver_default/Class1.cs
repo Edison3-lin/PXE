@@ -1,5 +1,6 @@
 ﻿using Microsoft.Office.Interop.Excel;
 using Microsoft.Win32;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -12,8 +13,8 @@ using System.Runtime.InteropServices;
 using System.Runtime.Remoting.Metadata.W3cXsd2001;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 using Excel = Microsoft.Office.Interop.Excel;
-using Common;
 
 namespace image_installation_driver_default
 {
@@ -328,13 +329,6 @@ namespace image_installation_driver_default
             return setupvalues;
         }
 
-        public int Setup()
-        {
-            // common.Setup
-            Testflow.Setup("xxx");
-            return 11;
-        }
-
         public static bool Run()
         {
             //Get all Device info
@@ -450,7 +444,6 @@ namespace image_installation_driver_default
             }
             string userName = Environment.UserName;
             // 設定Excel檔案的路徑
-            //string root_path = "C:\\Users\\" + userName + "\\Downloads\\";
             string root_path = @"C:\TestManager\ItemDownload\";
             string excelFileName = "SCD_RV07RC.xls";
             string excelFilePath = root_path + excelFileName;
@@ -1648,27 +1641,50 @@ namespace image_installation_driver_default
 
             }
 
+            string jsonfilePath = @"c:\\TestManager\\ItemDownload\\TR_Result.json"; // 將路徑替換為你的JSON文件的實際路徑
+            // 讀取JSON文件內容
+            string jsonContent = File.ReadAllText(jsonfilePath);
+            // 將JSON字串解析為JObject
+            JObject jsonObject = JObject.Parse(jsonContent);
+            // 讀取"TestStatus"的值
+            string test_status = (string)jsonObject["TestStatus"];
+            Console.WriteLine("TestStatus is: " + test_status);
+
             if (success ==28)
             {
+                Console.WriteLine("修改 \"TestStatus\" 內容");
+                // 讀取JSON文件內容
+                string jsonContent1 = File.ReadAllText(jsonfilePath);
+                // 將JSON字串解析為JObject
+                JObject jsonObject1 = JObject.Parse(jsonContent1);
+                // 修改 "site" 內容
+                jsonObject1["TestResult"] = "PASS"; // 在這裡將新的值賦給 "site" 屬性
+                                                    // 將修改後的JObject轉換回JSON字符串
+                string modifiedJson1 = jsonObject1.ToString();
+                // 將修改後的JSON字串保存回文件
+                File.WriteAllText(jsonfilePath, modifiedJson1);
+                Console.WriteLine("TestStatus is: " + test_status);
                 Console.WriteLine("All driver device found in PC, Success");
                 return true;
             }
             if (fail != 0)
             {
+                Console.WriteLine("修改 \"TestStatus\" 內容");
+                // 讀取JSON文件內容
+                string jsonContent1 = File.ReadAllText(jsonfilePath);
+                // 將JSON字串解析為JObject
+                JObject jsonObject1 = JObject.Parse(jsonContent1);
+                // 修改 "site" 內容
+                jsonObject1["TestResult"] = "Fail"; // 在這裡將新的值賦給 "site" 屬性
+                                                    // 將修改後的JObject轉換回JSON字符串
+                string modifiedJson1 = jsonObject1.ToString();
+                // 將修改後的JSON字串保存回文件
+                File.WriteAllText(jsonfilePath, modifiedJson1);
+                Console.WriteLine("TestStatus is: " + test_status);
                 Console.WriteLine("Not all driver device found in PC, Fail");
                 return false;
             }
             return false;
         }
-
-        public static void UpdateResults() 
-        {
-            Console.WriteLine("UpdateResults");
-        }
-        public static void TearDown() 
-        {
-            Console.WriteLine("TearDown");
-        }
-
     }
 }

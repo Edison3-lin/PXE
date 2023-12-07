@@ -116,8 +116,6 @@ for ($i=0; $i -lt $dataSet.Tables[0].Rows.Count; $i++)
     # $TCM_Status = $dataSet.Tables[0].Rows[$i][1]
     $programs = "common_bios_pxeboot_default.dll"
 
-    # Write-Host "55555555($TR_Excute_Status)111"
-
     # $TR_Excute_Status = $NULL
     # 第一次PXE boot (NULL)
     if ( '' -eq $TCM_Status )
