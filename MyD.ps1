@@ -1,97 +1,52 @@
- 
-#==============================全局变量区=========================#
-[bool]$isDownloaded=$False
- 
-#==============================下载函数===========================#
-Function Download([String]$url, [String]$fullFileName)
-{
-    if([String]::IsNullOrEmpty($url) -or [String]::IsNullOrEmpty($fullFileName))
-    {
-        return $false;
-    }
-    try
-    {
-        $client = New-Object System.Net.WebClient 
-        $client.UseDefaultCredentials = $True
- 
-        #监视WebClient 的下载完成事件 
-         Register-ObjectEvent -InputObject $client -EventName DownloadFileCompleted `
-        -SourceIdentifier Web.DownloadFileCompleted -Action {   
-            #下载完成，结束下载
-            $Global:isDownloaded = $True
+Function ftp($ftpurl,$username,$password,$do,$filename,$DownPatch) { 
+    # ftp 服务器地址，用户名，密码，操作（上传up/下载down/列表list），文件名，下载路径
+    # 示例：ftp ftp://10.10.98.91/ ftpuser shenzhen up C:\Windows\setupact.txt
+        if ($do -eq "up")
+        {
+            $fileinf=New-Object System.Io.FileInfo("$filename")
+            $upFTP = [system.net.ftpwebrequest] [system.net.webrequest]::create("$ftpurl"+$fileinf.name)
+            $upFTP.Credentials = New-Object System.Net.NetworkCredential("$username","$password")
+            $upFTP.Method=[system.net.WebRequestMethods+ftp]::UploadFile
+            $upFTP.KeepAlive=$false
+            $sourceStream = New-Object System.Io.StreamReader($fileInf.fullname)
+            $fileContents = [System.Text.Encoding]::UTF8.GetBytes($sourceStream.ReadToEnd())
+            $sourceStream.Close();
+            $upFTP.ContentLength = $fileContents.Length;
+            $requestStream = $upFTP.GetRequestStream();
+            $requestStream.Write($fileContents, 0, $fileContents.Length);
+            $requestStream.Close();
+            $response =$upFTP.GetResponse();
+            $response.StatusDescription
+            $response.Close();
         }
-        #监视WebClient 的进度事件
-        Register-ObjectEvent -InputObject $client -EventName DownloadProgressChanged `
-        -SourceIdentifier Web.DownloadProgressChanged -Action {
-            #将下载的进度信息记录到全局的Data对象中
-            $Global:Data = $event
-        }
- 
-        $Global:isDownloaded =$False
- 
-        #监视PowerShell退出事件
-        Register-EngineEvent -SourceIdentifier ([System.Management.Automation.PSEngineEvent]::Exiting) -Action {
-            #PowerShell 结束事件
-            Get-EventSubscriber | Unregister-Event
-            Get-Job | Remove-Job -Force
-           }
-           
-         #启用定时器，设置1秒一次输出下载进度
-        $timer = New-Object timers.timer
-        # 1 second interval
-        $timer.Interval = 1000
-        #Create the event subscription
-        Register-ObjectEvent -InputObject $timer -EventName Elapsed -SourceIdentifier Timer.Output -Action {
-            $percent = $Global:Data.SourceArgs.ProgressPercentage
-            $totalBytes = $Global:Data.SourceArgs.TotalBytesToReceive
-            $receivedBytes = $Global:Data.SourceArgs.BytesReceived
-           
-            If ($percent -ne $null) {
-                 #这里你可以选择将进度显示到命令行 也可以选择将进度写到文件，具体看自己需求
-                 #我这里选择将进度输出到命令行
-                    Write-Host "当前下载进度:$percent  已下载:$receivedBytes 总大小:$totalBytes"
-                    
+        if ($do -eq "down")
+        {
+            $downFTP = [system.net.ftpwebrequest] [system.net.webrequest]::create("$ftpurl"+"$filename")
+            $downFTP.Credentials = New-Object System.Net.NetworkCredential("$username","$password")
+            $response = $downFTP.getresponse()
+            $stream=$response.getresponsestream()
+            $buffer = new-object System.Byte[] 2048
+            $outputStream=New-Object System.Io.FileStream("$DownPatch","Create")
+            while(($readCount = $stream.Read($buffer, 0, 1024)) -gt 0){
+                $outputStream.Write($buffer, 0, $readCount)
             }
-           
+            $outputStream.Close()
+            $stream.Close()
+            $response.Close() 
+            if(Test-Path  $DownPatch){echo "DownLoad successful"}
         }
-        $timer.Enabled = $True
- 
-        #使用异步方式下载文件
-         $client.DownloadFileAsync($url, $fullFileName)
-          While (-Not $isDownloaded)
-           {
-                #等待下载线程结束
-                Start-Sleep -m 100
-           }
- 
-         $timer.Enabled = $False
-         
-        #清除监视
-        Get-EventSubscriber | Unregister-Event
-        Get-Job | Remove-Job -Force
-        #关闭下载线程
-        $client.Dispose()
-        Remove-Variable client
-      
-         Write-Host "Finish "
+        if ($do -eq "list")
+        {
+            $listFTP = [system.net.ftpwebrequest] [system.net.webrequest]::create("$ftpurl")
+            $listFTP.Credentials = New-Object System.Net.NetworkCredential("$username","$password")
+            $listFTP.Method=[system.net.WebRequestMethods+ftp]::listdirectorydetails
+            $response = $listFTP.getresponse()
+            $stream = New-Object System.Io.StreamReader($response.getresponsestream(),[System.Text.Encoding]::UTF8)
+            while(-not $stream.EndOfStream){
+                $stream.ReadLine()
+            }
+            $stream.Close()
+            $response.Close()     
+        }
     }
-    catch
-    {
-       
-        return $false;  
-    }
-    return $true;
-}
-
-$ftpServer = "ftp://127.0.0.1:21"
-$username = "sit001"
-$password = "sit1234"
-
-# 創建 NetworkCredential 對象
-$credentials = New-Object System.Net.NetworkCredential($username, $password)
-
-# 創建 WebClient 實例，並設置 Credentials
-$webClient = New-Object System.Net.WebClient
-$webClient.Credentials = $credentials
-
-Download -url "ftp://127.0.0.1:21/Test_Item/Test_Collection/Microsoft.PowerShell_profile.ps1" -fullFileName ".\ItemDownload\Microsoft.PowerShell_profile.ps1"
+    ftp "ftp://127.0.0.1:21/" "sit001" "sit1234" down "Test_Item/TestCase.exe" "C:\TestManager\TestCase.exe" 
