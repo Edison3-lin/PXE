@@ -18,7 +18,6 @@ namespace TM1002
     {
         private static string currentDirectory = "C:\\TestManager\\";
         private static string ItemDownload = currentDirectory+"ItemDownload\\";
-        private static string DllOnly = currentDirectory+"DllOnly\\";
         private static string log_file = currentDirectory+"MyLog\\TestManager.log";
         static string TR_FilePath = currentDirectory+"TR_Result.json";
         static Stopwatch ItemWatch = new Stopwatch();
@@ -333,40 +332,40 @@ namespace TM1002
             else return false;
         }
 
-        // ***** Execute_dllOnly *****
-        static bool Execute_dllOnly(string dllPath, object[] S, object[] R, object[] U, object[] T )
-        {
-            string callingDomainName = AppDomain.CurrentDomain.FriendlyName;//Thread.GetDomain().FriendlyName;
-            string basePath = AppDomain.CurrentDomain.BaseDirectory;
-            AppDomain ad = AppDomain.CreateDomain("TestManager DLL");
-            ProxyObject obj = (ProxyObject)ad.CreateInstanceFromAndUnwrap(basePath+callingDomainName, "TM1002.ProxyObject");
-            try
-            {
-                process_log(".... Loading Common.dll ....");
-                obj.LoadAssembly(currentDirectory+"Common.dll");
-            }
-            catch (System.IO.FileNotFoundException)
-            {
-                process_log("!!! 找不到 Common.dll");
-                return false;
-            }
+        // // ***** Execute_dllOnly *****
+        // static bool Execute_dllOnly(string dllPath, object[] S, object[] R, object[] U, object[] T )
+        // {
+        //     string callingDomainName = AppDomain.CurrentDomain.FriendlyName;//Thread.GetDomain().FriendlyName;
+        //     string basePath = AppDomain.CurrentDomain.BaseDirectory;
+        //     AppDomain ad = AppDomain.CreateDomain("TestManager DLL");
+        //     ProxyObject obj = (ProxyObject)ad.CreateInstanceFromAndUnwrap(basePath+callingDomainName, "TM1002.ProxyObject");
+        //     try
+        //     {
+        //         process_log(".... Loading Common.dll ....");
+        //         obj.LoadAssembly(currentDirectory+"Common.dll");
+        //     }
+        //     catch (System.IO.FileNotFoundException)
+        //     {
+        //         process_log("!!! 找不到 Common.dll");
+        //         return false;
+        //     }
 
-            // 啟動計時器
-            ItemWatch = new Stopwatch();
-            ItemWatch.Start();
+        //     // 啟動計時器
+        //     ItemWatch = new Stopwatch();
+        //     ItemWatch.Start();
 
-            process_log(".... Loading "+dllPath+" ....");
-            Object[] p = new object[]{ dllPath, S, R, U, T };
-            var result = obj.Invoke("RunTestItem",p);
+        //     process_log(".... Loading "+dllPath+" ....");
+        //     Object[] p = new object[]{ dllPath, S, R, U, T };
+        //     var result = obj.Invoke("RunTestItem",p);
 
-            // 停止計時器
-            ItemWatch.Stop();
+        //     // 停止計時器
+        //     ItemWatch.Stop();
 			
-            AppDomain.Unload(ad);
-            obj = null;
-            if(result.ToString() == "True") return true;
-            else return false;
-        }
+        //     AppDomain.Unload(ad);
+        //     obj = null;
+        //     if(result.ToString() == "True") return true;
+        //     else return false;
+        // }
 
         // ******* New Thread to monitor TimeOut *********
         static void MonitorExecutionTime()
@@ -381,7 +380,9 @@ namespace TM1002
                 {
                     if(ItemWatch.Elapsed.TotalSeconds >= timeout)
                     {
-                        Console.WriteLine($"Time Out!!!!: {ItemWatch.Elapsed.TotalSeconds} seconds");
+                        Console.WriteLine("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+                        Console.WriteLine($"執行 {ItemWatch.Elapsed.TotalSeconds} 秒，超過TimeOut"+timeout.ToString()+" 秒 !!!!");
+                        Console.WriteLine("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
                         NewWatch = false;
                     }
                 }
@@ -489,23 +490,22 @@ else
     // 檢查目錄是否存在，如果不存在則建立
     CreateDirectoryAndFile();
 
-    if (!Directory.Exists(DllOnly))
-    {
-        Directory.CreateDirectory(DllOnly);
-    }                
-
     if( args.Length > 1 )
     {
-        if (int.TryParse(args[1], out int timeout))
+        string strNumber = args[1];
+        try
         {
-            // 转换成功，result 包含整数值
-            Console.WriteLine(timeout);
+            timeout = int.Parse(strNumber);
         }
-        else
+        catch (Exception ex)
         {
-            // 转换失败，处理错误逻辑
-            timeout = 999;    
+            Console.WriteLine(ex.Message);
+            timeout = 999;
         }
+
+        Console.WriteLine("設定的Timeout:" +　timeout.ToString()+" 秒");
+        Console.WriteLine("Press any key to start testing...\n\n");
+        Console.ReadKey();
     }
     else
     {
@@ -514,8 +514,8 @@ else
 
     try
     {
-        process_log("<<Step 1>> Executing "+args[0]);
-        result = Execute_dll(DllOnly+args[0]);
+        process_log("<<Step 1>> Executing "+args[0]+" TimeOut: "+timeout+"秒");
+        result = Execute_dll(ItemDownload+args[0]);
     }
     catch (Exception ex)
     {

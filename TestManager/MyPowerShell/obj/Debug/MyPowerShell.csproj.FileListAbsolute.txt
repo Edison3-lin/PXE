@@ -1,0 +1,9 @@
+C:\TestManager\TestManager\MyPowerShell\bin\Debug\MyPowerShell.dll
+C:\TestManager\TestManager\MyPowerShell\bin\Debug\MyPowerShell.pdb
+C:\TestManager\TestManager\MyPowerShell\bin\Debug\Common.dll
+C:\TestManager\TestManager\MyPowerShell\bin\Debug\Common.pdb
+C:\TestManager\TestManager\MyPowerShell\obj\Debug\MyPowerShell.csproj.AssemblyReference.cache
+C:\TestManager\TestManager\MyPowerShell\obj\Debug\MyPowerShell.csproj.CoreCompileInputs.cache
+C:\TestManager\TestManager\MyPowerShell\obj\Debug\MyPowerShell.csproj.CopyComplete
+C:\TestManager\TestManager\MyPowerShell\obj\Debug\MyPowerShell.dll
+C:\TestManager\TestManager\MyPowerShell\obj\Debug\MyPowerShell.pdb

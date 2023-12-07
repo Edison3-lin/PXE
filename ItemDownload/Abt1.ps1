@@ -27,7 +27,7 @@ $T2 = $P+'/set "Touchpad=1"'
 $s = ' /sleep /help'
 try {
     process_log $PSCommandPath
-    $process = Start-Process -FilePath ".\ItemDwonload\abst64.exe" -ArgumentList $A -NoNewWindow -Wait -PassThru -RedirectStandardOutput $tempfile
+    $process = Start-Process -FilePath "C:\TestManager\ItemDownload\Abst64.exe" -ArgumentList $A -NoNewWindow -Wait -PassThru -RedirectStandardOutput $tempfile
     $process.WaitForExit()
     result_log (Get-Content $tempfile)
 

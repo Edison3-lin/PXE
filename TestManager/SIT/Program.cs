@@ -18,21 +18,22 @@ namespace SIT
     {
         static void Main(string[] args)
         {
-            // 检查是否有命令行参数
-            if (args.Length == 0)
-            {
-                Console.WriteLine("没有提供命令行参数。");
-            }
-            else
-            {
-                Console.WriteLine("命令行参数:");
 
-                // 使用循环显示所有命令行参数
-                for (int i = 0; i < args.Length; i++)
-                {
-                    Console.WriteLine($"参数 {i + 1}: {args[i]}");
-                }
-            }        
+            string strNumber = args[0];
+            int timeout = 0;
+            Console.WriteLine("strNumber " +　strNumber);
+            try
+            {
+                timeout = int.Parse(strNumber);
+                Console.WriteLine("timeout:" +　timeout.ToString());
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                timeout = 999;
+            }
+
         }
     }
 }

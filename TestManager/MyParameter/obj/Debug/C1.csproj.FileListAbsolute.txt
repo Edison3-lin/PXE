@@ -1,0 +1,6 @@
+C:\TestManager\TestManager\MyParameter\bin\Debug\MyParameter.dll
+C:\TestManager\TestManager\MyParameter\bin\Debug\MyParameter.pdb
+C:\TestManager\TestManager\MyParameter\obj\Debug\MyParameter.csproj.AssemblyReference.cache
+C:\TestManager\TestManager\MyParameter\obj\Debug\MyParameter.csproj.CoreCompileInputs.cache
+C:\TestManager\TestManager\MyParameter\obj\Debug\MyParameter.dll
+C:\TestManager\TestManager\MyParameter\obj\Debug\MyParameter.pdb

@@ -29,8 +29,7 @@ namespace Test3
              Runspace runspace = RunspaceFactory.CreateRunspace();
              runspace.Open();
              Pipeline pipeline = runspace.CreatePipeline();
-            //  pipeline.Commands.AddScript("c:\\TestManager\\Test_Item\\RunAs.ps1");             
-             pipeline.Commands.AddScript(".\\ItemDownload\\Info.ps1");
+             pipeline.Commands.AddScript("c:\\TestManager\\ItemDownload\\Info.ps1");
              pipeline.Invoke();
              runspace.Close();
             }
@@ -39,8 +38,6 @@ namespace Test3
                 Console.WriteLine("Error!!! " + ex.Message);
             }
 
-            // common.Setup
-            Testflow.Run("xxx");
             return 32;
         }
 

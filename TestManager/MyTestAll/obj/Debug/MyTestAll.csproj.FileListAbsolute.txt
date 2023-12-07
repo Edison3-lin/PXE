@@ -1,0 +1,9 @@
+C:\TestManager\TestManager\MyTestAll\bin\Debug\MyTestAll.dll
+C:\TestManager\TestManager\MyTestAll\bin\Debug\MyTestAll.pdb
+C:\TestManager\TestManager\MyTestAll\bin\Debug\Common.dll
+C:\TestManager\TestManager\MyTestAll\bin\Debug\Common.pdb
+C:\TestManager\TestManager\MyTestAll\obj\Debug\MyTestAll.csproj.AssemblyReference.cache
+C:\TestManager\TestManager\MyTestAll\obj\Debug\MyTestAll.csproj.CoreCompileInputs.cache
+C:\TestManager\TestManager\MyTestAll\obj\Debug\MyTestAll.csproj.CopyComplete
+C:\TestManager\TestManager\MyTestAll\obj\Debug\MyTestAll.dll
+C:\TestManager\TestManager\MyTestAll\obj\Debug\MyTestAll.pdb

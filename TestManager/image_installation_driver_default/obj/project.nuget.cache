@@ -1,10 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "Pab6YZP5CpqOVyiFby+Kherjc1Jw6QCQZqMFrRGUhCLw1ZtuVOnaUYZpxk/ewm2rqKj/SWJQ+v6gWBYVFfijvg==",
+  "dgSpecHash": "LxIWlgxDNoBocQmOMSW7MVKslLnLDYyUVVrqMP81byU1t9lEygyRv0o87okpLTFAylH29NmaktWZx++JRnVmIA==",
   "success": true,
   "projectFilePath": "C:\\TestManager\\TestManager\\image_installation_driver_default\\image_installation_driver_default.csproj",
   "expectedPackageFiles": [
-    "C:\\Users\\ediso\\.nuget\\packages\\microsoft.office.interop.excel\\15.0.4795.1001\\microsoft.office.interop.excel.15.0.4795.1001.nupkg.sha512"
+    "C:\\Users\\edison\\.nuget\\packages\\microsoft.office.interop.excel\\15.0.4795.1001\\microsoft.office.interop.excel.15.0.4795.1001.nupkg.sha512"
   ],
   "logs": []
 }

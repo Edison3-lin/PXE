@@ -65,7 +65,7 @@
             <summary>
             Allows efficient escaping for the library's built-in types (HTML, URL, JS).
             Assumes the following:
-              (a) All C0 and C1 code points are disallowed.
+              (a) All C0 and MyParameter code points are disallowed.
               (b) Escaping 1 ASCII input character results in no more than 6 output characters.
               (c) All Unicode scalar values may be represented in escaped form.
               (d) The escaped form of any Unicode scalar value consists of only ASCII characters.
