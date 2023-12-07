@@ -12,28 +12,29 @@ function result_log($log)
 
 function Down_Common($f)
 {
-
-    # Write-Host "Server: $ftpServer"
-    # Write-Host "Username: $username"
-    # Write-Host "Password: $password"
-    
     process_log  "   === $f attached ==="
     $attDir = $f.split('.')[0]
     $ftpDirectory = "/Test_Item/$attDir/"
-# process_log $attDir
-# return    
     $commonFilePath = ".\ItemDownload\"
     if (-not (Test-Path -Path $commonFilePath -PathType Container)) {
         New-Item -Path $commonFilePath -ItemType Directory
     }
+
+    # 創建 NetworkCredential 對象
+    $credentials = New-Object System.Net.NetworkCredential($username, $password)
     
     $ftpRequest = [System.Net.FtpWebRequest]::Create("$ftpServer$ftpDirectory")
-    $ftpRequest.Credentials = New-Object System.Net.NetworkCredential($username, $password)
+    $ftpRequest.Credentials = $credentials
     $ftpRequest.Method = [System.Net.WebRequestMethods+Ftp]::ListDirectory
 
     $ftpResponse = $ftpRequest.GetResponse()
     $ftpStream = $ftpResponse.GetResponseStream()
     $ftpReader = New-Object System.IO.StreamReader($ftpStream)
+
+
+    # 創建 WebClient 實例，並設置 Credentials
+    $webClient = New-Object System.Net.WebClient
+    $webClient.Credentials = $credentials
 
     while (-not $ftpReader.EndOfStream) {
         $fileName = $ftpReader.ReadLine()
@@ -41,12 +42,15 @@ function Down_Common($f)
             # Download the file
             process_log  "Download.... $fileName"
             $webClient.DownloadFile("$ftpServer$ftpDirectory$fileName", "$commonFilePath$fileName")
-
         }
         catch {
             process_log "!!!<$fileName>: $($_.Exception.Message)"
         }
     }
+
+    # Release WebClient
+    $webClient.Dispose()
+
     $ftpReader.Close()
     $ftpStream.Close()
     $ftpResponse.Close()
@@ -57,7 +61,6 @@ $Directory = Split-Path -Path $PSCommandPath -Parent
 $Directory += '\MyLog'
 $baseName = $file.BaseName
 $logfile = $Directory+'\'+$baseName+"_process.log"
-$tempfile = $Directory+'\temp.log'
 $outputfile = $Directory+'\'+$baseName+'_result.log'
 
 $configPath = ".\Server.json"
@@ -75,9 +78,6 @@ $localPath += "\ItemDownload"
 if (-not (Test-Path -Path $localPath -PathType Container)) {
     New-Item -Path $localPath -ItemType Directory
 }
-# Create a WebClient object and set credentials
-$webClient = New-Object System.Net.WebClient
-$webClient.Credentials = New-Object System.Net.NetworkCredential($username, $password)
 
 process_log "Download.. $remoteFile"
 # $remoteFile = image_installation_application_default.dll
@@ -90,6 +90,4 @@ catch {
 }
 
 process_log  "======Download finished======"
-# Release WebClient
-$webClient.Dispose()
 return 0
