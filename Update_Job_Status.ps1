@@ -58,8 +58,8 @@ $SqlCmd.connection = $SqlConn
     $sqlCmd.CommandText = 
     "
         update Test_Result 
-        set    TR_Test_Result   = 'Pass' ,
-               TR_Excute_Status = 'DONE' ,
+        set    TR_Test_Result   = '$TestResult',
+               TR_Excute_Status = '$TestStatus' ,
                TR_TestEndTime   = SYSDATETIME()
         where  TR_ID = '$TR_ID'
     "

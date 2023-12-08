@@ -69,7 +69,7 @@ Start-Process -FilePath "C:\TestManager\Service_out.bat" -NoNewWindow -Wait
     $ftpResponse.Close()
 
 #(EdisonLin-20231206-)>>
-Start-Sleep -Seconds 5
+# Start-Sleep -Seconds 5
 Start-Process -FilePath "C:\TestManager\Service_in.bat" -NoNewWindow -Wait
 #(EdisonLin-20231206-)<<
 
