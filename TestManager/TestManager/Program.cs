@@ -380,9 +380,9 @@ namespace TM1002
                 {
                     if(ItemWatch.Elapsed.TotalSeconds >= timeout)
                     {
-                        Console.WriteLine("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-                        Console.WriteLine($"執行 {ItemWatch.Elapsed.TotalSeconds} 秒，超過TimeOut"+timeout.ToString()+" 秒 !!!!");
-                        Console.WriteLine("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+                        Console.WriteLine("\n===========================================");
+                        Console.WriteLine($"Has been executed for <{ItemWatch.Elapsed.TotalSeconds}> seconds, Time-out time exceeded !!!!");
+                        Console.WriteLine("===========================================\n");
                         NewWatch = false;
                     }
                 }
@@ -478,7 +478,7 @@ if(args.Length == 0)
                 endTime = DateTime.Now;
                 timeSpan = endTime - startTime;
                 // 输出时间间隔
-                process_log("執行花費時間: " + timeSpan.Minutes + "分鐘 " + timeSpan.Seconds + "秒");
+                process_log("Spend " + timeSpan.Minutes + " Minutes " + timeSpan.Seconds + " Senconds");
                 process_log("=================Completed================");
                 // Thread.Sleep(1000);
             } while (!(Console.KeyAvailable && Console.ReadKey(true).Key == ConsoleKey.Escape));
@@ -503,9 +503,7 @@ else
             timeout = 999;
         }
 
-        Console.WriteLine("設定的Timeout:" +　timeout.ToString()+" 秒");
-        Console.WriteLine("Press any key to start testing...\n\n");
-        Console.ReadKey();
+        Console.WriteLine("Timeout: " +　timeout.ToString()+" seconds");
     }
     else
     {
@@ -514,7 +512,7 @@ else
 
     try
     {
-        process_log("<<Step 1>> Executing "+args[0]+" TimeOut: "+timeout+"秒");
+        process_log("<<Step 1>> Executing "+args[0]+" TimeOut: "+timeout+" seconds");
         result = Execute_dll(ItemDownload+args[0]);
     }
     catch (Exception ex)
