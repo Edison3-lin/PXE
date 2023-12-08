@@ -20,278 +20,7 @@ namespace image_installation_driver_default
 {
     public class image_installation_driver_default
     {
-        // Define constants and structures
-        private const int DIGCF_PRESENT = 0x000000002;
-        private const int DIGCF_ALLCLASSES = 0x000000004;
-
-        [StructLayout(LayoutKind.Sequential)]
-        public struct SP_DEVINFO_DATA
-        {
-            public int cbSize;
-            public Guid ClassGuid;
-            public int DevInst;
-            public IntPtr Reserved;
-        }
-
-        [StructLayout(LayoutKind.Sequential)]
-        public struct SP_DRVINFO_DATA
-        {
-            public uint cbSize;
-            public uint DriverType;
-            public IntPtr Reserved;
-            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 256)]
-            public string Description;
-            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 256)]
-            public string MfgName;
-            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 256)]
-            public string ProviderName;
-            public System.Runtime.InteropServices.ComTypes.FILETIME DriverDate;
-            public uint DriverVersion;
-        }
-
-        [DllImport("setupapi.dll", CharSet = CharSet.Auto)]
-        public static extern IntPtr SetupDiGetClassDevs(
-            ref Guid ClassGuid,
-            string Enumerator,
-            IntPtr hwndParent,
-            int Flags
-        );
-
-        [DllImport("setupapi.dll", CharSet = CharSet.Auto)]
-        public static extern bool SetupDiEnumDeviceInfo(
-            IntPtr DeviceInfoSet,
-            int MemberIndex,
-            ref SP_DEVINFO_DATA DeviceInfoData
-        );
-
-        [DllImport("setupapi.dll", CharSet = CharSet.Auto)]
-        public static extern bool SetupDiGetDeviceRegistryProperty(
-            IntPtr DeviceInfoSet,
-            ref SP_DEVINFO_DATA DeviceInfoData,
-            int Property,
-            out int PropertyRegDataType,
-            IntPtr PropertyBuffer,
-            int PropertyBufferSize,
-            out int RequiredSize
-        );
-
-        [DllImport("setupapi.dll", SetLastError = true)]
-        public static extern bool SetupDiEnumDriverInfo(
-            IntPtr DeviceInfoSet,
-            SP_DEVINFO_DATA DeviceInfoData,
-            uint DriverType, uint MemberIndex,
-            SP_DRVINFO_DATA DriverInfoData
-        );
-
-
-        [DllImport("setupapi.dll")]
-        private static extern Boolean SetupDiDestroyDeviceInfoList(IntPtr DeviceInfoSet);
-
-        public const int SPDRP_DEVICEDESC = 0x00000000;
-        public const int SPDRP_DRIVER = 0x00000009;
-        public const int SPDRP_INSTALL_STATE = 0x00000022;  // Device Install State (R)
-        const int SPDRP_HARDWAREID = 0x00000001; // Hardware ID
-        const int SPDIT_COMPATDRIVER = 0x00000002; // Get driver information for compatible drivers.
-
-        [DllImport("setupapi.dll", SetLastError = true)]
-        public static extern bool SetupDiBuildDriverInfoList(
-            IntPtr DeviceInfoSet,
-            SP_DEVINFO_DATA DeviceInfoData,
-            uint DriverType
-        );
-
-        // P/Invoke declarations
-        [DllImport("setupapi.dll")]
-        public static extern int CM_Locate_DevNode(
-            out uint pdnDevInst,
-            string pDeviceID,
-            uint ulFlags
-        );
-
-        [DllImport("setupapi.dll")]
-        public static extern int CM_Get_DevNode_Status(
-            out uint pulStatus,
-            out uint pulProblemNumber,
-            int dnDevInst,
-            uint ulFlags
-        );
-
-
-        public static string GetDeviceName(IntPtr deviceInfoSet, SP_DEVINFO_DATA deviceInfoData)
-        {
-            int requiredSize = 0;
-            SetupDiGetDeviceRegistryProperty(deviceInfoSet, ref deviceInfoData, SPDRP_DEVICEDESC, out int regDataType, IntPtr.Zero, 0, out requiredSize);
-            if (requiredSize == 0)
-                return string.Empty;
-
-            IntPtr propertyBuffer = Marshal.AllocHGlobal(requiredSize);
-            if (SetupDiGetDeviceRegistryProperty(deviceInfoSet, ref deviceInfoData, SPDRP_DEVICEDESC, out regDataType, propertyBuffer, requiredSize, out requiredSize))
-            {
-                string deviceName = Marshal.PtrToStringAuto(propertyBuffer);
-                Marshal.FreeHGlobal(propertyBuffer);
-                return deviceName;
-            }
-
-            return string.Empty;
-        }
-
-        public static string GetDriverVersion(IntPtr deviceInfoSet, SP_DEVINFO_DATA deviceInfoData)
-        {
-            int requiredSize = 0;
-            SetupDiGetDeviceRegistryProperty(deviceInfoSet, ref deviceInfoData, SPDRP_DRIVER, out int regDataType, IntPtr.Zero, 0, out requiredSize);
-            if (requiredSize == 0)
-                return string.Empty;
-
-            IntPtr propertyBuffer = Marshal.AllocHGlobal(requiredSize);
-            if (SetupDiGetDeviceRegistryProperty(deviceInfoSet, ref deviceInfoData, SPDRP_DRIVER, out regDataType, propertyBuffer, requiredSize, out requiredSize))
-            {
-                string driverVersion = Marshal.PtrToStringAuto(propertyBuffer);
-                Marshal.FreeHGlobal(propertyBuffer);
-
-                // Specify the registry key path and value name you want to read.
-                string keyPath = @"HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Class\" + driverVersion;
-                string valueName = "DriverVersion";
-
-                // Use the Registry.GetValue method to read the registry value.
-                object value = Registry.GetValue(keyPath, valueName, null);
-
-                if (value != null)
-                {
-                    //Console.WriteLine($"Value of {valueName} in {keyPath}: {value}");
-                }
-                else
-                {
-                    Console.WriteLine($"Registry value {valueName} not found in {keyPath}");
-                }
-
-                return value.ToString();
-            }
-
-            return string.Empty;
-        }
-
-        public static string GetHardwareID(IntPtr deviceInfoSet, SP_DEVINFO_DATA deviceInfoData)
-        {
-            int requiredSize = 0;
-            SetupDiGetDeviceRegistryProperty(deviceInfoSet, ref deviceInfoData, SPDRP_HARDWAREID, out int regDataType, IntPtr.Zero, 0, out requiredSize);
-            if (requiredSize == 0)
-                return string.Empty;
-
-            IntPtr propertyBuffer = Marshal.AllocHGlobal(requiredSize);
-            if (SetupDiGetDeviceRegistryProperty(deviceInfoSet, ref deviceInfoData, SPDRP_HARDWAREID, out regDataType, propertyBuffer, requiredSize, out requiredSize))
-            {
-                string hardwareid = Marshal.PtrToStringAuto(propertyBuffer);
-                Marshal.FreeHGlobal(propertyBuffer);
-                return hardwareid;
-            }
-
-            return string.Empty;
-        }
-
-        public static string GetDevicesStatusAndProblemCode(IntPtr deviceInfoSet, SP_DEVINFO_DATA deviceInfoData)
-        {
-            // Find the device node for the specified hardware ID.
-            uint devInst = 0;
-
-            uint status = 0;
-            uint problemNumber = 0;
-
-            int result = CM_Locate_DevNode(out devInst, null, 0);
-
-            if (result == 0)
-            {
-                // Device node found, now get its status.
-
-                result = CM_Get_DevNode_Status(out status, out problemNumber, deviceInfoData.DevInst, 0);
-
-                if (result == 0)
-                {
-                    //Console.WriteLine("Device Status: " + status);
-                    //Console.WriteLine("Device Problem Code: " + problemNumber);
-                }
-                else
-                {
-                    Console.WriteLine("Failed to get device status.");
-                }
-                return problemNumber.ToString();
-            }
-            else
-            {
-                Console.WriteLine("Device not found or error locating the device node.");
-                return string.Empty;
-            }
-        }
-
-        static List<string> ReadInfFiles(string directoryPath)
-        {
-            List<string> infContents = new List<string>();
-
-            try
-            {
-                // Get a list of all .inf files in the specified directory
-                string[] infFiles = Directory.GetFiles(directoryPath, "*.inf");
-
-                // Loop through each .inf file and read its content
-                foreach (string infFile in infFiles)
-                {
-                    // Read the file line by line
-                    foreach (string line in File.ReadLines(infFile))
-                    {
-                        // Check if the line contains the target string
-                        if (line.Contains("DriverVer ="))
-                        {
-                            infContents.Add(line);
-                            break; // Optionally, break after the first match if needed
-                        }
-                    }
-
-                }
-            }
-            catch (Exception ex)
-            {
-                // Handle any exceptions (e.g., directory not found, permission issues)
-                Console.WriteLine($"An error occurred: {ex.Message}");
-            }
-
-            return infContents;
-        }
-
-        public static string GetCpuManufacturer()
-        {
-            try
-            {
-                using (RegistryKey registryKey = Registry.LocalMachine.OpenSubKey(@"HARDWARE\DESCRIPTION\System\CentralProcessor\0", RegistryKeyPermissionCheck.ReadSubTree))
-                {
-                    if (registryKey != null)
-                    {
-                        object value = registryKey.GetValue("ProcessorNameString");
-
-                        if (value != null)
-                        {
-                            string processorName = value.ToString();
-
-                            if (processorName.Contains("AMD"))
-                            {
-                                return "AMD";
-                            }
-                            else if (processorName.Contains("Intel"))
-                            {
-                                return "Intel";
-                            }
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                // Handle any exceptions that may occur during registry access
-                Console.WriteLine("Error: " + ex.Message);
-            }
-
-            return "Unknown";
-        }
-
-        static string[] setup()
+        static string[] setup1()
         {
             string project_name = null;
             string computerName = Environment.MachineName;
@@ -409,7 +138,7 @@ namespace image_installation_driver_default
 
             //Get project name and PC name
             string[] PCInformation = new string[2];
-            PCInformation = setup();
+            PCInformation = setup1();
             Console.WriteLine(PCInformation[0] + " " + PCInformation[1]);
 
             string computerName = Environment.MachineName;
@@ -1641,7 +1370,7 @@ namespace image_installation_driver_default
 
             }
 
-            string jsonfilePath = @"c:\\TestManager\\ItemDownload\\TR_Result.json"; // 將路徑替換為你的JSON文件的實際路徑
+            string jsonfilePath = @"c:\\TestManager\\TR_Result.json"; // 將路徑替換為你的JSON文件的實際路徑
             // 讀取JSON文件內容
             string jsonContent = File.ReadAllText(jsonfilePath);
             // 將JSON字串解析為JObject
@@ -1685,6 +1414,301 @@ namespace image_installation_driver_default
                 return false;
             }
             return false;
+        }
+
+       public int Setup()
+        {
+            // common.Setup
+            return 0;
+        }
+
+        // public int Run()
+        // {
+        //     return 0;
+        // }
+
+        public int UpdateResults()
+        {
+
+            return 0;
+        }
+
+        public int TearDown()
+        {
+            return 0;
+        }
+
+
+
+        // Define constants and structures
+        private const int DIGCF_PRESENT = 0x000000002;
+        private const int DIGCF_ALLCLASSES = 0x000000004;
+
+        [StructLayout(LayoutKind.Sequential)]
+        public struct SP_DEVINFO_DATA
+        {
+            public int cbSize;
+            public Guid ClassGuid;
+            public int DevInst;
+            public IntPtr Reserved;
+        }
+
+        [StructLayout(LayoutKind.Sequential)]
+        public struct SP_DRVINFO_DATA
+        {
+            public uint cbSize;
+            public uint DriverType;
+            public IntPtr Reserved;
+            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 256)]
+            public string Description;
+            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 256)]
+            public string MfgName;
+            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 256)]
+            public string ProviderName;
+            public System.Runtime.InteropServices.ComTypes.FILETIME DriverDate;
+            public uint DriverVersion;
+        }
+
+        [DllImport("setupapi.dll", CharSet = CharSet.Auto)]
+        public static extern IntPtr SetupDiGetClassDevs(
+            ref Guid ClassGuid,
+            string Enumerator,
+            IntPtr hwndParent,
+            int Flags
+        );
+
+        [DllImport("setupapi.dll", CharSet = CharSet.Auto)]
+        public static extern bool SetupDiEnumDeviceInfo(
+            IntPtr DeviceInfoSet,
+            int MemberIndex,
+            ref SP_DEVINFO_DATA DeviceInfoData
+        );
+
+        [DllImport("setupapi.dll", CharSet = CharSet.Auto)]
+        public static extern bool SetupDiGetDeviceRegistryProperty(
+            IntPtr DeviceInfoSet,
+            ref SP_DEVINFO_DATA DeviceInfoData,
+            int Property,
+            out int PropertyRegDataType,
+            IntPtr PropertyBuffer,
+            int PropertyBufferSize,
+            out int RequiredSize
+        );
+
+        [DllImport("setupapi.dll", SetLastError = true)]
+        public static extern bool SetupDiEnumDriverInfo(
+            IntPtr DeviceInfoSet,
+            SP_DEVINFO_DATA DeviceInfoData,
+            uint DriverType, uint MemberIndex,
+            SP_DRVINFO_DATA DriverInfoData
+        );
+
+
+        [DllImport("setupapi.dll")]
+        private static extern Boolean SetupDiDestroyDeviceInfoList(IntPtr DeviceInfoSet);
+
+        public const int SPDRP_DEVICEDESC = 0x00000000;
+        public const int SPDRP_DRIVER = 0x00000009;
+        public const int SPDRP_INSTALL_STATE = 0x00000022;  // Device Install State (R)
+        const int SPDRP_HARDWAREID = 0x00000001; // Hardware ID
+        const int SPDIT_COMPATDRIVER = 0x00000002; // Get driver information for compatible drivers.
+
+        [DllImport("setupapi.dll", SetLastError = true)]
+        public static extern bool SetupDiBuildDriverInfoList(
+            IntPtr DeviceInfoSet,
+            SP_DEVINFO_DATA DeviceInfoData,
+            uint DriverType
+        );
+
+        // P/Invoke declarations
+        [DllImport("setupapi.dll")]
+        public static extern int CM_Locate_DevNode(
+            out uint pdnDevInst,
+            string pDeviceID,
+            uint ulFlags
+        );
+
+        [DllImport("setupapi.dll")]
+        public static extern int CM_Get_DevNode_Status(
+            out uint pulStatus,
+            out uint pulProblemNumber,
+            int dnDevInst,
+            uint ulFlags
+        );
+
+
+        public static string GetDeviceName(IntPtr deviceInfoSet, SP_DEVINFO_DATA deviceInfoData)
+        {
+            int requiredSize = 0;
+            SetupDiGetDeviceRegistryProperty(deviceInfoSet, ref deviceInfoData, SPDRP_DEVICEDESC, out int regDataType, IntPtr.Zero, 0, out requiredSize);
+            if (requiredSize == 0)
+                return string.Empty;
+
+            IntPtr propertyBuffer = Marshal.AllocHGlobal(requiredSize);
+            if (SetupDiGetDeviceRegistryProperty(deviceInfoSet, ref deviceInfoData, SPDRP_DEVICEDESC, out regDataType, propertyBuffer, requiredSize, out requiredSize))
+            {
+                string deviceName = Marshal.PtrToStringAuto(propertyBuffer);
+                Marshal.FreeHGlobal(propertyBuffer);
+                return deviceName;
+            }
+
+            return string.Empty;
+        }
+
+        public static string GetDriverVersion(IntPtr deviceInfoSet, SP_DEVINFO_DATA deviceInfoData)
+        {
+            int requiredSize = 0;
+            SetupDiGetDeviceRegistryProperty(deviceInfoSet, ref deviceInfoData, SPDRP_DRIVER, out int regDataType, IntPtr.Zero, 0, out requiredSize);
+            if (requiredSize == 0)
+                return string.Empty;
+
+            IntPtr propertyBuffer = Marshal.AllocHGlobal(requiredSize);
+            if (SetupDiGetDeviceRegistryProperty(deviceInfoSet, ref deviceInfoData, SPDRP_DRIVER, out regDataType, propertyBuffer, requiredSize, out requiredSize))
+            {
+                string driverVersion = Marshal.PtrToStringAuto(propertyBuffer);
+                Marshal.FreeHGlobal(propertyBuffer);
+
+                // Specify the registry key path and value name you want to read.
+                string keyPath = @"HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Class\" + driverVersion;
+                string valueName = "DriverVersion";
+
+                // Use the Registry.GetValue method to read the registry value.
+                object value = Registry.GetValue(keyPath, valueName, null);
+
+                if (value != null)
+                {
+                    //Console.WriteLine($"Value of {valueName} in {keyPath}: {value}");
+                }
+                else
+                {
+                    Console.WriteLine($"Registry value {valueName} not found in {keyPath}");
+                }
+
+                return value.ToString();
+            }
+
+            return string.Empty;
+        }
+
+        public static string GetHardwareID(IntPtr deviceInfoSet, SP_DEVINFO_DATA deviceInfoData)
+        {
+            int requiredSize = 0;
+            SetupDiGetDeviceRegistryProperty(deviceInfoSet, ref deviceInfoData, SPDRP_HARDWAREID, out int regDataType, IntPtr.Zero, 0, out requiredSize);
+            if (requiredSize == 0)
+                return string.Empty;
+
+            IntPtr propertyBuffer = Marshal.AllocHGlobal(requiredSize);
+            if (SetupDiGetDeviceRegistryProperty(deviceInfoSet, ref deviceInfoData, SPDRP_HARDWAREID, out regDataType, propertyBuffer, requiredSize, out requiredSize))
+            {
+                string hardwareid = Marshal.PtrToStringAuto(propertyBuffer);
+                Marshal.FreeHGlobal(propertyBuffer);
+                return hardwareid;
+            }
+
+            return string.Empty;
+        }
+
+        public static string GetDevicesStatusAndProblemCode(IntPtr deviceInfoSet, SP_DEVINFO_DATA deviceInfoData)
+        {
+            // Find the device node for the specified hardware ID.
+            uint devInst = 0;
+
+            uint status = 0;
+            uint problemNumber = 0;
+
+            int result = CM_Locate_DevNode(out devInst, null, 0);
+
+            if (result == 0)
+            {
+                // Device node found, now get its status.
+
+                result = CM_Get_DevNode_Status(out status, out problemNumber, deviceInfoData.DevInst, 0);
+
+                if (result == 0)
+                {
+                    //Console.WriteLine("Device Status: " + status);
+                    //Console.WriteLine("Device Problem Code: " + problemNumber);
+                }
+                else
+                {
+                    Console.WriteLine("Failed to get device status.");
+                }
+                return problemNumber.ToString();
+            }
+            else
+            {
+                Console.WriteLine("Device not found or error locating the device node.");
+                return string.Empty;
+            }
+        }
+
+        static List<string> ReadInfFiles(string directoryPath)
+        {
+            List<string> infContents = new List<string>();
+
+            try
+            {
+                // Get a list of all .inf files in the specified directory
+                string[] infFiles = Directory.GetFiles(directoryPath, "*.inf");
+
+                // Loop through each .inf file and read its content
+                foreach (string infFile in infFiles)
+                {
+                    // Read the file line by line
+                    foreach (string line in File.ReadLines(infFile))
+                    {
+                        // Check if the line contains the target string
+                        if (line.Contains("DriverVer ="))
+                        {
+                            infContents.Add(line);
+                            break; // Optionally, break after the first match if needed
+                        }
+                    }
+
+                }
+            }
+            catch (Exception ex)
+            {
+                // Handle any exceptions (e.g., directory not found, permission issues)
+                Console.WriteLine($"An error occurred: {ex.Message}");
+            }
+
+            return infContents;
+        }
+
+        public static string GetCpuManufacturer()
+        {
+            try
+            {
+                using (RegistryKey registryKey = Registry.LocalMachine.OpenSubKey(@"HARDWARE\DESCRIPTION\System\CentralProcessor\0", RegistryKeyPermissionCheck.ReadSubTree))
+                {
+                    if (registryKey != null)
+                    {
+                        object value = registryKey.GetValue("ProcessorNameString");
+
+                        if (value != null)
+                        {
+                            string processorName = value.ToString();
+
+                            if (processorName.Contains("AMD"))
+                            {
+                                return "AMD";
+                            }
+                            else if (processorName.Contains("Intel"))
+                            {
+                                return "Intel";
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                // Handle any exceptions that may occur during registry access
+                Console.WriteLine("Error: " + ex.Message);
+            }
+
+            return "Unknown";
         }
     }
 }
