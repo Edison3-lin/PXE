@@ -1,6 +1,6 @@
-Function ftp($ftpurl,$username,$password,$do,$filename,$DownPatch) { 
-    # ftp 服务器地址，用户名，密码，操作（上传up/下载down/列表list），文件名，下载路径
-    # 示例：ftp ftp://10.10.98.91/ ftpuser shenzhen up C:\Windows\setupact.txt
+Function ftp($ftpurl,$do,$filename,$DownPath) { 
+    # ftp 伺服器位址，使用者名，密碼，操作（上傳up/下載down/清單list），檔案名，下載路徑
+    # 示例：ftp ftp://10.10.98.91/ up C:\Windows\setupact.txt
         if ($do -eq "up")
         {
             $fileinf=New-Object System.Io.FileInfo("$filename")
@@ -26,27 +26,43 @@ Function ftp($ftpurl,$username,$password,$do,$filename,$DownPatch) {
             $response = $downFTP.getresponse()
             $stream=$response.getresponsestream()
             $buffer = new-object System.Byte[] 2048
-            $outputStream=New-Object System.Io.FileStream("$DownPatch","Create")
+            $outputStream=New-Object System.Io.FileStream("$DownPath","Create")
             while(($readCount = $stream.Read($buffer, 0, 1024)) -gt 0){
                 $outputStream.Write($buffer, 0, $readCount)
             }
             $outputStream.Close()
             $stream.Close()
             $response.Close() 
-            if(Test-Path  $DownPatch){echo "DownLoad successful"}
+            if(Test-Path  $DownPath){echo "DownLoad successful"}
         }
         if ($do -eq "list")
         {
             $listFTP = [system.net.ftpwebrequest] [system.net.webrequest]::create("$ftpurl")
             $listFTP.Credentials = New-Object System.Net.NetworkCredential("$username","$password")
-            $listFTP.Method=[system.net.WebRequestMethods+ftp]::listdirectorydetails
+            # $listFTP.Method=[system.net.WebRequestMethods+ftp]::listdirectorydetails
+            $listFTP.Method=[system.net.WebRequestMethods+ftp]::listdirectory
             $response = $listFTP.getresponse()
             $stream = New-Object System.Io.StreamReader($response.getresponsestream(),[System.Text.Encoding]::UTF8)
+            $files = @()
             while(-not $stream.EndOfStream){
-                $stream.ReadLine()
+                $files += $stream.ReadLine()
             }
             $stream.Close()
             $response.Close()     
+            return $files
         }
     }
-    ftp "ftp://127.0.0.1:21/" "sit001" "sit1234" down "Test_Item/TestCase.exe" "C:\TestManager\TestCase.exe" 
+
+    $configPath = ".\Server.json"
+    $config = Get-Content -Raw -Path $configPath | ConvertFrom-Json
+    $ftpServer    = $config.ftpServer
+    $username  = $config.username
+    $password  = $config.password
+
+    # ftp $ftpServer down "/Test_Item/TestCase.exe" "C:\TestManager\TestCase.exe" 
+    $f = ftp "$ftpServer/Test_Item/" list 
+
+    Write-Host $f
+
+
+
