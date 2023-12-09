@@ -1,6 +1,6 @@
 {
-  "TCM_ID": 7,
-  "TR_ID": 7,
+  "TCM_ID": 2,
+  "TR_ID": 2,
   "TestResult": "Fail",
   "TestStatus": "pxe boot",
   "Test_TimeOut": 10,
@@ -18,6 +18,8 @@
     }
   ],
   "Text_Log_File_Path": [
+    "c:\\TestManager\\ItemDownload\\Abst64.exe",
+    "c:\\TestManager\\ItemDownload\\CheckDeviceInfoByCS.exe",
     ".\\MyLog\\TestManager.log",
     ".\\TestLog\\Common.log"
   ],
