@@ -109,14 +109,14 @@ namespace TM1002
                 {
                     using (FileStream fs = File.Create(TMLOG));
                 }
-                else
-                {
-                    // Clear TMLOG content
-                    using (FileStream fs = new FileStream(TMLOG, FileMode.OpenOrCreate, FileAccess.ReadWrite))
-                    {
-                        fs.SetLength(0);
-                    }                    
-                }
+                // else
+                // {
+                //     // Clear TMLOG content
+                //     using (FileStream fs = new FileStream(TMLOG, FileMode.OpenOrCreate, FileAccess.ReadWrite))
+                //     {
+                //         fs.SetLength(0);
+                //     }                    
+                // }
             }
             catch (Exception ex)
             {
@@ -293,7 +293,7 @@ namespace TM1002
             }
             catch (System.IO.FileNotFoundException)
             {
-                ProcessLog("!!! 找不到 Common.dll");
+                ProcessLog("!!! Can't find out Common.dll");
                 return false;
             }
 

@@ -19,3 +19,78 @@
 正在移除 EventLog 來源 TMservice。
 已從系統中移除服務 TMservice...
 已經成功從系統移除服務 TMservice。
+正在安裝組件 'c:\TestManager\TMservice.exe'。
+受影響的參數為:
+   logtoconsole = 
+   logfile = c:\TestManager\TMservice.InstallLog
+   assemblypath = c:\TestManager\TMservice.exe
+正在安裝服務 TMservice...
+已經成功安裝服務 TMservice。
+正在記錄檔 Application 中建立 EventLog 來源 TMservice...
+正在認可組件 'c:\TestManager\TMservice.exe'。
+受影響的參數為:
+   logtoconsole = 
+   logfile = c:\TestManager\TMservice.InstallLog
+   assemblypath = c:\TestManager\TMservice.exe
+正在解除安裝組件 'c:\TestManager\TMservice.exe'。
+受影響的參數為:
+   logtoconsole = 
+   logfile = c:\TestManager\TMservice.InstallLog
+   assemblypath = c:\TestManager\TMservice.exe
+正在移除 EventLog 來源 TMservice。
+已從系統中移除服務 TMservice...
+已經成功從系統移除服務 TMservice。
+嘗試停止服務 TMservice。
+正在解除安裝組件 'c:\TestManager\TMservice.exe'。
+受影響的參數為:
+   logtoconsole = 
+   logfile = c:\TestManager\TMservice.InstallLog
+   assemblypath = c:\TestManager\TMservice.exe
+正在移除 EventLog 來源 TMservice。
+警告: 來源 TMservice 未於本機電腦上註冊。
+已從系統中移除服務 TMservice...
+已經成功從系統移除服務 TMservice。
+嘗試停止服務 TMservice。
+正在安裝組件 'c:\TestManager\TMservice.exe'。
+受影響的參數為:
+   logtoconsole = 
+   logfile = c:\TestManager\TMservice.InstallLog
+   assemblypath = c:\TestManager\TMservice.exe
+正在安裝服務 TMservice...
+已經成功安裝服務 TMservice。
+正在記錄檔 Application 中建立 EventLog 來源 TMservice...
+正在認可組件 'c:\TestManager\TMservice.exe'。
+受影響的參數為:
+   logtoconsole = 
+   logfile = c:\TestManager\TMservice.InstallLog
+   assemblypath = c:\TestManager\TMservice.exe
+正在解除安裝組件 'c:\TestManager\TMservice.exe'。
+受影響的參數為:
+   logtoconsole = 
+   logfile = c:\TestManager\TMservice.InstallLog
+   assemblypath = c:\TestManager\TMservice.exe
+正在移除 EventLog 來源 TMservice。
+已從系統中移除服務 TMservice...
+已經成功從系統移除服務 TMservice。
+正在安裝組件 'c:\TestManager\TMservice.exe'。
+受影響的參數為:
+   logtoconsole = 
+   logfile = c:\TestManager\TMservice.InstallLog
+   assemblypath = c:\TestManager\TMservice.exe
+正在安裝服務 TMservice...
+已經成功安裝服務 TMservice。
+正在記錄檔 Application 中建立 EventLog 來源 TMservice...
+正在認可組件 'c:\TestManager\TMservice.exe'。
+受影響的參數為:
+   logtoconsole = 
+   logfile = c:\TestManager\TMservice.InstallLog
+   assemblypath = c:\TestManager\TMservice.exe
+正在解除安裝組件 'c:\TestManager\TMservice.exe'。
+受影響的參數為:
+   logtoconsole = 
+   logfile = c:\TestManager\TMservice.InstallLog
+   assemblypath = c:\TestManager\TMservice.exe
+正在移除 EventLog 來源 TMservice。
+已從系統中移除服務 TMservice...
+已經成功從系統移除服務 TMservice。
+嘗試停止服務 TMservice。

@@ -8,108 +8,84 @@ using System.Threading.Tasks;
 
 namespace Common
 {
-    public class Runnner
-    {
-        //private static string test_dll_folder;
-
-        public void SetTestDllFolder(string folder)
-        {
-            // Runnner.test_dll_folder = folder;
-        }
-
-        /*
-         * DllName: the unique file name (without '.dll') of the test dll. For example: MyTestItem_1
-         * 
-         */
-        public static bool RunTestItem(string dllPath, object[] S, object[] R, object[] U, object[] T )
-        {
+    public class Runnner {
+        public static bool RunTestItem(string dllPath, object[] S, object[] R, object[] U, object[] T ) {
             Assembly myDll = Assembly.LoadFile(dllPath);
             var myTest=myDll.GetTypes().First(m=>!m.IsAbstract && m.IsClass);
             object myObj = myDll.CreateInstance(myTest.FullName);
             object myResult = null;
 
-            try
-            {
-                Testflow.General.WriteLog("Common", "Invoke "+dllPath+".Setup()" );
+            try {
+                Testflow.General.WriteLog("Common", dllPath+".Setup()" );
                 myTest.GetMethod("Setup").Invoke(myObj, S);            
             }
-            catch (Exception ex)
-            {
+            catch (Exception ex) {
                 Testflow.General.WriteLog("Common", "Setup() Error!!! " + ex.Message);
             }  
 
-            try
-            {
-                Testflow.General.WriteLog("Common", "Invoke "+dllPath+".Run()" );
+            try {
+                Testflow.General.WriteLog("Common", dllPath+".Run()" );
                 myResult = myTest.GetMethod("Run").Invoke(myObj, R);            
             }
-            catch (Exception ex)
-            {
+            catch (Exception ex) {
                 Testflow.General.WriteLog("Common", "Run() Error!!! " + ex.Message);
             }   
 
-            try
-            {
-                Testflow.General.WriteLog("Common", "Invoke "+dllPath+".UpdateResults()" );
+            try {
+                Testflow.General.WriteLog("Common", dllPath+".UpdateResults()" );
                 myTest.GetMethod("UpdateResults").Invoke(myObj, U);            
             }
-            catch (Exception ex)
-            {
+            catch (Exception ex) {
                 Testflow.General.WriteLog("Common", "UpdateResults() Error!!! " + ex.Message);
             }   
 
-            try
-            {
+            try {
                Testflow.General.WriteLog("Common", "Invoke "+dllPath+".TearDown()" );
                myTest.GetMethod("TearDown").Invoke(myObj, T);   
             }   
-            catch (Exception ex)
-            {
+            catch (Exception ex) {
                 Testflow.General.WriteLog("Common", "TearDown() Error!!! " + ex.Message);
             }   
 
-            if(myResult.ToString() == "True") return true;
-            else return false;
+            if(myResult.ToString() == "True") 
+                return true;
+            else 
+                return false;
         }
     }
     public class Testflow
     {
-        public static int Setup(string DllName)
+        private const string TMDIRECTORY = "C:\\TestManager\\";
+        private const string TESTLOGDIRECTORY = "C:\\TestManager\\TestLog\\";
+
+        public static void Setup(string logFileName)
         {
-            General.WriteLog(DllName, "Testflow::Setup");
-            return 90;
+            General.WriteLog(logFileName, $"General.WriteLog({logFileName}, \"Setup\");");
         }
-        public static int Run(string DllName)
+        public static void Run(string logFileName)
         {
-            General.WriteLog(DllName, "Testflow::Run");
-            return 90;
+            General.WriteLog(logFileName, $"General.WriteLog({logFileName}, \"Run\");");
         }
 
-        public static int UpdateResults(string DllName, bool passFail)
+        public static void UpdateResults(string logFileName, bool passFail)
         {
-            General.WriteLog(DllName, "Testflow::UpdateResults");
-            return 90;
+            General.WriteLog(logFileName, $"General.WriteLog({logFileName}, \"UpdateResults\");");
         }
 
-        public static int TearDown(string DllName)
+        public static void TearDown(string logFileName)
         {
-            General.WriteLog(DllName, "Testflow::TearDown");
-            return 90;
+            General.WriteLog(logFileName, $"General.WriteLog({logFileName}, \"TearDown\");");
         }
 
         public class General
         {
-            private static string currentDirectory = Directory.GetCurrentDirectory() + '\\';
-            // private static string MyLog = currentDirectory+"MyLog\\";
-            private static string TestLog = currentDirectory+"TestLog\\";
-
-            public static int WriteLog(string DllName, string content)
+            public static void WriteLog(string logFileName, string content)
             {
-                string log_file = TestLog+DllName+".log";
+                string LogFile = TESTLOGDIRECTORY+logFileName+".log";
                 try
                 {
-                    // 使用 StreamWriter 打開檔案並appand內容
-                    using (StreamWriter writer = new StreamWriter(log_file, true))
+                    // appand content
+                    using (StreamWriter writer = new StreamWriter(LogFile, true))
                     {
                         writer.Write("["+DateTime.Now.ToString()+"] "+content+'\n');
                     }
@@ -120,7 +96,6 @@ namespace Common
                     Console.WriteLine("WriteLog Error!!! " + ex.Message);
                 }
             
-                return 0;
             }
         }
     }

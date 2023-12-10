@@ -16,13 +16,13 @@ namespace MyTestAll
  
        public int Setup()
         {
-            // common.Setup
+            Testflow.General.WriteLog("MyTestAll", "Setup MyTestAll.dll...");
             return 0;
         }
 
         public int Run()
         {
-            Testflow.Run("TEST");
+            Testflow.General.WriteLog("MyTestAll", "Start MyTestAll.dll...");
             DllIndex = 0;
 
             //********* SIT 依序填寫執行的DLL的項目 /Start/
@@ -35,18 +35,21 @@ namespace MyTestAll
             Execute_dll("MyParameter.dll",  new object[] { 22, "G2" }, new object[] { 20, 20, "Edison" }, new object[]{"Hello! ", 77}, new object[]{'c', "==== tear down 結束 ===="});
             //********* SIT 依序填寫執行的DLL的項目 /End/
 
+            Testflow.General.WriteLog("MyTestAll", "Finish MyTestAll.dll...");
+
             HadRun("_kIll_");
             return 0;
         }
 
         public int UpdateResults()
         {
-
+            Testflow.General.WriteLog("MyTestAll", "UpdateResults MyTestAll.dll...");
             return 0;
         }
 
         public int TearDown()
         {
+            Testflow.General.WriteLog("MyTestAll", "TearDown MyTestAll.dll...");
             return 0;
         }
 

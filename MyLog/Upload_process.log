@@ -1,7 +1,11 @@
-[2023-12-10 15:20:32]  to ftp://127.0.0.1:21/Test_Log/2AE5ACBD-9082-8444-8DDE-85B3FEFC7BD9/2/2/Abst64.exe
-[2023-12-10 15:20:32] <c:\TestManager\ItemDownload\Abst64.exe> upload to ftp://127.0.0.1:21/Test_Log/2AE5ACBD-9082-8444-8DDE-85B3FEFC7BD9/2/2/Abst64.exe
-[2023-12-10 15:20:32]  to ftp://127.0.0.1:21/Test_Log/2AE5ACBD-9082-8444-8DDE-85B3FEFC7BD9/2/2/TestManager.log
-[2023-12-10 15:20:32] <c:\TestManager\MyLog\TestManager.log> upload to ftp://127.0.0.1:21/Test_Log/2AE5ACBD-9082-8444-8DDE-85B3FEFC7BD9/2/2/TestManager.log
-[2023-12-10 15:20:32]  to ftp://127.0.0.1:21/Test_Log/2AE5ACBD-9082-8444-8DDE-85B3FEFC7BD9/2/2/Common.log
-[2023-12-10 15:20:32] <c:\TestManager\TestLog\Common.log> upload to ftp://127.0.0.1:21/Test_Log/2AE5ACBD-9082-8444-8DDE-85B3FEFC7BD9/2/2/Common.log
-[2023-12-10 15:20:32] ======Upload finished======
+[2023-12-10 17:42:05]  to ftp://127.0.0.1:21/Test_Log/2AE5ACBD-9082-8444-8DDE-85B3FEFC7BD9/2/2/Abst64.exe
+[2023-12-10 17:42:05] <c:\TestManager\ItemDownload\Abst64.exe> upload to ftp://127.0.0.1:21/Test_Log/2AE5ACBD-9082-8444-8DDE-85B3FEFC7BD9/2/2/Abst64.exe
+[2023-12-10 17:42:05]  to ftp://127.0.0.1:21/Test_Log/2AE5ACBD-9082-8444-8DDE-85B3FEFC7BD9/2/2/TestManager.log
+[2023-12-10 17:42:05] <c:\TestManager\MyLog\TestManager.log> upload to ftp://127.0.0.1:21/Test_Log/2AE5ACBD-9082-8444-8DDE-85B3FEFC7BD9/2/2/TestManager.log
+[2023-12-10 17:42:05]  to ftp://127.0.0.1:21/Test_Log/2AE5ACBD-9082-8444-8DDE-85B3FEFC7BD9/2/2/Common.log
+[2023-12-10 17:42:05] <c:\TestManager\TestLog\Common.log> upload to ftp://127.0.0.1:21/Test_Log/2AE5ACBD-9082-8444-8DDE-85B3FEFC7BD9/2/2/Common.log
+[2023-12-10 17:42:05] ======Upload finished======
+[2023-12-10 17:49:17]  to ftp://127.0.0.1:21/Test_Log/2AE5ACBD-9082-8444-8DDE-85B3FEFC7BD9/2/2/
+[2023-12-10 17:49:17] ERROR!!! <c:\TestManager\ItemDownload\Abst64.exe> upload failed !!!
+[2023-12-10 17:51:24]  to ftp://127.0.0.1:21/Test_Log/2AE5ACBD-9082-8444-8DDE-85B3FEFC7BD9/2/2/
+[2023-12-10 17:51:24] ERROR!!! <c:\TestManager\ItemDownload\Abst64.exe> upload failed !!!

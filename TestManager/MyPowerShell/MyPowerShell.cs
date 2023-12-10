@@ -17,14 +17,16 @@ namespace MyPowerShell
 
         public int Setup()
         {
-            // common.Setup
-            Testflow.Setup(DllName);
+            Testflow.General.WriteLog("MyPowershell", "Setup MyPowershell.dll...");
 
             return 21;
         }
 
         public int Run()
         {
+
+            Testflow.General.WriteLog("MyPowershell", "Start MyPowershell.dll...");
+
             try
             {
              Runspace runspace = RunspaceFactory.CreateRunspace();
@@ -39,20 +41,20 @@ namespace MyPowerShell
                 Console.WriteLine("Error!!! " + ex.Message);
             }
 
-            // common.Setup
-            Testflow.Run("MyPowerShell");
+            Testflow.General.WriteLog("MyPowershell", "End MyPowershell.dll...");
+
             return 22;
         }
 
         public int UpdateResults()
         {
-            Testflow.UpdateResults(DllName, true);
+            Testflow.General.WriteLog("MyPowershell", "UpdateResults MyPowershell.dll...");
             return 23;
         }
 
         public int TearDown()
         {
-            Testflow.TearDown(DllName);
+            Testflow.General.WriteLog("MyPowershell", "TearDown MyPowershell.dll...");
             return 24;
         }
 
