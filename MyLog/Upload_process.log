@@ -1,10 +1,7 @@
-[2023-12-07 15:02:22] .\MyLog\TestManager.log to ftp://127.0.0.1:21/Test_Log/96D4AD84-158A-7144-AA29-C01850D3E814/7/7/TestManager.log
-[2023-12-07 15:02:22] <C:\TestManager\MyLog\TestManager.log> upload to 
-[2023-12-07 15:02:22] .\TestLog\Common.log to ftp://127.0.0.1:21/Test_Log/96D4AD84-158A-7144-AA29-C01850D3E814/7/7/Common.log
-[2023-12-07 15:02:22] <C:\TestManager\TestLog\Common.log> upload to 
-[2023-12-07 15:02:22] ======Upload finished======
-[2023-12-07 15:07:18] .\MyLog\TestManager.log to ftp://127.0.0.1:21/Test_Log/96D4AD84-158A-7144-AA29-C01850D3E814/7/7/TestManager.log
-[2023-12-07 15:07:18] <C:\TestManager\MyLog\TestManager.log> upload to 
-[2023-12-07 15:07:18] .\TestLog\Common.log to ftp://127.0.0.1:21/Test_Log/96D4AD84-158A-7144-AA29-C01850D3E814/7/7/Common.log
-[2023-12-07 15:07:18] <C:\TestManager\TestLog\Common.log> upload to 
-[2023-12-07 15:07:18] ======Upload finished======
+[2023-12-10 15:20:32]  to ftp://127.0.0.1:21/Test_Log/2AE5ACBD-9082-8444-8DDE-85B3FEFC7BD9/2/2/Abst64.exe
+[2023-12-10 15:20:32] <c:\TestManager\ItemDownload\Abst64.exe> upload to ftp://127.0.0.1:21/Test_Log/2AE5ACBD-9082-8444-8DDE-85B3FEFC7BD9/2/2/Abst64.exe
+[2023-12-10 15:20:32]  to ftp://127.0.0.1:21/Test_Log/2AE5ACBD-9082-8444-8DDE-85B3FEFC7BD9/2/2/TestManager.log
+[2023-12-10 15:20:32] <c:\TestManager\MyLog\TestManager.log> upload to ftp://127.0.0.1:21/Test_Log/2AE5ACBD-9082-8444-8DDE-85B3FEFC7BD9/2/2/TestManager.log
+[2023-12-10 15:20:32]  to ftp://127.0.0.1:21/Test_Log/2AE5ACBD-9082-8444-8DDE-85B3FEFC7BD9/2/2/Common.log
+[2023-12-10 15:20:32] <c:\TestManager\TestLog\Common.log> upload to ftp://127.0.0.1:21/Test_Log/2AE5ACBD-9082-8444-8DDE-85B3FEFC7BD9/2/2/Common.log
+[2023-12-10 15:20:32] ======Upload finished======

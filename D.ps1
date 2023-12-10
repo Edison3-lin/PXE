@@ -1,7 +1,4 @@
-. .\FTP.ps1
-. .\LOG.ps1
-. .\JSON.ps1
-. .\DATABASE.ps1
+. .\FunAll.ps1
 
     $UUID = Get-WmiObject Win32_ComputerSystemProduct | Select-Object -ExpandProperty UUID 
 
@@ -46,7 +43,7 @@
         set    TR_Test_Result   = '$TestResult',
                TR_Excute_Status = '$TestStatus' ,
                TR_TestEndTime   = SYSDATETIME()
-        where  TR_ID = 3
+        where  TR_ID = 4
     "
     
     $dataSet = DATABASE "update" $MySqlCmd2

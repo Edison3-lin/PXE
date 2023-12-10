@@ -1,6 +1,4 @@
-. .\FTP.ps1
-. .\LOG.ps1
-. .\JSON.ps1
+. .\FunAll.ps1
 
     ### Create log file ###
     $file = Get-Item $PSCommandPath
@@ -10,9 +8,14 @@
     $logfile = $Directory+'\'+$baseName+"_process.log"
     $outputfile = $Directory+'\'+$baseName+'_result.log'
 
+    # if (Test-Path -Path $args[1] -PathType Container) {
+    #     process_log "ERROR!!! <$($args[1])> not a directory !!!"
+    #     return 0
+    # }    
+
     ### Download files ###
     # $detailsList = ftp "$ftpServer/Test_Item/" list 
-    $detailsList = FTP "$ftpServer/$($args[0])" list 
+    $detailsList = FTP "$ftpServer$($args[0])" list 
 
     # Distinguish between files and directories
     foreach ($details in $detailsList) {
@@ -25,8 +28,14 @@
         if ($permissions -like "d*") {
             process_log "Directory: $name"
         } else {
-            process_log "$ftpServer/$($args[0])/$name -> $($args[1])\$name"
-            FTP "$ftpServer/$($args[0])/$name" down "$($args[1])\$name"
+            try {
+                process_log "$ftpServer$($args[0])$name -> $($args[1])$name"
+                FTP "$ftpServer$($args[0])$name" down "$($args[1])$name"
+            }
+            catch {
+                process_log "ERROR!!! <$name> download failed !!!"
+            }
+
         }
     }
 

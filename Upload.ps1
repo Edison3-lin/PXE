@@ -1,6 +1,4 @@
-. .\FTP.ps1
-. .\LOG.ps1
-. .\JSON.ps1
+. .\FunAll.ps1
 
     $file = Get-Item $PSCommandPath
     $Directory = Split-Path -Path $PSCommandPath -Parent
@@ -14,27 +12,21 @@
     $UUID = Get-WmiObject Win32_ComputerSystemProduct | Select-Object -ExpandProperty UUID 
     $remoteFilePath = "/Test_Log/$UUID/$TCM_ID/$TR_ID/"
 
-    # Create a WebClient object and set credentials
-    $webClient = New-Object System.Net.WebClient
-    $webClient.Credentials = New-Object System.Net.NetworkCredential($username, $password)
-
     foreach ($log in $Text_Log_File_Path) {
         $f = Get-Item $log
         $file = $f.Name
-        $sourceFilePath = $log
         $destinationFilePath = $remoteFilePath+$file
         try {
             process_log "$sourceFilePath to $ftpServer$destinationFilePath"
-            $webClient.UploadFile("$ftpServer$destinationFilePath", $sourceFilePath)
+            FTP "$ftpServer$destinationFilePath" up "$log"
         }
         catch {
-            process_log "!!!<$f>: $($_.Exception.Message)"
+            process_log "ERROR!!! <$log> upload failed !!!"
+            return $false
         }
-        process_log "<$f> upload to $localFilePath"
+        process_log "<$log> upload to $ftpServer$destinationFilePath"
     }
 
     process_log  "======Upload finished======"
-    # Release WebClient
-    $webClient.Dispose()
 
-return 0
+return $true

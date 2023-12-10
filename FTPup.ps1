@@ -1,6 +1,4 @@
-. .\FTP.ps1
-. .\LOG.ps1
-. .\JSON.ps1
+. .\FunAll.ps1
 
     ### Create log file ###
     $file = Get-Item $PSCommandPath
@@ -18,7 +16,12 @@
         if ($file.PSIsContainer) {
             process_log "Directory: $($file.FullName)"
         } else {
-            process_log "$($args[1])\$file -> $ftpServer/$($args[0])/$file"
-            FTP "$ftpServer/$($args[0])/$file" up "$($args[1])\$file"
+            process_log "$($args[1])$file -> $ftpServer$($args[0])$file"
+            try {
+                FTP "$ftpServer$($args[0])$file" up "$($args[1])$file"
+            }
+            catch {
+                process_log "ERROR!!! <$file> upload failed !!!"
+            }
         }
     }

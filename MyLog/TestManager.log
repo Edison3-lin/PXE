@@ -1,16 +1,32 @@
-[2023/12/7 PM 03:11:22] <<Step 1>> Got Job then downloading
-[2023/12/7 PM 03:11:22] <<Step 2>> Executing C:\TestManager\ItemDownload\common_bios_pxeboot_default.dll
-[2023/12/7 PM 03:11:22] .... Loading Common.dll ....
-[2023/12/7 PM 03:11:22] .... Loading C:\TestManager\ItemDownload\common_bios_pxeboot_default.dll ....
-[2023/12/7 PM 03:12:37] <<Step 1>> Got Job then downloading
-[2023/12/7 PM 03:12:37] <<Step 2>> Executing C:\TestManager\ItemDownload\common_bios_pxeboot_default.dll
-[2023/12/7 PM 03:12:37] .... Loading Common.dll ....
-[2023/12/7 PM 03:12:37] .... Loading C:\TestManager\ItemDownload\common_bios_pxeboot_default.dll ....
-[2023/12/7 PM 03:16:46] <<Step 1>> Got Job then downloading
-[2023/12/7 PM 03:16:46] <<Step 2>> Executing C:\TestManager\ItemDownload\common_bios_pxeboot_default.dll
-[2023/12/7 PM 03:16:46] .... Loading Common.dll ....
-[2023/12/7 PM 03:16:46] .... Loading C:\TestManager\ItemDownload\common_bios_pxeboot_default.dll ....
-[2023/12/7 PM 03:31:04] <<Step 1>> Got Job then downloading
-[2023/12/7 PM 03:31:05] <<Step 2>> Executing C:\TestManager\ItemDownload\common_bios_pxeboot_default.dll
-[2023/12/7 PM 03:31:05] .... Loading Common.dll ....
-[2023/12/7 PM 03:31:05] .... Loading C:\TestManager\ItemDownload\common_bios_pxeboot_default.dll ....
+[2023/12/10 下午 03:16:22] <<Step 1>> Got Job then downloading
+[2023/12/10 下午 03:16:22] <<Step 2>> Executing C:\TestManager\ItemDownload\Test_Collection.dll
+[2023/12/10 下午 03:16:22] .... Loading Common.dll ....
+[2023/12/10 下午 03:16:22] .... Loading C:\TestManager\ItemDownload\Test_Collection.dll ....
+[2023/12/10 下午 03:16:22] Run test Error!!! 引動過程的目標傳回例外狀況。
+[2023/12/10 下午 03:16:22] <<Step 3>>  update test status to DB 
+[2023/12/10 下午 03:16:23] <<Step 4>>  upload log to FTP:  Test_Collection.dll
+[2023/12/10 下午 03:16:23] <<Step 5>>  Keep listening job status
+[2023/12/10 下午 03:16:23] 執行花費時間: 0分鐘 1秒
+[2023/12/10 下午 03:16:23] =================Completed================
+[2023/12/10 下午 03:17:12] <<Step 1>> Got Job then downloading
+[2023/12/10 下午 03:17:12] <<Step 2>> Executing C:\TestManager\ItemDownload\Test_Collection.dll
+[2023/12/10 下午 03:17:12] .... Loading Common.dll ....
+[2023/12/10 下午 03:17:12] .... Loading C:\TestManager\ItemDownload\Test_Collection.dll ....
+[2023/12/10 下午 03:17:12] Run test Error!!! 引動過程的目標傳回例外狀況。
+[2023/12/10 下午 03:17:12] <<Step 3>>  update test status to DB 
+[2023/12/10 下午 03:17:13] <<Step 4>>  upload log to FTP:  Test_Collection.dll
+[2023/12/10 下午 03:17:13] <<Step 5>>  Keep listening job status
+[2023/12/10 下午 03:17:13] 執行花費時間: 0分鐘 1秒
+[2023/12/10 下午 03:17:13] =================Completed================
+[2023/12/10 下午 03:20:18] **** Exit ****
+[2023/12/10 下午 03:20:30] <<Step 1>> Got Job then downloading
+[2023/12/10 下午 03:20:31] <<Step 2>> Executing C:\TestManager\ItemDownload\Test_Collection.dll
+[2023/12/10 下午 03:20:31] .... Loading Common.dll ....
+[2023/12/10 下午 03:20:31] .... Loading C:\TestManager\ItemDownload\Test_Collection.dll ....
+[2023/12/10 下午 03:20:31] Run test Error!!! 引動過程的目標傳回例外狀況。
+[2023/12/10 下午 03:20:31] <<Step 3>>  update test status to DB 
+[2023/12/10 下午 03:20:32] <<Step 4>>  upload log to FTP:  Test_Collection.dll
+[2023/12/10 下午 03:20:32] <<Step 5>>  Keep listening job status
+[2023/12/10 下午 03:20:32] 執行花費時間: 0分鐘 1秒
+[2023/12/10 下午 03:20:32] =================Completed================
+[2023/12/10 下午 03:21:22] **** Exit ****

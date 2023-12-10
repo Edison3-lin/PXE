@@ -1,7 +1,4 @@
-. .\FTP.ps1
-. .\LOG.ps1
-. .\JSON.ps1
-
+. .\FunAll.ps1
 
     ### Create log file ###
     $file = Get-Item $PSCommandPath
@@ -11,40 +8,10 @@
     $logfile = $Directory+'\'+$baseName+"_process.log"
     $outputfile = $Directory+'\'+$baseName+'_result.log'
 
-    #Build connect object
-    $SqlConn = New-Object System.Data.SqlClient.SqlConnection
-    $SqlConn.ConnectionString = "Data Source=$DBserver;Initial Catalog=$Database;user id=$DBuserName;pwd=$DBpassword"
- 
-    # Try to open the connection, wait up to 30 seconds
-    $timeout = 30
-    $timer = [System.Diagnostics.Stopwatch]::StartNew()
-
-    while ($SqlConn.State -ne 'Open' -and $timer.Elapsed.TotalSeconds -lt $timeout) {
-        try {
-            # Open connection
-            $SqlConn.Open()
-            Start-Sleep -Seconds 1
-        } catch {
-            # If the connection fails to open, catch the exception and continue waiting.
-            # process_log "Error opening connection: $_"
-        }
-    }
-
-    $timer.Stop()
-
-    # Check connection status
-    if ($SqlConn.State -ne 'Open') {
-        process_log "SqlConn.State = $($SqlConn.State) timeout."
-        return "Unconnected_"
-    }
-
-    $SqlCmd = New-Object System.Data.SqlClient.SqlCommand
-    $SqlCmd.connection = $SqlConn
-
     $UUID = Get-WmiObject Win32_ComputerSystemProduct | Select-Object -ExpandProperty UUID 
-    $programs = $NULL
+    $ExecuteDll = $NULL
 
-    $sqlCmd.CommandText = "
+    $MySqlCmd = "
             select 
                 TCM.TCM_ID,
                 TCM.TCM_Status,
@@ -71,10 +38,7 @@
                 and TAC.TAC_Table_Index is not null
         "
 
-    $adapter = New-Object System.Data.SqlClient.SqlDataAdapter $sqlCmd
-    $dataset = New-Object System.Data.DataSet
-    $NULL = $adapter.Fill($dataSet)
-
+    $dataSet = DATABASE "read" $MySqlCmd
     for ($i=0; $i -lt $dataSet.Tables[0].Rows.Count; $i++)
     {
         $TCM_ID = ($dataSet.Tables[0].Rows[$i][0])
@@ -86,10 +50,8 @@
         $updatedJson = $TRconfig | ConvertTo-Json -Depth 10
         $updatedJson | Set-Content -Path $TRPath
 
-        # $TCM_Status = $dataSet.Tables[0].Rows[$i][1]
-        $programs = "common_bios_pxeboot_default.dll"
+        $ExecuteDll = "common_bios_pxeboot_default.dll"
 
-        # $TR_Excute_Status = $NULL
         # First time PXE boot (NULL)
         if ( '' -eq $TCM_Status )
         {
@@ -97,7 +59,7 @@
             $updatedJson = $TRconfig | ConvertTo-Json -Depth 10
             $updatedJson | Set-Content -Path $TRPath
 
-            $sqlCmd.CommandText = "
+            $MySqlCmd = "
                     update Test_Result 
                     set    TR_Excute_Status = 'Running'
                     where  TR_ID = '$TR_ID'
@@ -106,7 +68,7 @@
                     set    TCM_Status = 'Running'
                     where  TCM_ID = '$TCM_ID'
                 "
-            $NULL = $SqlCmd.executenonquery()
+            DATABASE "update" $MySqlCmd    
         }
         # Not the first time PXE (Running)
         elseif ( $TR_Excute_Status -eq "Running" ) 
@@ -120,35 +82,32 @@
             # image patch write "Done" to TR_Resulte.json
             if( $TRconfig.TestStatus -eq "DONE" )
             {
-                $sqlCmd.CommandText = "
+                $MySqlCmd = "
                         update Test_Result 
                         set    TR_Excute_Status = 'DONE',
                                TR_Test_Result = 'Pass'
                         where  TR_ID = '$TR_ID'
                     "
-                $NULL = $SqlCmd.executenonquery()
+                DATABASE "update" $MySqlCmd    
                 $TRconfig.TestResult = "Pass"
             }
             else 
             {
                 # 'Image Flash' not finish
-                $sqlCmd.CommandText = "
+                $MySqlCmd = "
                         update Test_Result 
                         set    TR_Excute_Status = 'DONE',
                                TR_Test_Result = 'Fail'
                         where  TR_ID = '$TR_ID'
                     "
-                $NULL = $SqlCmd.executenonquery()
+                DATABASE "update" $MySqlCmd    
                 $TRconfig.TestResult = "Fail"
             }  
             $TRconfig.TestStatus = "DONE"
             $updatedJson = $TRconfig | ConvertTo-Json -Depth 10
             $updatedJson | Set-Content -Path $TRPath
-            $programs = $NULL
+            $ExecuteDll = $NULL
         }
     }
 
-    #Close Database
-    $SqlConn.close()
-
-    return $programs
+return $ExecuteDll

@@ -1,7 +1,4 @@
-. .\FTP.ps1
-. .\LOG.ps1
-. .\JSON.ps1
-. .\DATABASE.ps1
+. .\FunAll.ps1
 
     ### Create log file ###
     $file = Get-Item $PSCommandPath

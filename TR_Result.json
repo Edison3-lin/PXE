@@ -1,8 +1,8 @@
 {
   "TCM_ID": 2,
   "TR_ID": 2,
-  "TestResult": "sss",
-  "TestStatus": "555",
+  "TestResult": "Pass",
+  "TestStatus": "New",
   "Test_TimeOut": 10,
   "TestFail_Dercription": "",
   "PrintLog": [
@@ -19,9 +19,8 @@
   ],
   "Text_Log_File_Path": [
     "c:\\TestManager\\ItemDownload\\Abst64.exe",
-    "c:\\TestManager\\ItemDownload\\CheckDeviceInfoByCS.exe",
-    ".\\MyLog\\TestManager.log",
-    ".\\TestLog\\Common.log"
+    "c:\\TestManager\\MyLog\\TestManager.log",
+    "c:\\TestManager\\TestLog\\Common.log"
   ],
   "Image_Log_File_Path": [
     "D:\\Windows_Captain\\AP_Testing\\test1.png",
