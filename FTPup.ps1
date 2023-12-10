@@ -19,6 +19,6 @@
             process_log "Directory: $($file.FullName)"
         } else {
             process_log "$($args[1])\$file -> $ftpServer/$($args[0])/$file"
-            ftp "$ftpServer/$($args[0])/$file" up "$($args[1])\$file"
+            FTP "$ftpServer/$($args[0])/$file" up "$($args[1])\$file"
         }
     }

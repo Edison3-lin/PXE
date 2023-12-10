@@ -1,4 +1,4 @@
-Function ftp($ftpurl,$do,$filename) { 
+Function FTP($ftpurl,$do,$filename) { 
     # ftp 伺服器位址，使用者名，密碼，操作（上傳up/下載down/清單list），檔案名，下載路徑
     # 示例：ftp ftp://10.10.98.91/ up C:\Windows\setupact.txt
         if ($do -eq "up")

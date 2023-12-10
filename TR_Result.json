@@ -1,8 +1,8 @@
 {
   "TCM_ID": 2,
   "TR_ID": 2,
-  "TestResult": "Fail",
-  "TestStatus": "pxe boot",
+  "TestResult": "sss",
+  "TestStatus": "555",
   "Test_TimeOut": 10,
   "TestFail_Dercription": "",
   "PrintLog": [

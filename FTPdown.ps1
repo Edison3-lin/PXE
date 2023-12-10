@@ -12,7 +12,7 @@
 
     ### Download files ###
     # $detailsList = ftp "$ftpServer/Test_Item/" list 
-    $detailsList = ftp "$ftpServer/$($args[0])" list 
+    $detailsList = FTP "$ftpServer/$($args[0])" list 
 
     # Distinguish between files and directories
     foreach ($details in $detailsList) {
@@ -26,7 +26,7 @@
             process_log "Directory: $name"
         } else {
             process_log "$ftpServer/$($args[0])/$name -> $($args[1])\$name"
-            ftp "$ftpServer/$($args[0])/$name" down "$($args[1])\$name"
+            FTP "$ftpServer/$($args[0])/$name" down "$($args[1])\$name"
         }
     }
 
