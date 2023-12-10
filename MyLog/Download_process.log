@@ -1,55 +1,7 @@
-[2023-12-10 15:16:22] ftp://127.0.0.1:21/Test_Item/Test_Collection/Abst64.exe -> c:\\TestManager\\ItemDownload\\Abst64.exe
-[2023-12-10 15:16:22] ftp://127.0.0.1:21/Test_Item/Test_Collection/Abt1.ps1 -> c:\\TestManager\\ItemDownload\\Abt1.ps1
-[2023-12-10 15:16:22] ftp://127.0.0.1:21/Test_Item/Test_Collection/image_installation_application_default.dll -> c:\\TestManager\\ItemDownload\\image_installation_application_default.dll
-[2023-12-10 15:16:22] ftp://127.0.0.1:21/Test_Item/Test_Collection/image_installation_driver_default.dll -> c:\\TestManager\\ItemDownload\\image_installation_driver_default.dll
-[2023-12-10 15:16:22] ftp://127.0.0.1:21/Test_Item/Test_Collection/Info.ps1 -> c:\\TestManager\\ItemDownload\\Info.ps1
-[2023-12-10 15:16:22] ftp://127.0.0.1:21/Test_Item/Test_Collection/Microsoft.Office.Interop.Excel.dll -> c:\\TestManager\\ItemDownload\\Microsoft.Office.Interop.Excel.dll
-[2023-12-10 15:16:22] ftp://127.0.0.1:21/Test_Item/Test_Collection/Microsoft.Vbe.Interop.dll -> c:\\TestManager\\ItemDownload\\Microsoft.Vbe.Interop.dll
-[2023-12-10 15:16:22] ftp://127.0.0.1:21/Test_Item/Test_Collection/mouseByCS.dll -> c:\\TestManager\\ItemDownload\\mouseByCS.dll
-[2023-12-10 15:16:22] ftp://127.0.0.1:21/Test_Item/Test_Collection/office.dll -> c:\\TestManager\\ItemDownload\\office.dll
-[2023-12-10 15:16:22] ftp://127.0.0.1:21/Test_Item/Test_Collection/pwrtest.exe -> c:\\TestManager\\ItemDownload\\pwrtest.exe
-[2023-12-10 15:16:22] ftp://127.0.0.1:21/Test_Item/Test_Collection/Setup.dll -> c:\\TestManager\\ItemDownload\\Setup.dll
-[2023-12-10 15:16:22] ftp://127.0.0.1:21/Test_Item/Test_Collection/stdole.dll -> c:\\TestManager\\ItemDownload\\stdole.dll
-[2023-12-10 15:16:22] ftp://127.0.0.1:21/Test_Item/Test_Collection/Test3.dll -> c:\\TestManager\\ItemDownload\\Test3.dll
-[2023-12-10 15:16:22] ftp://127.0.0.1:21/Test_Item/Test_Collection/TestCase.exe -> c:\\TestManager\\ItemDownload\\TestCase.exe
-[2023-12-10 15:16:22] ftp://127.0.0.1:21/Test_Item/Test_Collection/TestItem1.dll -> c:\\TestManager\\ItemDownload\\TestItem1.dll
-[2023-12-10 15:16:22] ftp://127.0.0.1:21/Test_Item/Test_Collection/TestItem2.dll -> c:\\TestManager\\ItemDownload\\TestItem2.dll
-[2023-12-10 15:16:22] ftp://127.0.0.1:21/Test_Item/Test_Collection/Test_Collection.dll -> c:\\TestManager\\ItemDownload\\Test_Collection.dll
-[2023-12-10 15:16:22] ======Download finished======
-[2023-12-10 15:17:12] ftp://127.0.0.1:21/Test_Item/Test_Collection/Abst64.exe -> c:\\TestManager\\ItemDownload\\Abst64.exe
-[2023-12-10 15:17:12] ftp://127.0.0.1:21/Test_Item/Test_Collection/Abt1.ps1 -> c:\\TestManager\\ItemDownload\\Abt1.ps1
-[2023-12-10 15:17:12] ftp://127.0.0.1:21/Test_Item/Test_Collection/image_installation_application_default.dll -> c:\\TestManager\\ItemDownload\\image_installation_application_default.dll
-[2023-12-10 15:17:12] ftp://127.0.0.1:21/Test_Item/Test_Collection/image_installation_driver_default.dll -> c:\\TestManager\\ItemDownload\\image_installation_driver_default.dll
-[2023-12-10 15:17:12] ftp://127.0.0.1:21/Test_Item/Test_Collection/Info.ps1 -> c:\\TestManager\\ItemDownload\\Info.ps1
-[2023-12-10 15:17:12] ftp://127.0.0.1:21/Test_Item/Test_Collection/Microsoft.Office.Interop.Excel.dll -> c:\\TestManager\\ItemDownload\\Microsoft.Office.Interop.Excel.dll
-[2023-12-10 15:17:12] ftp://127.0.0.1:21/Test_Item/Test_Collection/Microsoft.Vbe.Interop.dll -> c:\\TestManager\\ItemDownload\\Microsoft.Vbe.Interop.dll
-[2023-12-10 15:17:12] ftp://127.0.0.1:21/Test_Item/Test_Collection/mouseByCS.dll -> c:\\TestManager\\ItemDownload\\mouseByCS.dll
-[2023-12-10 15:17:12] ftp://127.0.0.1:21/Test_Item/Test_Collection/office.dll -> c:\\TestManager\\ItemDownload\\office.dll
-[2023-12-10 15:17:12] ftp://127.0.0.1:21/Test_Item/Test_Collection/pwrtest.exe -> c:\\TestManager\\ItemDownload\\pwrtest.exe
-[2023-12-10 15:17:12] ftp://127.0.0.1:21/Test_Item/Test_Collection/Setup.dll -> c:\\TestManager\\ItemDownload\\Setup.dll
-[2023-12-10 15:17:12] ftp://127.0.0.1:21/Test_Item/Test_Collection/stdole.dll -> c:\\TestManager\\ItemDownload\\stdole.dll
-[2023-12-10 15:17:12] ftp://127.0.0.1:21/Test_Item/Test_Collection/Test3.dll -> c:\\TestManager\\ItemDownload\\Test3.dll
-[2023-12-10 15:17:12] ftp://127.0.0.1:21/Test_Item/Test_Collection/TestCase.exe -> c:\\TestManager\\ItemDownload\\TestCase.exe
-[2023-12-10 15:17:12] ftp://127.0.0.1:21/Test_Item/Test_Collection/TestItem1.dll -> c:\\TestManager\\ItemDownload\\TestItem1.dll
-[2023-12-10 15:17:12] ftp://127.0.0.1:21/Test_Item/Test_Collection/TestItem2.dll -> c:\\TestManager\\ItemDownload\\TestItem2.dll
-[2023-12-10 15:17:12] ftp://127.0.0.1:21/Test_Item/Test_Collection/Test_Collection.dll -> c:\\TestManager\\ItemDownload\\Test_Collection.dll
-[2023-12-10 15:17:12] ERROR!!! <Test_Collection.dll> download failed !!!
-[2023-12-10 15:17:12] ======Download finished======
-[2023-12-10 15:20:30] ftp://127.0.0.1:21/Test_Item/Test_Collection/Abst64.exe -> c:\\TestManager\\ItemDownload\\Abst64.exe
-[2023-12-10 15:20:30] ftp://127.0.0.1:21/Test_Item/Test_Collection/Abt1.ps1 -> c:\\TestManager\\ItemDownload\\Abt1.ps1
-[2023-12-10 15:20:30] ftp://127.0.0.1:21/Test_Item/Test_Collection/image_installation_application_default.dll -> c:\\TestManager\\ItemDownload\\image_installation_application_default.dll
-[2023-12-10 15:20:30] ftp://127.0.0.1:21/Test_Item/Test_Collection/image_installation_driver_default.dll -> c:\\TestManager\\ItemDownload\\image_installation_driver_default.dll
-[2023-12-10 15:20:30] ftp://127.0.0.1:21/Test_Item/Test_Collection/Info.ps1 -> c:\\TestManager\\ItemDownload\\Info.ps1
-[2023-12-10 15:20:30] ftp://127.0.0.1:21/Test_Item/Test_Collection/Microsoft.Office.Interop.Excel.dll -> c:\\TestManager\\ItemDownload\\Microsoft.Office.Interop.Excel.dll
-[2023-12-10 15:20:30] ftp://127.0.0.1:21/Test_Item/Test_Collection/Microsoft.Vbe.Interop.dll -> c:\\TestManager\\ItemDownload\\Microsoft.Vbe.Interop.dll
-[2023-12-10 15:20:30] ftp://127.0.0.1:21/Test_Item/Test_Collection/mouseByCS.dll -> c:\\TestManager\\ItemDownload\\mouseByCS.dll
-[2023-12-10 15:20:30] ftp://127.0.0.1:21/Test_Item/Test_Collection/office.dll -> c:\\TestManager\\ItemDownload\\office.dll
-[2023-12-10 15:20:30] ftp://127.0.0.1:21/Test_Item/Test_Collection/pwrtest.exe -> c:\\TestManager\\ItemDownload\\pwrtest.exe
-[2023-12-10 15:20:30] ftp://127.0.0.1:21/Test_Item/Test_Collection/Setup.dll -> c:\\TestManager\\ItemDownload\\Setup.dll
-[2023-12-10 15:20:30] ftp://127.0.0.1:21/Test_Item/Test_Collection/stdole.dll -> c:\\TestManager\\ItemDownload\\stdole.dll
-[2023-12-10 15:20:30] ftp://127.0.0.1:21/Test_Item/Test_Collection/Test3.dll -> c:\\TestManager\\ItemDownload\\Test3.dll
-[2023-12-10 15:20:30] ftp://127.0.0.1:21/Test_Item/Test_Collection/TestCase.exe -> c:\\TestManager\\ItemDownload\\TestCase.exe
-[2023-12-10 15:20:30] ftp://127.0.0.1:21/Test_Item/Test_Collection/TestItem1.dll -> c:\\TestManager\\ItemDownload\\TestItem1.dll
-[2023-12-10 15:20:30] ftp://127.0.0.1:21/Test_Item/Test_Collection/TestItem2.dll -> c:\\TestManager\\ItemDownload\\TestItem2.dll
-[2023-12-10 15:20:31] ftp://127.0.0.1:21/Test_Item/Test_Collection/Test_Collection.dll -> c:\\TestManager\\ItemDownload\\Test_Collection.dll
-[2023-12-10 15:20:31] ======Download finished======
+[2023-12-10 16:26:39] ftp://127.0.0.1:21/Test_Item/MyTestAll/MyParameter.dll -> c:\\TestManager\\ItemDownload\\MyParameter.dll
+[2023-12-10 16:26:39] ftp://127.0.0.1:21/Test_Item/MyTestAll/MyPowerShell.dll -> c:\\TestManager\\ItemDownload\\MyPowerShell.dll
+[2023-12-10 16:26:39] ftp://127.0.0.1:21/Test_Item/MyTestAll/MyReboot.dll -> c:\\TestManager\\ItemDownload\\MyReboot.dll
+[2023-12-10 16:26:39] ftp://127.0.0.1:21/Test_Item/MyTestAll/MyTestAll.dll -> c:\\TestManager\\ItemDownload\\MyTestAll.dll
+[2023-12-10 16:26:39] ftp://127.0.0.1:21/Test_Item/MyTestAll/Newtonsoft.Json.dll -> c:\\TestManager\\ItemDownload\\Newtonsoft.Json.dll
+[2023-12-10 16:26:39] ftp://127.0.0.1:21/Test_Item/MyTestAll/Test3.dll -> c:\\TestManager\\ItemDownload\\Test3.dll
+[2023-12-10 16:26:39] ======Download finished======

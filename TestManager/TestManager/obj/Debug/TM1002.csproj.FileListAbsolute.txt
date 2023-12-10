@@ -1,10 +1,10 @@
 C:\TestManager\TestManager\TestManager\bin\Debug\TM1002.exe.config
 C:\TestManager\TestManager\TestManager\bin\Debug\TM1002.exe
 C:\TestManager\TestManager\TestManager\bin\Debug\TM1002.pdb
-C:\TestManager\TestManager\TestManager\obj\Debug\TM1002.csproj.AssemblyReference.cache
-C:\TestManager\TestManager\TestManager\obj\Debug\TM1002.csproj.CoreCompileInputs.cache
-C:\TestManager\TestManager\TestManager\obj\Debug\TM1002.exe
-C:\TestManager\TestManager\TestManager\obj\Debug\TM1002.pdb
 C:\TestManager\TestManager\TestManager\bin\Debug\Newtonsoft.Json.dll
 C:\TestManager\TestManager\TestManager\bin\Debug\Newtonsoft.Json.xml
+C:\TestManager\TestManager\TestManager\obj\Debug\TM1002.csproj.AssemblyReference.cache
+C:\TestManager\TestManager\TestManager\obj\Debug\TM1002.csproj.CoreCompileInputs.cache
 C:\TestManager\TestManager\TestManager\obj\Debug\TM1002.csproj.CopyComplete
+C:\TestManager\TestManager\TestManager\obj\Debug\TM1002.exe
+C:\TestManager\TestManager\TestManager\obj\Debug\TM1002.pdb

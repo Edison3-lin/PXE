@@ -1,29 +1,29 @@
 {
-  "TCM_ID": 2,
-  "TR_ID": 2,
-  "TestResult": "Pass",
-  "TestStatus": "New",
-  "Test_TimeOut": 10,
-  "TestFail_Dercription": "",
-  "PrintLog": [
-    {
-      "time": "2023/3/28 15:21:20",
-      "LogType": "Info",
-      "log": "Find API exe path"
-    },
-    {
-      "time": "2023/3/28 15:21:20",
-      "LogType": "Info",
-      "log": "exe API"
-    }
-  ],
-  "Text_Log_File_Path": [
-    "c:\\TestManager\\ItemDownload\\Abst64.exe",
-    "c:\\TestManager\\MyLog\\TestManager.log",
-    "c:\\TestManager\\TestLog\\Common.log"
-  ],
-  "Image_Log_File_Path": [
-    "D:\\Windows_Captain\\AP_Testing\\test1.png",
-    "D:\\Windows_Captain\\AP_Testing\\test2.png"
-  ]
+    "TCM_ID":  2,
+    "TR_ID":  2,
+    "TestResult":  "Pass",
+    "TestStatus":  "New",
+    "Test_TimeOut":  10,
+    "TestFail_Dercription":  "",
+    "PrintLog":  [
+                     {
+                         "time":  "2023/3/28 15:21:20",
+                         "LogType":  "Info",
+                         "log":  "Find API exe path"
+                     },
+                     {
+                         "time":  "2023/3/28 15:21:20",
+                         "LogType":  "Info",
+                         "log":  "exe API"
+                     }
+                 ],
+    "Text_Log_File_Path":  [
+                               "c:\\TestManager\\ItemDownload\\Abst64.exe",
+                               "c:\\TestManager\\MyLog\\TestManager.log",
+                               "c:\\TestManager\\TestLog\\Common.log"
+                           ],
+    "Image_Log_File_Path":  [
+                                "D:\\Windows_Captain\\AP_Testing\\test1.png",
+                                "D:\\Windows_Captain\\AP_Testing\\test2.png"
+                            ]
 }
