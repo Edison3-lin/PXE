@@ -1,24 +1,13 @@
-[2023-12-10 17:42:03] ftp://127.0.0.1:21/Test_Item/MyTestAll/Abst64.exe -> c:\\TestManager\\ItemDownload\\Abst64.exe
-[2023-12-10 17:42:03] ftp://127.0.0.1:21/Test_Item/MyTestAll/Abt1.ps1 -> c:\\TestManager\\ItemDownload\\Abt1.ps1
-[2023-12-10 17:42:03] ftp://127.0.0.1:21/Test_Item/MyTestAll/MyParameter.dll -> c:\\TestManager\\ItemDownload\\MyParameter.dll
-[2023-12-10 17:42:03] ftp://127.0.0.1:21/Test_Item/MyTestAll/MyPowerShell.dll -> c:\\TestManager\\ItemDownload\\MyPowerShell.dll
-[2023-12-10 17:42:03] ftp://127.0.0.1:21/Test_Item/MyTestAll/MyReboot.dll -> c:\\TestManager\\ItemDownload\\MyReboot.dll
-[2023-12-10 17:42:03] ftp://127.0.0.1:21/Test_Item/MyTestAll/MyTestAll.dll -> c:\\TestManager\\ItemDownload\\MyTestAll.dll
-[2023-12-10 17:42:03] ftp://127.0.0.1:21/Test_Item/MyTestAll/Newtonsoft.Json.dll -> c:\\TestManager\\ItemDownload\\Newtonsoft.Json.dll
-[2023-12-10 17:42:03] ======Download finished======
-[2023-12-10 17:49:12] ftp://127.0.0.1:21/Test_Item/MyTestAll/Abt1.ps1 -> c:\\TestManager\\ItemDownload\\Abt1.ps1
-[2023-12-10 17:49:12] ftp://127.0.0.1:21/Test_Item/MyTestAll/MyParameter.dll -> c:\\TestManager\\ItemDownload\\MyParameter.dll
-[2023-12-10 17:49:12] ftp://127.0.0.1:21/Test_Item/MyTestAll/MyPowerShell.dll -> c:\\TestManager\\ItemDownload\\MyPowerShell.dll
-[2023-12-10 17:49:12] ftp://127.0.0.1:21/Test_Item/MyTestAll/MyReboot.dll -> c:\\TestManager\\ItemDownload\\MyReboot.dll
-[2023-12-10 17:49:12] ftp://127.0.0.1:21/Test_Item/MyTestAll/MyTestAll.dll -> c:\\TestManager\\ItemDownload\\MyTestAll.dll
-[2023-12-10 17:49:12] ftp://127.0.0.1:21/Test_Item/MyTestAll/Newtonsoft.Json.dll -> c:\\TestManager\\ItemDownload\\Newtonsoft.Json.dll
-[2023-12-10 17:49:12] ftp://127.0.0.1:21/Test_Item/MyTestAll/pwrtest.exe -> c:\\TestManager\\ItemDownload\\pwrtest.exe
-[2023-12-10 17:49:12] ======Download finished======
-[2023-12-10 17:51:19] ftp://127.0.0.1:21/Test_Item/MyTestAll/Abt1.ps1 -> c:\\TestManager\\ItemDownload\\Abt1.ps1
-[2023-12-10 17:51:19] ftp://127.0.0.1:21/Test_Item/MyTestAll/MyParameter.dll -> c:\\TestManager\\ItemDownload\\MyParameter.dll
-[2023-12-10 17:51:19] ftp://127.0.0.1:21/Test_Item/MyTestAll/MyPowerShell.dll -> c:\\TestManager\\ItemDownload\\MyPowerShell.dll
-[2023-12-10 17:51:19] ftp://127.0.0.1:21/Test_Item/MyTestAll/MyReboot.dll -> c:\\TestManager\\ItemDownload\\MyReboot.dll
-[2023-12-10 17:51:19] ftp://127.0.0.1:21/Test_Item/MyTestAll/MyTestAll.dll -> c:\\TestManager\\ItemDownload\\MyTestAll.dll
-[2023-12-10 17:51:19] ftp://127.0.0.1:21/Test_Item/MyTestAll/Newtonsoft.Json.dll -> c:\\TestManager\\ItemDownload\\Newtonsoft.Json.dll
-[2023-12-10 17:51:19] ftp://127.0.0.1:21/Test_Item/MyTestAll/pwrtest.exe -> c:\\TestManager\\ItemDownload\\pwrtest.exe
-[2023-12-10 17:51:19] ======Download finished======
+[2023-12-11 09:41:31] ftp://127.0.0.1:21/Test_Item/image_installation_application_default/image_installation_application_default.dll -> c:\\TestManager\\ItemDownload\\image_installation_application_default.dll
+[2023-12-11 09:41:31] ftp://127.0.0.1:21/Test_Item/image_installation_application_default/Microsoft.Office.Interop.Excel.dll -> c:\\TestManager\\ItemDownload\\Microsoft.Office.Interop.Excel.dll
+[2023-12-11 09:41:31] ftp://127.0.0.1:21/Test_Item/image_installation_application_default/SCD_RV07RC.xls -> c:\\TestManager\\ItemDownload\\SCD_RV07RC.xls
+[2023-12-11 09:41:31] ======Download finished======
+[2023-12-11 16:30:15] ftp://127.0.0.1:21/Test_Item/image_installation_application_default/image_installation_application_default.dll -> c:\\TestManager\\ItemDownload\\image_installation_application_default.dll
+[2023-12-11 16:30:15] ftp://127.0.0.1:21/Test_Item/image_installation_application_default/Microsoft.Office.Interop.Excel.dll -> c:\\TestManager\\ItemDownload\\Microsoft.Office.Interop.Excel.dll
+[2023-12-11 16:30:15] ftp://127.0.0.1:21/Test_Item/image_installation_application_default/SCD_RV07RC.xls -> c:\\TestManager\\ItemDownload\\SCD_RV07RC.xls
+[2023-12-11 16:30:15] ======Download finished======
+[2023-12-11 16:30:45] ftp://127.0.0.1:21/Test_Item/image_installation_application_default/image_installation_application_default.dll -> c:\\TestManager\\ItemDownload\\image_installation_application_default.dll
+[2023-12-11 16:30:45] ERROR!!! <image_installation_application_default.dll> download failed !!!
+[2023-12-11 16:30:45] ftp://127.0.0.1:21/Test_Item/image_installation_application_default/Microsoft.Office.Interop.Excel.dll -> c:\\TestManager\\ItemDownload\\Microsoft.Office.Interop.Excel.dll
+[2023-12-11 16:30:45] ftp://127.0.0.1:21/Test_Item/image_installation_application_default/SCD_RV07RC.xls -> c:\\TestManager\\ItemDownload\\SCD_RV07RC.xls
+[2023-12-11 16:30:45] ======Download finished======

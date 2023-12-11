@@ -20,10 +20,9 @@ namespace TMservice
 
         protected override void OnStart(string[] args)
         {
-            // 設定批處理文件的路徑
+            // bat file
             string batFilePath = @"C:\TestManager\test.bat";
 
-            // 創建進程啟動信息
             ProcessStartInfo psi = new ProcessStartInfo
             {
                 FileName = "cmd.exe",
@@ -34,30 +33,36 @@ namespace TMservice
                 WorkingDirectory = System.IO.Path.GetDirectoryName(batFilePath)
             };
 
-            // 創建進程對象
             using (Process process = new Process { StartInfo = psi })
             {
-                // 啟動進程
                 process.Start();
-
-                // 向 cmd 輸入執行的命令（這裡是執行批處理文件）
                 process.StandardInput.WriteLine($"\"{batFilePath}\"");
-
-                // 等待命令執行完成
                 process.WaitForExit();
             }                
         }
 
         protected override void OnStop()
         {
-            // 停止服務時執行的程式碼
+            // bat file
+            string batFilePath = @"C:\TestManager\testStop.bat";
+
+            ProcessStartInfo psi = new ProcessStartInfo
+            {
+                FileName = "cmd.exe",
+                RedirectStandardInput = true,
+                RedirectStandardOutput = true,
+                UseShellExecute = false,
+                CreateNoWindow = true,
+                WorkingDirectory = System.IO.Path.GetDirectoryName(batFilePath)
+            };
+
+            using (Process process = new Process { StartInfo = psi })
+            {
+                process.Start();
+                process.StandardInput.WriteLine($"\"{batFilePath}\"");
+                process.WaitForExit();
+            }                
         }
 
-        private void OnTimer(object sender, ElapsedEventArgs e)
-        {
-            // 定期執行的程式碼
-            Console.WriteLine("xxxx");
-            // 這裡可以執行你的任務或工作
-        }        
     }
 }

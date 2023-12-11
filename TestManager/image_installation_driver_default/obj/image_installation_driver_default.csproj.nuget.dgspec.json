@@ -1,21 +1,25 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\k\\source\\repos\\image_installation_driver_default\\image_installation_driver_default.csproj": {}
+    "C:\\TestManager\\TestManager\\image_installation_driver_default\\image_installation_driver_default.csproj": {}
   },
   "projects": {
-    "C:\\Users\\k\\source\\repos\\image_installation_driver_default\\image_installation_driver_default.csproj": {
+    "C:\\TestManager\\TestManager\\image_installation_driver_default\\image_installation_driver_default.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\k\\source\\repos\\image_installation_driver_default\\image_installation_driver_default.csproj",
+        "projectUniqueName": "C:\\TestManager\\TestManager\\image_installation_driver_default\\image_installation_driver_default.csproj",
         "projectName": "image_installation_driver_default",
-        "projectPath": "C:\\Users\\k\\source\\repos\\image_installation_driver_default\\image_installation_driver_default.csproj",
-        "packagesPath": "C:\\Users\\k\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\k\\source\\repos\\image_installation_driver_default\\obj\\",
+        "projectPath": "C:\\TestManager\\TestManager\\image_installation_driver_default\\image_installation_driver_default.csproj",
+        "packagesPath": "C:\\Users\\edison\\.nuget\\packages\\",
+        "outputPath": "C:\\TestManager\\TestManager\\image_installation_driver_default\\obj\\",
         "projectStyle": "PackageReference",
         "skipContentFileWrite": true,
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
         "configFilePaths": [
-          "C:\\Users\\k\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\edison\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -47,6 +51,9 @@
       },
       "runtimes": {
         "win": {
+          "#import": []
+        },
+        "win-arm64": {
           "#import": []
         },
         "win-x64": {

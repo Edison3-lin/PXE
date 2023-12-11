@@ -1,11 +1,55 @@
-[2023-12-10 17:42:05]  to ftp://127.0.0.1:21/Test_Log/2AE5ACBD-9082-8444-8DDE-85B3FEFC7BD9/2/2/Abst64.exe
-[2023-12-10 17:42:05] <c:\TestManager\ItemDownload\Abst64.exe> upload to ftp://127.0.0.1:21/Test_Log/2AE5ACBD-9082-8444-8DDE-85B3FEFC7BD9/2/2/Abst64.exe
-[2023-12-10 17:42:05]  to ftp://127.0.0.1:21/Test_Log/2AE5ACBD-9082-8444-8DDE-85B3FEFC7BD9/2/2/TestManager.log
-[2023-12-10 17:42:05] <c:\TestManager\MyLog\TestManager.log> upload to ftp://127.0.0.1:21/Test_Log/2AE5ACBD-9082-8444-8DDE-85B3FEFC7BD9/2/2/TestManager.log
-[2023-12-10 17:42:05]  to ftp://127.0.0.1:21/Test_Log/2AE5ACBD-9082-8444-8DDE-85B3FEFC7BD9/2/2/Common.log
-[2023-12-10 17:42:05] <c:\TestManager\TestLog\Common.log> upload to ftp://127.0.0.1:21/Test_Log/2AE5ACBD-9082-8444-8DDE-85B3FEFC7BD9/2/2/Common.log
-[2023-12-10 17:42:05] ======Upload finished======
-[2023-12-10 17:49:17]  to ftp://127.0.0.1:21/Test_Log/2AE5ACBD-9082-8444-8DDE-85B3FEFC7BD9/2/2/
-[2023-12-10 17:49:17] ERROR!!! <c:\TestManager\ItemDownload\Abst64.exe> upload failed !!!
-[2023-12-10 17:51:24]  to ftp://127.0.0.1:21/Test_Log/2AE5ACBD-9082-8444-8DDE-85B3FEFC7BD9/2/2/
-[2023-12-10 17:51:24] ERROR!!! <c:\TestManager\ItemDownload\Abst64.exe> upload failed !!!
+[2023-12-11 09:06:13]  to ftp://172.0.0.9:2121/Test_Log/96D4AD84-158A-7144-AA29-C01850D3E814/5057/5090/
+[2023-12-11 09:06:13] ERROR!!! <c:\TestManager\ItemDownload\Abst64.exe> upload failed !!!
+[2023-12-11 09:06:30]  to ftp://172.0.0.9:2121/Test_Log/96D4AD84-158A-7144-AA29-C01850D3E814/5057/5090/
+[2023-12-11 09:06:30] ERROR!!! <c:\TestManager\ItemDownload\Abst64.exe> upload failed !!!
+[2023-12-11 09:06:53]  to ftp://172.0.0.9:2121/Test_Log/96D4AD84-158A-7144-AA29-C01850D3E814/5057/5090/
+[2023-12-11 09:06:53] ERROR!!! <c:\TestManager\ItemDownload\Abst64.exe> upload failed !!!
+[2023-12-11 09:13:12]  to ftp://172.0.0.9:2121/Test_Log/96D4AD84-158A-7144-AA29-C01850D3E814/5057/5090/
+[2023-12-11 09:13:12] ERROR!!! <c:\TestManager\ItemDownload\Abst64.exe> upload failed !!!
+[2023-12-11 09:13:40]  to ftp://172.0.0.9:2121/Test_Log/96D4AD84-158A-7144-AA29-C01850D3E814/5057/5090/TestManager.log
+[2023-12-11 09:13:41] <c:\TestManager\MyLog\TestManager.log> upload to ftp://172.0.0.9:2121/Test_Log/96D4AD84-158A-7144-AA29-C01850D3E814/5057/5090/TestManager.log
+[2023-12-11 09:13:41]  to ftp://172.0.0.9:2121/Test_Log/96D4AD84-158A-7144-AA29-C01850D3E814/5057/5090/Common.log
+[2023-12-11 09:13:42] <c:\TestManager\TestLog\Common.log> upload to ftp://172.0.0.9:2121/Test_Log/96D4AD84-158A-7144-AA29-C01850D3E814/5057/5090/Common.log
+[2023-12-11 09:13:42] ======Upload finished======
+[2023-12-11 09:14:04]  to ftp://172.0.0.9:2121/Test_Log/96D4AD84-158A-7144-AA29-C01850D3E814/5057/5090/TestManager.log
+[2023-12-11 09:15:44] ERROR!!! <c:\TestManager\MyLog\TestManager.log> upload failed !!!
+[2023-12-11 09:19:22]  to ftp://172.0.0.9:2121/Test_Log/96D4AD84-158A-7144-AA29-C01850D3E814/5057/5091/TestManager.log
+[2023-12-11 09:19:22] <c:\TestManager\MyLog\TestManager.log> upload to ftp://172.0.0.9:2121/Test_Log/96D4AD84-158A-7144-AA29-C01850D3E814/5057/5091/TestManager.log
+[2023-12-11 09:19:22]  to ftp://172.0.0.9:2121/Test_Log/96D4AD84-158A-7144-AA29-C01850D3E814/5057/5091/Common.log
+[2023-12-11 09:19:23] <c:\TestManager\TestLog\Common.log> upload to ftp://172.0.0.9:2121/Test_Log/96D4AD84-158A-7144-AA29-C01850D3E814/5057/5091/Common.log
+[2023-12-11 09:19:23] ======Upload finished======
+[2023-12-11 09:22:47]  to ftp://172.0.0.9:2121/Test_Log/96D4AD84-158A-7144-AA29-C01850D3E814/5058/5092/TestManager.log
+[2023-12-11 09:22:47] <c:\TestManager\MyLog\TestManager.log> upload to ftp://172.0.0.9:2121/Test_Log/96D4AD84-158A-7144-AA29-C01850D3E814/5058/5092/TestManager.log
+[2023-12-11 09:22:47]  to ftp://172.0.0.9:2121/Test_Log/96D4AD84-158A-7144-AA29-C01850D3E814/5058/5092/Common.log
+[2023-12-11 09:22:48] <c:\TestManager\TestLog\Common.log> upload to ftp://172.0.0.9:2121/Test_Log/96D4AD84-158A-7144-AA29-C01850D3E814/5058/5092/Common.log
+[2023-12-11 09:22:48] ======Upload finished======
+[2023-12-11 09:23:44]  to ftp://172.0.0.9:2121/Test_Log/96D4AD84-158A-7144-AA29-C01850D3E814/5059/5093/TestManager.log
+[2023-12-11 09:23:44] <c:\TestManager\MyLog\TestManager.log> upload to ftp://172.0.0.9:2121/Test_Log/96D4AD84-158A-7144-AA29-C01850D3E814/5059/5093/TestManager.log
+[2023-12-11 09:23:44]  to ftp://172.0.0.9:2121/Test_Log/96D4AD84-158A-7144-AA29-C01850D3E814/5059/5093/Common.log
+[2023-12-11 09:23:44] <c:\TestManager\TestLog\Common.log> upload to ftp://172.0.0.9:2121/Test_Log/96D4AD84-158A-7144-AA29-C01850D3E814/5059/5093/Common.log
+[2023-12-11 09:23:44] ======Upload finished======
+[2023-12-11 09:28:45]  to ftp://172.0.0.9:2121/Test_Log/96D4AD84-158A-7144-AA29-C01850D3E814/5060/5094/TestManager.log
+[2023-12-11 09:28:45] <c:\TestManager\MyLog\TestManager.log> upload to ftp://172.0.0.9:2121/Test_Log/96D4AD84-158A-7144-AA29-C01850D3E814/5060/5094/TestManager.log
+[2023-12-11 09:28:45]  to ftp://172.0.0.9:2121/Test_Log/96D4AD84-158A-7144-AA29-C01850D3E814/5060/5094/Common.log
+[2023-12-11 09:28:46] <c:\TestManager\TestLog\Common.log> upload to ftp://172.0.0.9:2121/Test_Log/96D4AD84-158A-7144-AA29-C01850D3E814/5060/5094/Common.log
+[2023-12-11 09:28:46] ======Upload finished======
+[2023-12-11 09:31:34]  to ftp://172.0.0.9:2121/Test_Log/96D4AD84-158A-7144-AA29-C01850D3E814/5061/5095/TestManager.log
+[2023-12-11 09:31:35] <c:\TestManager\MyLog\TestManager.log> upload to ftp://172.0.0.9:2121/Test_Log/96D4AD84-158A-7144-AA29-C01850D3E814/5061/5095/TestManager.log
+[2023-12-11 09:31:35]  to ftp://172.0.0.9:2121/Test_Log/96D4AD84-158A-7144-AA29-C01850D3E814/5061/5095/Common.log
+[2023-12-11 09:31:36] <c:\TestManager\TestLog\Common.log> upload to ftp://172.0.0.9:2121/Test_Log/96D4AD84-158A-7144-AA29-C01850D3E814/5061/5095/Common.log
+[2023-12-11 09:31:36] ======Upload finished======
+[2023-12-11 09:41:32]  to ftp://127.0.0.1:21/Test_Log/96D4AD84-158A-7144-AA29-C01850D3E814/7/7/TestManager.log
+[2023-12-11 09:41:32] <c:\TestManager\MyLog\TestManager.log> upload to ftp://127.0.0.1:21/Test_Log/96D4AD84-158A-7144-AA29-C01850D3E814/7/7/TestManager.log
+[2023-12-11 09:41:32]  to ftp://127.0.0.1:21/Test_Log/96D4AD84-158A-7144-AA29-C01850D3E814/7/7/Common.log
+[2023-12-11 09:41:32] <c:\TestManager\TestLog\Common.log> upload to ftp://127.0.0.1:21/Test_Log/96D4AD84-158A-7144-AA29-C01850D3E814/7/7/Common.log
+[2023-12-11 09:41:32] ======Upload finished======
+[2023-12-11 16:30:17]  to ftp://127.0.0.1:21/Test_Log/96D4AD84-158A-7144-AA29-C01850D3E814/7/7/TestManager.log
+[2023-12-11 16:30:17] <c:\TestManager\MyLog\TestManager.log> upload to ftp://127.0.0.1:21/Test_Log/96D4AD84-158A-7144-AA29-C01850D3E814/7/7/TestManager.log
+[2023-12-11 16:30:17]  to ftp://127.0.0.1:21/Test_Log/96D4AD84-158A-7144-AA29-C01850D3E814/7/7/Common.log
+[2023-12-11 16:30:17] <c:\TestManager\TestLog\Common.log> upload to ftp://127.0.0.1:21/Test_Log/96D4AD84-158A-7144-AA29-C01850D3E814/7/7/Common.log
+[2023-12-11 16:30:17] ======Upload finished======
+[2023-12-11 16:30:46]  to ftp://127.0.0.1:21/Test_Log/96D4AD84-158A-7144-AA29-C01850D3E814/7/7/TestManager.log
+[2023-12-11 16:30:46] <c:\TestManager\MyLog\TestManager.log> upload to ftp://127.0.0.1:21/Test_Log/96D4AD84-158A-7144-AA29-C01850D3E814/7/7/TestManager.log
+[2023-12-11 16:30:46]  to ftp://127.0.0.1:21/Test_Log/96D4AD84-158A-7144-AA29-C01850D3E814/7/7/Common.log
+[2023-12-11 16:30:46] <c:\TestManager\TestLog\Common.log> upload to ftp://127.0.0.1:21/Test_Log/96D4AD84-158A-7144-AA29-C01850D3E814/7/7/Common.log
+[2023-12-11 16:30:46] ======Upload finished======

@@ -1,7 +1,7 @@
 {
-    "TCM_ID":  2,
-    "TR_ID":  2,
-    "TestResult":  "Pass",
+    "TCM_ID":  7,
+    "TR_ID":  7,
+    "TestResult":  "Fail",
     "TestStatus":  "New",
     "Test_TimeOut":  10,
     "TestFail_Dercription":  "",
@@ -18,7 +18,6 @@
                      }
                  ],
     "Text_Log_File_Path":  [
-                               "c:\\TestManager\\ItemDownload\\Abst64.exe",
                                "c:\\TestManager\\MyLog\\TestManager.log",
                                "c:\\TestManager\\TestLog\\Common.log"
                            ],

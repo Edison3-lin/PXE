@@ -12,10 +12,8 @@ using System.Diagnostics;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace TM1002
-{
-    public class TestManager
-    {
+namespace TM1002 {
+    public class TestManager {
         private const string TMDIRECTORY = "C:\\TestManager\\";
         private const string ITEMDOWNLOAD = "C:\\TestManager\\ItemDownload\\";
         private const string TMLOG = "C:\\TestManager\\MyLog\\TestManager.log";
@@ -24,13 +22,11 @@ namespace TM1002
         private static int timeout = int.MaxValue;
 
         // **** Check Need Update ****
-        static bool Check_Need_Update()
-        {
+        static bool Check_Need_Update() {
             Runspace runspace = RunspaceFactory.CreateRunspace();
             runspace.Open();
             Pipeline pipeline = runspace.CreatePipeline();
-            try
-            {
+            try {
                 pipeline.Commands.AddScript(TMDIRECTORY + "Check_Update.ps1");
                 var result = pipeline.Invoke();
                 runspace.Close();  
@@ -47,8 +43,7 @@ namespace TM1002
                         return false;
                 }
             }
-            catch
-            {
+            catch {
                 runspace.Close();
                 ProcessLog("Waiting 2 sec for ready");
                 Thread.Sleep(2000);
@@ -58,8 +53,7 @@ namespace TM1002
         }    
 
         // **** Update TestManager ****
-        static void UpdateT()
-        {
+        static void UpdateT() {
             int currentProcessId = Process.GetCurrentProcess().Id;
             string scriptCommand = $"Start-Process powershell -ArgumentList '-NoExit -File C:\\TestManager\\UpdateT.ps1' -WindowStyle Hidden; Stop-Process -Id {currentProcessId}";
 
@@ -88,10 +82,8 @@ namespace TM1002
         }
 
         // **** 創建log file ****
-        static void CreateDirectoryAndFile()
-        {
-            try
-            {
+        static void CreateDirectoryAndFile() {
+            try {
                 if (!Directory.Exists(ITEMDOWNLOAD))
                 {
                     Directory.CreateDirectory(ITEMDOWNLOAD);
@@ -118,17 +110,14 @@ namespace TM1002
                 //     }                    
                 // }
             }
-            catch (Exception ex)
-            {
+            catch (Exception ex) {
                 Console.WriteLine("Error!!! " + ex.Message);
             }
         }
 
         // **** TestManager.log ****
-        public static void ProcessLog(string content)
-        {
-            try
-            {
+        public static void ProcessLog(string content) {
+            try {
                 // appand content
                 using (StreamWriter writer = new StreamWriter(TMLOG, true))
                 {
@@ -136,21 +125,18 @@ namespace TM1002
                 }
 
             }
-            catch (Exception ex)
-            {
+            catch (Exception ex) {
                 Console.WriteLine("Error!!! " + ex.Message);
             }
         }      
         
         // ***** get jobs from DB *****
-        static string GetPXE()
-        {
+        static string GetPXE() {
             string jobList = null;
             Runspace runspace = RunspaceFactory.CreateRunspace();
             runspace.Open();
             Pipeline pipeline = runspace.CreatePipeline();
-            try
-            {
+            try {
                 pipeline.Commands.AddScript(TMDIRECTORY + "GetPXE.ps1");
                 var result = pipeline.Invoke();
 
@@ -163,8 +149,7 @@ namespace TM1002
                 }
                 runspace.Close();                
             }
-            catch
-            {
+            catch {
                 runspace.Close();
                 ProcessLog("Waiting 2 sec for GetPXE ready");
                 Thread.Sleep(2000);
@@ -174,14 +159,12 @@ namespace TM1002
         }
 
         // ***** get jobs from DB *****
-        static string GetJob()
-        {
+        static string GetJob() {
             string jobList = "";
             Runspace runspace = RunspaceFactory.CreateRunspace();
             runspace.Open();
             Pipeline pipeline = runspace.CreatePipeline();
-            try
-            {
+            try {
                 pipeline.Commands.AddScript(TMDIRECTORY+"GetJob.ps1");
                 var result = pipeline.Invoke();
                 runspace.Close();
@@ -193,8 +176,7 @@ namespace TM1002
                         jobList = null;
                 }
             }    
-            catch
-            {
+            catch {
                 runspace.Close();
                 ProcessLog("Waiting 2 sec for Get_JOB ready");
                 Thread.Sleep(2000);
@@ -204,21 +186,18 @@ namespace TM1002
         }
 
         // ***** FtpDownload *****
-        static void FtpDownload(string jobList)
-        {
+        static void FtpDownload(string jobList) {
             Runspace runspace = RunspaceFactory.CreateRunspace();
             runspace.Open();
             Pipeline pipeline = runspace.CreatePipeline();
 
-            try
-            {
+            try {
                 // pipeline.Commands.AddScript(TMDIRECTORY+"RunAs.ps1");
                 pipeline.Commands.AddScript("$remoteFile = \""+jobList+"\"");
                 pipeline.Commands.AddScript(TMDIRECTORY+"Download.ps1");
                 var result = pipeline.Invoke();
             }    
-            catch (Exception ex)
-            {
+            catch (Exception ex) {
                 ProcessLog("Error!!! Downloading "+ex.Message);
                 runspace.Close();
                 return;
@@ -228,19 +207,16 @@ namespace TM1002
             return;
         }
         // ***** upload a program from FTP *****
-        static void FtpUpload()
-        {
+        static void FtpUpload() {
             Runspace runspace = RunspaceFactory.CreateRunspace();
             runspace.Open();
             Pipeline pipeline = runspace.CreatePipeline();
 
-            try
-            {
+            try {
                 pipeline.Commands.AddScript(TMDIRECTORY+"Upload.ps1 ");
                 var result = pipeline.Invoke();
             }    
-            catch (Exception ex)
-            {
+            catch (Exception ex) {
                 ProcessLog("Upload "+ex.Message);
                 runspace.Close();
                 return;
@@ -251,14 +227,12 @@ namespace TM1002
         }
 
         // ***** update job_status to DB *****
-        static bool UpdateJobStatus()
-        {
+        static bool UpdateJobStatus() {
             Runspace runspace = RunspaceFactory.CreateRunspace();
             runspace.Open();
             Pipeline pipeline = runspace.CreatePipeline();
 
-            try
-            {
+            try {
                 pipeline.Commands.AddScript(TMDIRECTORY+"UpdateJobStatus.ps1");
                 var result = pipeline.Invoke();
                 if(result[0].ToString() == "Unconnected_")
@@ -266,10 +240,8 @@ namespace TM1002
                     runspace.Close();
                     return false;
                 }
-
             }    
-            catch (Exception ex)
-            {
+            catch (Exception ex) {
                 ProcessLog("Update "+ex.Message);
                 runspace.Close();
                 return false;
@@ -280,19 +252,16 @@ namespace TM1002
         }
 
         // ***** ExecuteDll *****
-        static bool ExecuteDll(string dllPath)
-        {
+        static bool ExecuteDll(string dllPath) {
             string callingDomainName = AppDomain.CurrentDomain.FriendlyName;
             string basePath = AppDomain.CurrentDomain.BaseDirectory;
             AppDomain ad = AppDomain.CreateDomain("TestManager DLL");
             ProxyObject obj = (ProxyObject)ad.CreateInstanceFromAndUnwrap(basePath+callingDomainName, "TM1002.ProxyObject");
-            try
-            {
+            try {
                 ProcessLog(".... Loading Common.dll ....");
                 obj.LoadAssembly(TMDIRECTORY+"Common.dll");
             }
-            catch (System.IO.FileNotFoundException)
-            {
+            catch (System.IO.FileNotFoundException) {
                 ProcessLog("!!! Can't find out Common.dll");
                 return false;
             }
@@ -315,25 +284,20 @@ namespace TM1002
         }
 
         // ******* New Thread to monitor TimeOut *********
-        static void MonitorExecutionTime()
-        {
+        static void MonitorExecutionTime() {
             bool NewWatch = true;
-            do
-            {
+            do {
                 Thread.Sleep(1000);
 
-                if( NewWatch )
-                {
-                    if(ItemWatch.Elapsed.TotalSeconds >= timeout)
-                    {
+                if( NewWatch ) {
+                    if(ItemWatch.Elapsed.TotalSeconds >= timeout) {
                         Console.WriteLine("\n======================================================");
                         Console.WriteLine($"Has been executed for <{ItemWatch.Elapsed.TotalSeconds}> seconds, Time-out time exceeded !!!!");
                         Console.WriteLine("========================================================\n");
                         NewWatch = false;
                     }
                 }
-                else
-                {
+                else {
                     if(ItemWatch.Elapsed.TotalSeconds < timeout)
                     {
                         NewWatch = true;
@@ -359,9 +323,9 @@ namespace TM1002
 
                     if( Check_Need_Update() )
                     {
+                        ProcessLog("Found a new TM version on FTP, trying to update! ");
                         UpdateT();
                     }    
-                    // step 1. Listening job status from DB
                     JobList = GetPXE();
                     if(JobList == null)
                     {
@@ -388,19 +352,17 @@ namespace TM1002
 
                     startTime = DateTime.Now;
 
-                    // 讀取 TR_Result.json timeout 内容
+                    // Read TR_Result.json timeout
                     string jsonString = System.IO.File.ReadAllText(TR);
                     JObject json = JObject.Parse(jsonString);
                     timeout = (int)json["Test_TimeOut"];
 
-                    try
-                    {
-                        // step 2. 執行Dll程式
+                    try {
+                        // step 2. Execute Dll
                         ProcessLog("<<Step 2>> Executing "+ITEMDOWNLOAD+JobList);
                         result = ExecuteDll(ITEMDOWNLOAD+JobList);
                     }
-                    catch (Exception ex)
-                    {
+                    catch (Exception ex) {
                         ProcessLog("Run test Error!!! " + ex.Message);
                     }
                     // step 3. update test status to DB
@@ -452,15 +414,12 @@ namespace TM1002
         }
     }
 
-    class ProxyObject : MarshalByRefObject
-    {
+    class ProxyObject : MarshalByRefObject {
         Assembly assembly = null;
-        public void LoadAssembly(string myDllPath)
-        {
+        public void LoadAssembly(string myDllPath) {
             assembly = Assembly.LoadFile(myDllPath);
         }
-        public bool Invoke(string methodName, params Object[] args)
-        {
+        public bool Invoke(string methodName, params Object[] args) {
             if (assembly == null)
                 return false;
             var cName=assembly.GetTypes().First(m=>!m.IsAbstract && m.IsClass);
