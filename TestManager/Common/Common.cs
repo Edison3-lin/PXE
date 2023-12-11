@@ -40,7 +40,7 @@ namespace Common
             }   
 
             try {
-               Testflow.General.WriteLog("Common", "Invoke "+dllPath+".TearDown()" );
+               Testflow.General.WriteLog("Common", dllPath+".TearDown()" );
                myTest.GetMethod("TearDown").Invoke(myObj, T);   
             }   
             catch (Exception ex) {

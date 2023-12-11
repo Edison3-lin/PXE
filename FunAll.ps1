@@ -1,5 +1,3 @@
-# .\FTPdown.ps1 "/Test_Item/" "c:\\TestManager\\ItemDownload\\"
-# .\FTPup.ps1 "/Test_Item/" "c:\\TestManager\\ItemDownload\\"
 # $dataSet = DATABASE "read" $MySqlCmd1
 # DATABASE "update" $MySqlCmd2
 
