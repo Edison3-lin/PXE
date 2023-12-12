@@ -22,12 +22,12 @@ namespace TM1002 {
         private static int timeout = int.MaxValue;
 
         // **** Check Need Update ****
-        static bool Check_Need_Update() {
+        static bool UpgradeCheck() {
             Runspace runspace = RunspaceFactory.CreateRunspace();
             runspace.Open();
             Pipeline pipeline = runspace.CreatePipeline();
             try {
-                pipeline.Commands.AddScript(TMDIRECTORY + "Check_Update.ps1");
+                pipeline.Commands.AddScript(TMDIRECTORY + "UpgradeCheck.ps1");
                 var result = pipeline.Invoke();
                 runspace.Close();  
                 foreach (var psObject in result)
@@ -53,9 +53,9 @@ namespace TM1002 {
         }    
 
         // **** Update TestManager ****
-        static void UpdateT() {
+        static void UpgradTestManager() {
             int currentProcessId = Process.GetCurrentProcess().Id;
-            string scriptCommand = $"Start-Process powershell -ArgumentList '-NoExit -File C:\\TestManager\\UpdateT.ps1' -WindowStyle Hidden; Stop-Process -Id {currentProcessId}";
+            string scriptCommand = $"Start-Process powershell -ArgumentList '-NoExit -File C:\\TestManager\\UpgradTestManager.ps1' -WindowStyle Hidden; Stop-Process -Id {currentProcessId}";
 
             // Build ProcessStartInfo object，setting process information
              ProcessStartInfo psi = new ProcessStartInfo
@@ -131,13 +131,13 @@ namespace TM1002 {
         }      
         
         // ***** get jobs from DB *****
-        static string GetPXE() {
+        static string DBimage() {
             string jobList = null;
             Runspace runspace = RunspaceFactory.CreateRunspace();
             runspace.Open();
             Pipeline pipeline = runspace.CreatePipeline();
             try {
-                pipeline.Commands.AddScript(TMDIRECTORY + "GetPXE.ps1");
+                pipeline.Commands.AddScript(TMDIRECTORY + "DBimage.ps1");
                 var result = pipeline.Invoke();
 
                 foreach (var psObject in result)
@@ -151,7 +151,7 @@ namespace TM1002 {
             }
             catch {
                 runspace.Close();
-                ProcessLog("Waiting 2 sec for GetPXE ready");
+                ProcessLog("Waiting 2 sec for DBimage ready");
                 Thread.Sleep(2000);
                 return null;
             }
@@ -159,13 +159,13 @@ namespace TM1002 {
         }
 
         // ***** get jobs from DB *****
-        static string GetJob() {
+        static string DBjob() {
             string jobList = "";
             Runspace runspace = RunspaceFactory.CreateRunspace();
             runspace.Open();
             Pipeline pipeline = runspace.CreatePipeline();
             try {
-                pipeline.Commands.AddScript(TMDIRECTORY+"GetJob.ps1");
+                pipeline.Commands.AddScript(TMDIRECTORY+"DBjob.ps1");
                 var result = pipeline.Invoke();
                 runspace.Close();
                 foreach (var psObject in result)
@@ -178,15 +178,15 @@ namespace TM1002 {
             }    
             catch {
                 runspace.Close();
-                ProcessLog("Waiting 2 sec for Get_JOB ready");
+                ProcessLog("Waiting 2 sec for DBjob ready");
                 Thread.Sleep(2000);
                 return null;
             }
             return jobList;
         }
 
-        // ***** FtpDownload *****
-        static void FtpDownload(string jobList) {
+        // ***** FTPdownload *****
+        static void FTPdownload(string jobList) {
             Runspace runspace = RunspaceFactory.CreateRunspace();
             runspace.Open();
             Pipeline pipeline = runspace.CreatePipeline();
@@ -194,7 +194,7 @@ namespace TM1002 {
             try {
                 // pipeline.Commands.AddScript(TMDIRECTORY+"RunAs.ps1");
                 pipeline.Commands.AddScript("$remoteFile = \""+jobList+"\"");
-                pipeline.Commands.AddScript(TMDIRECTORY+"Download.ps1");
+                pipeline.Commands.AddScript(TMDIRECTORY+"FTPdownload.ps1");
                 var result = pipeline.Invoke();
             }    
             catch (Exception ex) {
@@ -207,13 +207,13 @@ namespace TM1002 {
             return;
         }
         // ***** upload a program from FTP *****
-        static void FtpUpload() {
+        static void FTPupload() {
             Runspace runspace = RunspaceFactory.CreateRunspace();
             runspace.Open();
             Pipeline pipeline = runspace.CreatePipeline();
 
             try {
-                pipeline.Commands.AddScript(TMDIRECTORY+"Upload.ps1 ");
+                pipeline.Commands.AddScript(TMDIRECTORY+"FTPupload.ps1 ");
                 var result = pipeline.Invoke();
             }    
             catch (Exception ex) {
@@ -227,13 +227,13 @@ namespace TM1002 {
         }
 
         // ***** update job_status to DB *****
-        static bool UpdateJobStatus() {
+        static bool DBupdateStatus() {
             Runspace runspace = RunspaceFactory.CreateRunspace();
             runspace.Open();
             Pipeline pipeline = runspace.CreatePipeline();
 
             try {
-                pipeline.Commands.AddScript(TMDIRECTORY+"UpdateJobStatus.ps1");
+                pipeline.Commands.AddScript(TMDIRECTORY+"DBupdateStatus.ps1");
                 var result = pipeline.Invoke();
                 if(result[0].ToString() == "Unconnected_")
                 {
@@ -321,15 +321,17 @@ namespace TM1002 {
                 do {
                     CreateDirectoryAndFile();
 
-                    if( Check_Need_Update() )
+                    // if( UpgradeCheck() )
+                    if( false )
                     {
-                        ProcessLog("Found a new TM version on FTP, trying to update! ");
-                        UpdateT();
-                    }    
-                    JobList = GetPXE();
+                        ProcessLog("Found a new TestManager version on FTP, trying to upgrade! ");
+                        UpgradTestManager();
+                    }   
+
+                    JobList = DBimage();
                     if(JobList == null)
                     {
-                        JobList = GetJob();
+                        JobList = DBjob();
                     }
                     if(JobList == null)
                     {
@@ -346,7 +348,7 @@ namespace TM1002 {
                     // step 1. Got Job then downloading
                     ProcessLog("<<Step 1>> Got Job then downloading");
                     if (!File.Exists(ITEMDOWNLOAD+"DoneDll.txt"))
-                        FtpDownload(JobList);
+                        FTPdownload(JobList);
                     else    
                         ProcessLog("Skip downloading again for reboot");
 
@@ -367,11 +369,11 @@ namespace TM1002 {
                     }
                     // step 3. update test status to DB
                     ProcessLog("<<Step 3>>  update test status to DB ");
-                    UpdateJobStatus();   //Update test result
+                    DBupdateStatus();   //Update test result
 
                     // step 4. upload log to FTP
                     ProcessLog("<<Step 4>>  upload log to FTP:  "+JobList);
-                    FtpUpload();
+                    FTPupload();
 
                     // step 5. Job_List的PowerShell程式都完成，繼續Listening job status
                     ProcessLog("<<Step 5>>  Keep listening job status");
