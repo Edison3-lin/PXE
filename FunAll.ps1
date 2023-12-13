@@ -96,6 +96,14 @@ Function FTP($ftpurl,$do,$filename) {
         }
     }
 
+function CheckMD5($file, $MD5file) {
+        $MD5s = Get-Content -Path $MD5file
+        $MD5 = Get-FileHash -Path $file.FullName -Algorithm MD5 | Select-Object -ExpandProperty Hash
+        if($MD5 -notin $MD5s) {
+            return $false
+        }
+        return $true
+    }    
 Function process_log($log) {
         $timestamp = Get-Date -Format "[yyyy-MM-dd HH:mm:ss] "
         $timestamp+$log | Add-Content $logfile
