@@ -27,7 +27,7 @@
                 from DUT_Profile A, Test_Control_Main B
                 where A.DP_UUID = '$UUID'
                     and A.DP_UUID = B.DP_UUID
-                    and B.TCM_Name = 'Image Flash'
+                    and (B.TCM_Name = 'Image Flash' or B.TCM_Name = 'BIOS Update')
                     and (B.TCM_Status is null or B.TCM_Status = 'Running')
                 order by B.TCM_CreateDate desc
                 ) TCM 

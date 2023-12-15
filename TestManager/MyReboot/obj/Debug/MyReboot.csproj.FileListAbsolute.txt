@@ -1,9 +1,0 @@
-C:\TestManager\TestManager\MyReboot\bin\Debug\MyReboot.dll
-C:\TestManager\TestManager\MyReboot\bin\Debug\MyReboot.pdb
-C:\TestManager\TestManager\MyReboot\bin\Debug\Common.dll
-C:\TestManager\TestManager\MyReboot\bin\Debug\Common.pdb
-C:\TestManager\TestManager\MyReboot\obj\Debug\MyReboot.csproj.AssemblyReference.cache
-C:\TestManager\TestManager\MyReboot\obj\Debug\MyReboot.csproj.CoreCompileInputs.cache
-C:\TestManager\TestManager\MyReboot\obj\Debug\MyReboot.csproj.CopyComplete
-C:\TestManager\TestManager\MyReboot\obj\Debug\MyReboot.dll
-C:\TestManager\TestManager\MyReboot\obj\Debug\MyReboot.pdb

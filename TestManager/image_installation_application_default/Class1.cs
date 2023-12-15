@@ -10,7 +10,6 @@ using System.Text;
 using System.Linq;
 using System.Reflection;
 using Excel = Microsoft.Office.Interop.Excel;
-using Common;
 
 namespace image_installation_application_default
 {
@@ -18,8 +17,8 @@ namespace image_installation_application_default
     {
         public int Setup()
         {
-            // common.Setup
-            Testflow.Setup("xxx");
+            // LoadDll.Setup
+            
             return 11;
         }
 

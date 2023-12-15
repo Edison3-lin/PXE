@@ -1,7 +1,7 @@
-C:\TestManager\TestManager\TestManager\bin\Debug\TM1002.exe.config
-C:\TestManager\TestManager\TestManager\bin\Debug\TM1002.exe
-C:\TestManager\TestManager\TestManager\bin\Debug\TM1002.pdb
-C:\TestManager\TestManager\TestManager\obj\Debug\TM1002.csproj.AssemblyReference.cache
-C:\TestManager\TestManager\TestManager\obj\Debug\TM1002.csproj.CoreCompileInputs.cache
-C:\TestManager\TestManager\TestManager\obj\Debug\TM1002.exe
-C:\TestManager\TestManager\TestManager\obj\Debug\TM1002.pdb
+C:\TestManager\TestManager\TestManager\bin\Debug\TM1003.exe.config
+C:\TestManager\TestManager\TestManager\bin\Debug\TM1003.exe
+C:\TestManager\TestManager\TestManager\bin\Debug\TM1003.pdb
+C:\TestManager\TestManager\TestManager\obj\Debug\TM1003.csproj.AssemblyReference.cache
+C:\TestManager\TestManager\TestManager\obj\Debug\TM1003.csproj.CoreCompileInputs.cache
+C:\TestManager\TestManager\TestManager\obj\Debug\TM1003.exe
+C:\TestManager\TestManager\TestManager\obj\Debug\TM1003.pdb

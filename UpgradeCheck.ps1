@@ -1,59 +1,50 @@
-function Get_Version()
-{
-    # 获取目录下的所有文件
-    $files = Get-ChildItem -Path ".\" -File
-    foreach ($file in $files) {
-        if($file.Name -like "TM????.exe")
-        {
-            $f = $file.Name.Substring(2, 4) 
-            return $f
+. .\FunAll.ps1
+function Get_Version() {
+        $files = Get-ChildItem -Path ".\" -File
+        foreach ($file in $files) {
+            if($file.Name -like "TM????.exe")
+            {
+                $f = $file.Name.Substring(2, 4) 
+                return $f
+            }
         }
+        return $null    
     }
-    return $null    
-}
-function Down_Common()
-{
-    $ftpDirectory = "/TestManager/"
+function TM_Version($version) {
+        $ftpDirectory = "/TestManager/"
+        $detailsList = FTP "$ftpServer$ftpDirectory" list 
+        foreach ($details in $detailsList) {
+            $splitDetails = $details -split "\s+"
+            $permissions = $splitDetails[0]
+            $name = $splitDetails[-1]
 
-    $ftpRequest = [System.Net.FtpWebRequest]::Create("$ftpServer$ftpDirectory")
-    $ftpRequest.Credentials = New-Object System.Net.NetworkCredential($username, $password)
-    $ftpRequest.Method = [System.Net.WebRequestMethods+Ftp]::ListDirectory
+            # Files or Directories?
+            if ($permissions -like "d*") {
+                if([int]$name -gt [int]$version )
+                {
+                    return $true
+                }
+            }    
+        }
+        return $false
+    }
 
-    # Get FTP directoryListing
-    $ftpResponse = $ftpRequest.GetResponse()
-    $ftpStream = $ftpResponse.GetResponseStream()
-    $ftpReader = New-Object System.IO.StreamReader($ftpStream)
-    $directoryListing = $ftpReader.ReadToEnd()
-    $dir = $directoryListing -split "`r`n"
-    $ftpReader.Close()
-    $ftpStream.Close()
-    $ftpResponse.Close()
+    ### Create log file ###
+    $file = Get-Item $PSCommandPath
+    $Directory = Split-Path -Path $PSCommandPath -Parent
+    $Directory += '\MyLog'
+    $baseName = $file.BaseName
+    $logfile = $Directory+'\'+$baseName+"_process.log"
+    $outputfile = $Directory+'\'+$baseName+'_result.log'
 
-    return ([int]$dir[-2] -gt [int]$version)
-}
+    $version = Get_Version
 
-$configPath = ".\Server.json"
-$config = Get-Content -Raw -Path $configPath | ConvertFrom-Json
-$ftpServer = $config.ftpServer
-$username = $config.username
-$password = $config.password
-
-# Create a WebClient object and set credentials
-$webClient = New-Object System.Net.WebClient
-$webClient.Credentials = New-Object System.Net.NetworkCredential($username, $password)
-
-$version = Get_Version
-
-try {
-    $CheckUpdate =  Down_Common
-}
-catch {
-    Write-Host "Directory not exist?"
-    $webClient.Dispose()
-    return $false
-}
-
-# Release WebClient
-$webClient.Dispose()
+    try {
+        $CheckUpdate =  TM_Version($version)
+    }
+    catch {
+        Write-Host "Directory not exist?"
+        return $false
+    }
 
 return $CheckUpdate

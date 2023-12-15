@@ -8,8 +8,6 @@
     $logfile = $Directory+'\'+$baseName+"_process.log"
     $outputfile = $Directory+'\'+$baseName+'_result.log'
 
- 
-    $remoteFile = "MyTestAll.dll"    
     # TestManager pass $remoteFile
     $attDir = $remoteFile.split('.')[0]
     $ftpPath = "/Test_Item/$attDir/"
@@ -39,17 +37,28 @@
         if( $name -eq "Items.md5" ) {
             continue
         }
+        if( $name -eq "MD5.ps1" ) {
+            continue
+        }
         # Files or Directories?
         if ($permissions -like "d*") {
             process_log "Directory: $name"
         } else {
             try {
                 process_log "$ftpServer/Test_Item/$attDir/$name -> $localPath$name"
-                do {
+                for( $i = 0; $i -lt 5; $i++) {
                     FTP "$ftpServer/Test_Item/$attDir/$name" down "$localPath$name"
                     $f = Get-Item "$localPath$name"
                     $DownOK = CheckMD5 $f ".\\ItemDownload\\Items.md5"
-                } while ( -not $DownOK )
+                    if($DownOK) {
+                        process_log "  <$name> MD5 OK!"
+                        break
+                    }
+                }
+                if(-not $DownOK) {                
+                    process_log "!!!!!! <$name> MD5 ERROR !!!!!!"
+                    return $false
+                }    
             }
             catch {
                 process_log "ERROR!!! <$name> download failed !!!"
@@ -58,5 +67,5 @@
         }
     }
 
-process_log  "======Download finished======"
+process_log  "======MD5 veriry OK! Download finished======"
 return $true

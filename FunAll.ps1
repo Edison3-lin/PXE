@@ -1,8 +1,5 @@
-# $dataSet = DATABASE "read" $MySqlCmd1
-# DATABASE "update" $MySqlCmd2
-
 Function DATABASE($do, $mySqlCmd) { 
-    if( $do -notin @("read", "update") )
+    if( $do -notin @("test","read", "update") )
     {
         return $false
     }
@@ -26,6 +23,11 @@ Function DATABASE($do, $mySqlCmd) {
 
     $timer.Stop()
 
+    if ($do -eq "test") {
+        Write-Host $SqlConn.State
+        $SqlConn.close()
+        return
+    }    
     # Check connection status
     if ($SqlConn.State -ne 'Open') {
         return "Unconnected_"
@@ -94,6 +96,21 @@ Function FTP($ftpurl,$do,$filename) {
             $response.Close()     
             return $files
         }
+        if ($do -eq "test")
+        {
+            $listFTP = [system.net.ftpwebrequest] [system.net.webrequest]::create("$ftpurl")
+            $listFTP.Credentials = New-Object System.Net.NetworkCredential("$username","$password")
+            $listFTP.Method=[system.net.WebRequestMethods+ftp]::listdirectory
+            try {
+                $response = $listFTP.getresponse()
+            }
+            catch {
+                Write-Host "ftpResponse error!!"
+                return $false
+            }
+            $response.Close()     
+            return $true
+        }
     }
 
 function CheckMD5($file, $MD5file) {
@@ -104,6 +121,27 @@ function CheckMD5($file, $MD5file) {
         }
         return $true
     }    
+
+function MakeMD5() {
+        # Get all files 
+        $files = Get-ChildItem -Path ".\" -File
+        $MD5 = ""
+        $MD5file = ".\\Items.md5"
+        if (Test-Path -Path $MD5file -PathType Leaf) {
+            Remove-Item $MD5file
+        }
+        foreach ($file in $files) {
+            if($file.Name -eq "Items.md5") {
+                continue
+            }
+            if($file.Name -eq "MD5.ps1") {
+                continue
+            }
+            $MD5 = Get-FileHash -Path $file.FullName -Algorithm MD5 | Select-Object -ExpandProperty Hash
+            $MD5 | Add-Content $MD5file
+        }
+    }
+    
 Function process_log($log) {
         $timestamp = Get-Date -Format "[yyyy-MM-dd HH:mm:ss] "
         $timestamp+$log | Add-Content $logfile
@@ -149,3 +187,9 @@ function CreateDir($directoryName) {
     $TestStatus = $TRconfig.TestStatus
     $Text_Log_File_Path = $TRconfig.Text_Log_File_Path
     $Test_TimeOut       = $TRconfig.Test_TimeOut
+
+
+    # $dataSet = DATABASE "read" $MySqlCmd1
+    # DATABASE "update" $MySqlCmd2
+    # DATABASE test
+    # FTP "$ftpServer/" test 

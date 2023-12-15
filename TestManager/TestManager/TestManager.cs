@@ -12,7 +12,7 @@ using System.Diagnostics;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace TM1002 {
+namespace TM1003 {
     public class TestManager {
         private const string TMDIRECTORY = "C:\\TestManager\\";
         private const string ITEMDOWNLOAD = "C:\\TestManager\\ItemDownload\\";
@@ -139,7 +139,6 @@ namespace TM1002 {
             try {
                 pipeline.Commands.AddScript(TMDIRECTORY + "DBimage.ps1");
                 var result = pipeline.Invoke();
-
                 foreach (var psObject in result)
                 {
                     if(psObject != null)
@@ -186,7 +185,7 @@ namespace TM1002 {
         }
 
         // ***** FTPdownload *****
-        static void FTPdownload(string jobList) {
+        static bool FTPdownload(string jobList) {
             Runspace runspace = RunspaceFactory.CreateRunspace();
             runspace.Open();
             Pipeline pipeline = runspace.CreatePipeline();
@@ -196,15 +195,15 @@ namespace TM1002 {
                 pipeline.Commands.AddScript("$remoteFile = \""+jobList+"\"");
                 pipeline.Commands.AddScript(TMDIRECTORY+"FTPdownload.ps1");
                 var result = pipeline.Invoke();
+                runspace.Close();
+                if(result[0].ToString() == "True") return true;
+                else return false;
             }    
             catch (Exception ex) {
                 ProcessLog("Error!!! Downloading "+ex.Message);
                 runspace.Close();
-                return;
+                return false;
             }
-
-            runspace.Close();
-            return;
         }
         // ***** upload a program from FTP *****
         static void FTPupload() {
@@ -223,6 +222,17 @@ namespace TM1002 {
             }
 
             runspace.Close();
+
+            // Clear LOG content
+            using (FileStream fs = new FileStream(TMLOG, FileMode.OpenOrCreate, FileAccess.ReadWrite))
+            {
+                fs.SetLength(0);
+            }                    
+            using (FileStream fs = new FileStream("C:\\TestManager\\MyLog\\LoadDll.log", FileMode.OpenOrCreate, FileAccess.ReadWrite))
+            {
+                fs.SetLength(0);
+            }                    
+
             return;
         }
 
@@ -256,13 +266,13 @@ namespace TM1002 {
             string callingDomainName = AppDomain.CurrentDomain.FriendlyName;
             string basePath = AppDomain.CurrentDomain.BaseDirectory;
             AppDomain ad = AppDomain.CreateDomain("TestManager DLL");
-            ProxyObject obj = (ProxyObject)ad.CreateInstanceFromAndUnwrap(basePath+callingDomainName, "TM1002.ProxyObject");
+            ProxyObject obj = (ProxyObject)ad.CreateInstanceFromAndUnwrap(basePath+callingDomainName, "TM1003.ProxyObject");
             try {
-                ProcessLog(".... Loading Common.dll ....");
-                obj.LoadAssembly(TMDIRECTORY+"Common.dll");
+                ProcessLog(".... Loading LoadDll.dll ....");
+                obj.LoadAssembly(TMDIRECTORY+"LoadDll.dll");
             }
             catch (System.IO.FileNotFoundException) {
-                ProcessLog("!!! Can't find out Common.dll");
+                ProcessLog("!!! Can't find out LoadDll.dll");
                 return false;
             }
 
@@ -271,7 +281,7 @@ namespace TM1002 {
             ItemWatch.Start();
 
             ProcessLog(".... Loading "+dllPath+" ....");
-            Object[] p = new object[]{ dllPath, new object[]{}, new object[]{}, new object[]{}, new object[]{} };
+            Object[] p = new object[]{ dllPath };
             var result = obj.Invoke("RunTestItem",p);
 
             // Stop Stopwatch
@@ -321,8 +331,8 @@ namespace TM1002 {
                 do {
                     CreateDirectoryAndFile();
 
-                    // if( UpgradeCheck() )
-                    if( false )
+                    if( UpgradeCheck() )
+                    //if( false )
                     {
                         ProcessLog("Found a new TestManager version on FTP, trying to upgrade! ");
                         UpgradTestManager();
@@ -347,10 +357,20 @@ namespace TM1002 {
 
                     // step 1. Got Job then downloading
                     ProcessLog("<<Step 1>> Got Job then downloading");
-                    if (!File.Exists(ITEMDOWNLOAD+"DoneDll.txt"))
-                        FTPdownload(JobList);
-                    else    
-                        ProcessLog("Skip downloading again for reboot");
+                    // if (!File.Exists(ITEMDOWNLOAD+"DoneDll.txt"))
+                        if(!FTPdownload(JobList)) {
+                            ProcessLog(" <Job abort!>  MD5 check of FTP download failed");
+                            // Update TR_Result.json 
+                            string ftpJson = System.IO.File.ReadAllText(TR);
+                            JObject fjson = JObject.Parse(ftpJson);
+                            fjson["TestStatus"] = "DONE";
+                            string updatedJson = fjson.ToString();
+                            System.IO.File.WriteAllText(TR, updatedJson);
+                            DBupdateStatus();
+                            continue;
+                        }
+                    // else    
+                    //     ProcessLog("Skip downloading again for reboot");
 
                     startTime = DateTime.Now;
 
@@ -371,16 +391,18 @@ namespace TM1002 {
                     ProcessLog("<<Step 3>>  update test status to DB ");
                     DBupdateStatus();   //Update test result
 
-                    // step 4. upload log to FTP
-                    ProcessLog("<<Step 4>>  upload log to FTP:  "+JobList);
-                    FTPupload();
-
                     // step 5. Job_List的PowerShell程式都完成，繼續Listening job status
-                    ProcessLog("<<Step 5>>  Keep listening job status");
+                    ProcessLog("<<Step 4>>  Keep listening job status");
                     endTime = DateTime.Now;
                     timeSpan = endTime - startTime;
                     ProcessLog("Spend " + timeSpan.Minutes + " Minutes " + timeSpan.Seconds + " Senconds");
+
+                    // step 5. upload log to FTP
+                    ProcessLog("<<Step 5>>  upload log to FTP");
                     ProcessLog("=================Completed================");
+
+                    FTPupload();
+
                 } while (!(Console.KeyAvailable && Console.ReadKey(true).Key == ConsoleKey.Escape));
             }  
             // Test DLL only          

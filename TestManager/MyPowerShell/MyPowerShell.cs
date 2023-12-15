@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Common;
+using LoadDll;
 using System.Management.Automation;             // *.csproj 手動加入 <Reference Include="System.Management.Automation" />
 using System.Management.Automation.Runspaces;   // *.csproj 手動加入 <Reference Include="System.Management.Automation" />
 
@@ -17,7 +17,7 @@ namespace MyPowerShell
 
         public int Setup()
         {
-            Testflow.General.WriteLog("MyPowershell", "Setup MyPowershell.dll...");
+            Runnner.WriteLog("Setup MyPowershell.dll...");
 
             return 21;
         }
@@ -25,7 +25,7 @@ namespace MyPowerShell
         public int Run()
         {
 
-            Testflow.General.WriteLog("MyPowershell", "Start MyPowershell.dll...");
+            Runnner.WriteLog("Start MyPowershell.dll...");
 
             try
             {
@@ -41,20 +41,20 @@ namespace MyPowerShell
                 Console.WriteLine("Error!!! " + ex.Message);
             }
 
-            Testflow.General.WriteLog("MyPowershell", "End MyPowershell.dll...");
+            Runnner.WriteLog("End MyPowershell.dll...");
 
             return 22;
         }
 
         public int UpdateResults()
         {
-            Testflow.General.WriteLog("MyPowershell", "UpdateResults MyPowershell.dll...");
+            Runnner.WriteLog("UpdateResults MyPowershell.dll...");
             return 23;
         }
 
         public int TearDown()
         {
-            Testflow.General.WriteLog("MyPowershell", "TearDown MyPowershell.dll...");
+            Runnner.WriteLog("TearDown MyPowershell.dll...");
             return 24;
         }
 

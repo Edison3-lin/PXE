@@ -3,24 +3,47 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Common;
+using LoadDll;
 using System.Diagnostics;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace MyReboot
 {
     public class MyReboot
     {
         private const string DllName = "MyReboot";
+        private const string TR = "C:\\TestManager\\TR_Result.json";
 
         public int Setup()
         {
-            // common.Setup
+            // LoadDll.Setup
             return 11;
         }
 
         public int Run()
         {
-            // common.Setup
+
+           // Read TR_Result.json Reboot
+           string jsonString = System.IO.File.ReadAllText(TR);
+           JObject json = JObject.Parse(jsonString);
+           string MyReboot = (string) json["Reboot"];
+           Console.WriteLine(MyReboot);
+
+           if( MyReboot == "Reboot") {
+                json["Reboot"] = "After";
+                string ModJson = json.ToString();
+                System.IO.File.WriteAllText(TR, ModJson);
+                Console.WriteLine("Had reboot...");
+                return 0;
+           }
+           else {
+                json["Reboot"] = "Before";
+                string ModJson = json.ToString();
+                System.IO.File.WriteAllText(TR, ModJson);
+           }
+
+
             string exeFilePath = "shutdown";
             // Create a ProcessStartInfo object with the file path
             ProcessStartInfo startInfo = new ProcessStartInfo(exeFilePath);
