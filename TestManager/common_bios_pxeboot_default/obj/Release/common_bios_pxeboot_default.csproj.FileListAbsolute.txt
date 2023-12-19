@@ -1,0 +1,6 @@
+C:\Users\k\source\repos\common_bios_pxeboot_default\bin\Release\common_bios_pxeboot_default.dll
+C:\Users\k\source\repos\common_bios_pxeboot_default\bin\Release\common_bios_pxeboot_default.pdb
+C:\Users\k\source\repos\common_bios_pxeboot_default\obj\Release\common_bios_pxeboot_default.csproj.AssemblyReference.cache
+C:\Users\k\source\repos\common_bios_pxeboot_default\obj\Release\common_bios_pxeboot_default.csproj.CoreCompileInputs.cache
+C:\Users\k\source\repos\common_bios_pxeboot_default\obj\Release\common_bios_pxeboot_default.dll
+C:\Users\k\source\repos\common_bios_pxeboot_default\obj\Release\common_bios_pxeboot_default.pdb

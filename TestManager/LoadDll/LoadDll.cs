@@ -36,7 +36,6 @@ namespace LoadDll {
             Assembly myDll = Assembly.LoadFile(dllPath);
             var myTest=myDll.GetTypes().First(m=>!m.IsAbstract && m.IsClass);
             object myObj = myDll.CreateInstance(myTest.FullName);
-            object myResult = null;
 
             try {
                 myTest.GetMethod("Setup").Invoke(myObj, new object[] {});
@@ -46,7 +45,7 @@ namespace LoadDll {
             }  
 
             try {
-                myResult = myTest.GetMethod("Run").Invoke(myObj, new object[] {});            
+                myTest.GetMethod("Run").Invoke(myObj, new object[] {});            
             }
             catch (Exception ex) {
                 WriteLog( "Run() Error!!! " + ex.Message);
@@ -66,10 +65,7 @@ namespace LoadDll {
                 WriteLog( "TearDown() Error!!! " + ex.Message);
             }   
 
-            if(myResult.ToString() == "True") 
-                return true;
-            else 
-                return false;
+            return true;
         }
     }
 }

@@ -262,7 +262,7 @@ namespace TM1003 {
         }
 
         // ***** ExecuteDll *****
-        static bool ExecuteDll(string dllPath) {
+        static void ExecuteDll(string dllPath) {
             string callingDomainName = AppDomain.CurrentDomain.FriendlyName;
             string basePath = AppDomain.CurrentDomain.BaseDirectory;
             AppDomain ad = AppDomain.CreateDomain("TestManager DLL");
@@ -273,7 +273,7 @@ namespace TM1003 {
             }
             catch (System.IO.FileNotFoundException) {
                 ProcessLog("!!! Can't find out LoadDll.dll");
-                return false;
+                return;
             }
 
             // Start Stopwatch
@@ -282,15 +282,13 @@ namespace TM1003 {
 
             ProcessLog(".... Loading "+dllPath+" ....");
             Object[] p = new object[]{ dllPath };
-            var result = obj.Invoke("RunTestItem",p);
+            bool result = obj.Invoke("RunTestItem",p);
 
             // Stop Stopwatch
             ItemWatch.Stop();
 			
             AppDomain.Unload(ad);
             obj = null;
-            if(result.ToString() == "True") return true;
-            else return false;
         }
 
         // ******* New Thread to monitor TimeOut *********
@@ -323,7 +321,7 @@ namespace TM1003 {
             DateTime startTime;
             DateTime endTime;
             TimeSpan timeSpan;
-            bool result = true;
+            // bool result = true;
             Thread monitoringThread = new Thread(MonitorExecutionTime);     // Another Thread to watch timeout
             monitoringThread.Start();
 
@@ -382,7 +380,7 @@ namespace TM1003 {
                     try {
                         // step 2. Execute Dll
                         ProcessLog("<<Step 2>> Executing "+ITEMDOWNLOAD+JobList);
-                        result = ExecuteDll(ITEMDOWNLOAD+JobList);
+                        ExecuteDll(ITEMDOWNLOAD+JobList);
                     }
                     catch (Exception ex) {
                         ProcessLog("Run test Error!!! " + ex.Message);
@@ -425,7 +423,7 @@ namespace TM1003 {
 
                 try {
                     ProcessLog("<<Step 1>> Executing "+args[0]+" TimeOut: "+timeout+" seconds");
-                    result = ExecuteDll(ITEMDOWNLOAD+args[0]);
+                    ExecuteDll(ITEMDOWNLOAD+args[0]);
                 }
                 catch (Exception ex) {
                     ProcessLog("Run test Error!!! " + ex.Message);

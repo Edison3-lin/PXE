@@ -1,10 +1,18 @@
 ﻿using System;
-using System.IO;
 using System.Collections.Generic;
+using System.Data.SqlClient;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using LoadDll;
+using System.Management;
+using System.Xml.Linq;
+using System.IO;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading;
+using CaptainWin.CommonAPI;
 
 namespace MyTestAll2
 {
@@ -14,53 +22,78 @@ namespace MyTestAll2
         private const string ThisFileName = "MyTestAll2.dll";
         private static int DllIndex;
         private static string ItemDownload = "C:\\TestManager\\ItemDownload\\";
+        // private const string TR = "C:\\TestManager\\TR_Result.json";
  
-       public int Setup()
+       public static void Setup()
         {
-            return 0;
         }
 
-        public int Run()
+        public static void Run()
         {
-            DllIndex = 0;
+Console.WriteLine("RebbotDllIndex dsfdsf" );
+string jsonString = "{\"name\":\"John\",\"age\":30,\"city\":\"New York\"}";
+try{
+            string TR = @"c:\\TestManager\\TR_Result.json"; // 將路徑替換為你的JSON文件的實際路徑
+
+//                     string jsonString = File.ReadAllText(TR);
+// Console.WriteLine(jsonString);
+
+                     JObject json = JObject.Parse(jsonString);
+                    // int timeout = (int)json["Test_TimeOut"];
+// Console.WriteLine(timeout);
+}
+catch (FileNotFoundException)
+        {
+            Console.WriteLine("找不到指定的文件。");
+        }
+        catch (IOException)
+        {
+            Console.WriteLine("讀取文件時出現了錯誤。");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("發生了未處理的錯誤：" + ex.Message);
+        }
 
             //********* SIT 依序填寫執行的DLL的項目 /Start/
-            Execute_dll("MyPowerShell.dll");
-            Execute_dll("MyParameter.dll");
-            // Execute_dll("MyReboot.dll");   //reboot
-            Execute_dll("MyParameter.dll");
-            // Execute_dll("MyReboot.dll");   //reboot
-            Execute_dll("MyParameter.dll");
+            // RecordDllIndex(0);
+            // // CaptainWin.CommonAPI.TestOperation.Sleep(3, 1);
+            // RecordDllIndex(1);
+            // CaptainWin.CommonAPI.TestOperation.Reboot(10);
+            // RecordDllIndex(2);
             //********* SIT 依序填寫執行的DLL的項目 /End/
 
 
-            HadRun("_kIll_");
-            return 0;
+            // HadRun("_kIll_");
         }
 
-        public int UpdateResults()
+        public static void UpdateResults()
         {
-            return 0;
         }
 
-        public int TearDown()
+        public static void TearDown()
         {
-            return 0;
         }
 
-        public static void Execute_dll(string DllFileName)
+        public static void RecordDllIndex(int DllIndex)
         {
-            try
-            {
-                if(!HadRun(DllFileName))
+
+try{
+                            //string ftpJson = System.IO.File.ReadAllText(TR);
+                            // JObject fjson = JObject.Parse(ftpJson);
+                            // fjson["TestStatus"] = "DONE";
+                            // string updatedJson = fjson.ToString();
+                            // System.IO.File.WriteAllText(TR, updatedJson);
+}
+                catch (Exception ex)
                 {
-                    LoadDll.Runnner.RunTestItem(ItemDownload+DllFileName);
-                }    
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(DllFileName + ex.Message);
-            }
+                    Console.WriteLine($"sdfsadfsdfsd An error occurred: {ex.Message}");
+                }
+// jsonString = System.IO.File.ReadAllText(TR);     
+// json = JObject.Parse(jsonString);
+// Console.WriteLine("RebbotDllIndex {0}" ,json["Reboot"]);
+// Console.ReadKey();
+           
         }    
 
         public static bool HadRun(string DllFileName)
