@@ -2,9 +2,9 @@
   "TCM_ID": 0,
   "TR_ID": 0,
   "TestResult": "",
-  "TestStatus": "",
-  "Test_TimeOut": 10,
-  "Reboot": "",
+  "TestStatus": "edison",
+  "Test_TimeOut": 0,
+  "Reboot": 0,
   "TestFail_Dercription": "",
   "PrintLog": [
     {

@@ -1,11 +1,11 @@
 {
   "version": 2,
-  "dgSpecHash": "fmm3KHMHm2WNEsLVMVHLDjR2hYcK+jzqag11bMv99Fk8r//MlpmZ7eidXKDkidcilTp/Yq/kf/QreJPG5IgtxA==",
+  "dgSpecHash": "lBmwIBZZm6EapiqAdGtpRec2xAXxddxAlyFFMrqM6VgbMIu/ujCcBhca2VnTXeiaqtwQ/H4RbP8kpllnfcAW0A==",
   "success": true,
   "projectFilePath": "C:\\TestManager\\TestManager\\image_installation_driver_default\\image_installation_driver_default.csproj",
   "expectedPackageFiles": [
-    "C:\\Users\\edison\\.nuget\\packages\\microsoft.office.interop.excel\\15.0.4795.1001\\microsoft.office.interop.excel.15.0.4795.1001.nupkg.sha512",
-    "C:\\Users\\edison\\.nuget\\packages\\newtonsoft.json\\13.0.3\\newtonsoft.json.13.0.3.nupkg.sha512"
+    "C:\\Users\\ediso\\.nuget\\packages\\microsoft.office.interop.excel\\15.0.4795.1001\\microsoft.office.interop.excel.15.0.4795.1001.nupkg.sha512",
+    "C:\\Users\\ediso\\.nuget\\packages\\newtonsoft.json\\13.0.3\\newtonsoft.json.13.0.3.nupkg.sha512"
   ],
   "logs": []
 }
