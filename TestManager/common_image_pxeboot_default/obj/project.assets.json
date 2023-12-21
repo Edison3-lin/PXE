@@ -15,66 +15,6 @@
           }
         }
       }
-    },
-    ".NETFramework,Version=v4.7.2/win": {
-      "Newtonsoft.Json/13.0.3": {
-        "type": "package",
-        "compile": {
-          "lib/net45/Newtonsoft.Json.dll": {
-            "related": ".xml"
-          }
-        },
-        "runtime": {
-          "lib/net45/Newtonsoft.Json.dll": {
-            "related": ".xml"
-          }
-        }
-      }
-    },
-    ".NETFramework,Version=v4.7.2/win-arm64": {
-      "Newtonsoft.Json/13.0.3": {
-        "type": "package",
-        "compile": {
-          "lib/net45/Newtonsoft.Json.dll": {
-            "related": ".xml"
-          }
-        },
-        "runtime": {
-          "lib/net45/Newtonsoft.Json.dll": {
-            "related": ".xml"
-          }
-        }
-      }
-    },
-    ".NETFramework,Version=v4.7.2/win-x64": {
-      "Newtonsoft.Json/13.0.3": {
-        "type": "package",
-        "compile": {
-          "lib/net45/Newtonsoft.Json.dll": {
-            "related": ".xml"
-          }
-        },
-        "runtime": {
-          "lib/net45/Newtonsoft.Json.dll": {
-            "related": ".xml"
-          }
-        }
-      }
-    },
-    ".NETFramework,Version=v4.7.2/win-x86": {
-      "Newtonsoft.Json/13.0.3": {
-        "type": "package",
-        "compile": {
-          "lib/net45/Newtonsoft.Json.dll": {
-            "related": ".xml"
-          }
-        },
-        "runtime": {
-          "lib/net45/Newtonsoft.Json.dll": {
-            "related": ".xml"
-          }
-        }
-      }
     }
   },
   "libraries": {
@@ -115,7 +55,7 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\ediso\\.nuget\\packages\\": {},
+    "C:\\Users\\edison\\.nuget\\packages\\": {},
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
@@ -124,7 +64,7 @@
       "projectUniqueName": "C:\\TestManager\\TestManager\\common_image_pxeboot_default\\common_image_pxeboot_default.csproj",
       "projectName": "common_image_pxeboot_default",
       "projectPath": "C:\\TestManager\\TestManager\\common_image_pxeboot_default\\common_image_pxeboot_default.csproj",
-      "packagesPath": "C:\\Users\\ediso\\.nuget\\packages\\",
+      "packagesPath": "C:\\Users\\edison\\.nuget\\packages\\",
       "outputPath": "C:\\TestManager\\TestManager\\common_image_pxeboot_default\\obj\\",
       "projectStyle": "PackageReference",
       "skipContentFileWrite": true,
@@ -132,7 +72,7 @@
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
-        "C:\\Users\\ediso\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\edison\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
@@ -157,20 +97,6 @@
             "version": "[13.0.3, )"
           }
         }
-      }
-    },
-    "runtimes": {
-      "win": {
-        "#import": []
-      },
-      "win-arm64": {
-        "#import": []
-      },
-      "win-x64": {
-        "#import": []
-      },
-      "win-x86": {
-        "#import": []
       }
     }
   }

@@ -1,0 +1,10 @@
+C:\TestManager\TestManager\MyReboot\bin\Debug\MyReboot.dll
+C:\TestManager\TestManager\MyReboot\bin\Debug\MyReboot.pdb
+C:\TestManager\TestManager\MyReboot\bin\Debug\LoadDll.dll
+C:\TestManager\TestManager\MyReboot\bin\Debug\Newtonsoft.Json.dll
+C:\TestManager\TestManager\MyReboot\bin\Debug\Newtonsoft.Json.xml
+C:\TestManager\TestManager\MyReboot\obj\Debug\MyReboot.csproj.AssemblyReference.cache
+C:\TestManager\TestManager\MyReboot\obj\Debug\MyReboot.csproj.CoreCompileInputs.cache
+C:\TestManager\TestManager\MyReboot\obj\Debug\MyReboot.csproj.CopyComplete
+C:\TestManager\TestManager\MyReboot\obj\Debug\MyReboot.dll
+C:\TestManager\TestManager\MyReboot\obj\Debug\MyReboot.pdb

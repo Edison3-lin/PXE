@@ -1,10 +1,7 @@
 C:\TestManager\TestManager\MyT\bin\Debug\MyT.exe.config
 C:\TestManager\TestManager\MyT\bin\Debug\MyT.exe
 C:\TestManager\TestManager\MyT\bin\Debug\MyT.pdb
-C:\TestManager\TestManager\MyT\bin\Debug\Newtonsoft.Json.dll
-C:\TestManager\TestManager\MyT\bin\Debug\Newtonsoft.Json.xml
 C:\TestManager\TestManager\MyT\obj\Debug\MyT.csproj.AssemblyReference.cache
 C:\TestManager\TestManager\MyT\obj\Debug\MyT.csproj.CoreCompileInputs.cache
-C:\TestManager\TestManager\MyT\obj\Debug\MyT.csproj.CopyComplete
 C:\TestManager\TestManager\MyT\obj\Debug\MyT.exe
 C:\TestManager\TestManager\MyT\obj\Debug\MyT.pdb

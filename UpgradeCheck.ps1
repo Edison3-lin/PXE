@@ -5,14 +5,16 @@ function Get_Version() {
             if($file.Name -like "TM????.exe")
             {
                 $f = $file.Name.Substring(2, 4) 
+                process_log "TestManager ver. $f"
                 return $f
             }
         }
         return $null    
     }
 function TM_Version($version) {
-        $ftpDirectory = "/TestManager/"
+        $ftpDirectory = "/Captain_Tool/TestManager/"
         $detailsList = FTP "$ftpServer$ftpDirectory" list 
+# Write-Host $detailsList
         foreach ($details in $detailsList) {
             $splitDetails = $details -split "\s+"
             $permissions = $splitDetails[0]
@@ -32,10 +34,8 @@ function TM_Version($version) {
     ### Create log file ###
     $file = Get-Item $PSCommandPath
     $Directory = Split-Path -Path $PSCommandPath -Parent
-    $Directory += '\MyLog'
     $baseName = $file.BaseName
     $logfile = $Directory+'\'+$baseName+"_process.log"
-    $outputfile = $Directory+'\'+$baseName+'_result.log'
 
     $version = Get_Version
 

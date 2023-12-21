@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Management;
 using System.Management.Automation;
 using System.Management.Automation.Runspaces;
 using System.Threading;
@@ -12,7 +13,7 @@ using System.Diagnostics;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace TM1003 {
+namespace TM1004 {
     public class TestManager {
         private const string TMDIRECTORY = "C:\\TestManager\\";
         private const string ITEMDOWNLOAD = "C:\\TestManager\\ItemDownload\\";
@@ -224,14 +225,14 @@ namespace TM1003 {
             runspace.Close();
 
             // Clear LOG content
-            using (FileStream fs = new FileStream(TMLOG, FileMode.OpenOrCreate, FileAccess.ReadWrite))
-            {
-                fs.SetLength(0);
-            }                    
-            using (FileStream fs = new FileStream("C:\\TestManager\\MyLog\\LoadDll.log", FileMode.OpenOrCreate, FileAccess.ReadWrite))
-            {
-                fs.SetLength(0);
-            }                    
+            // using (FileStream fs = new FileStream(TMLOG, FileMode.OpenOrCreate, FileAccess.ReadWrite))
+            // {
+            //     fs.SetLength(0);
+            // }                    
+            // using (FileStream fs = new FileStream("C:\\TestManager\\MyLog\\LoadDll.log", FileMode.OpenOrCreate, FileAccess.ReadWrite))
+            // {
+            //     fs.SetLength(0);
+            // }                    
 
             return;
         }
@@ -266,7 +267,7 @@ namespace TM1003 {
             string callingDomainName = AppDomain.CurrentDomain.FriendlyName;
             string basePath = AppDomain.CurrentDomain.BaseDirectory;
             AppDomain ad = AppDomain.CreateDomain("TestManager DLL");
-            ProxyObject obj = (ProxyObject)ad.CreateInstanceFromAndUnwrap(basePath+callingDomainName, "TM1003.ProxyObject");
+            ProxyObject obj = (ProxyObject)ad.CreateInstanceFromAndUnwrap(basePath+callingDomainName, "TM1004.ProxyObject");
             try {
                 ProcessLog(".... Loading LoadDll.dll ....");
                 obj.LoadAssembly(TMDIRECTORY+"LoadDll.dll");
@@ -282,7 +283,7 @@ namespace TM1003 {
 
             ProcessLog(".... Loading "+dllPath+" ....");
             Object[] p = new object[]{ dllPath };
-            bool result = obj.Invoke("RunTestItem",p);
+            obj.Invoke("RunTestItem",p);
 
             // Stop Stopwatch
             ItemWatch.Stop();
@@ -321,7 +322,6 @@ namespace TM1003 {
             DateTime startTime;
             DateTime endTime;
             TimeSpan timeSpan;
-            // bool result = true;
             Thread monitoringThread = new Thread(MonitorExecutionTime);     // Another Thread to watch timeout
             monitoringThread.Start();
 

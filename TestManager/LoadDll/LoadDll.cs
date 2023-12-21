@@ -32,7 +32,7 @@ namespace LoadDll {
         
         }
 
-        public static bool RunTestItem(string dllPath) {
+        public static void RunTestItem(string dllPath) {
             Assembly myDll = Assembly.LoadFile(dllPath);
             var myTest=myDll.GetTypes().First(m=>!m.IsAbstract && m.IsClass);
             object myObj = myDll.CreateInstance(myTest.FullName);
@@ -65,7 +65,6 @@ namespace LoadDll {
                 WriteLog( "TearDown() Error!!! " + ex.Message);
             }   
 
-            return true;
         }
     }
 }

@@ -9,7 +9,10 @@
     $outputfile = $Directory+'\'+$baseName+'_result.log'
 
     # TestManager pass $remoteFile
+    process_log "remoteFile: $remoteFile"
+    $remoteFile = "common_image_pxeboot_default.dll"
     $attDir = $remoteFile.split('.')[0]
+    process_log "attDir: $attDir"
     $ftpPath = "/Test_Item/$attDir/"
     $localPath = "c:\\TestManager\\ItemDownload\\"
     if (-not (Test-Path -Path $localPath -PathType Container)) {
@@ -18,6 +21,7 @@
 
    # Download MD5 file
     try {
+        process_log "$ftpServer/Test_Item/$attDir/Items.md5 -> $($localPath)Items.md5"
         FTP "$ftpServer/Test_Item/$attDir/Items.md5" down "$($localPath)Items.md5"
     }
     catch {

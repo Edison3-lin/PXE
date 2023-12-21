@@ -31,26 +31,26 @@ namespace MyTestAll2 {
             DllIndex++; // 1
             if( DllIndex > index ) {
                 RecordDllIndex(DllIndex);
-                // CaptainWin.CommonAPI.TestOperation.Sleep(4, 1);
-                Console.WriteLine(DllIndex);
-                Console.ReadKey();
+                CaptainWin.CommonAPI.DoSleep.Sleep(3, 1);
             }    
 
             DllIndex++; // 2
             if( DllIndex > index ) {
                 RecordDllIndex(DllIndex);
-                Console.WriteLine(DllIndex);
-                Console.ReadKey();
-                // CaptainWin.CommonAPI.TestOperation.Reboot(10);
+                CaptainWin.CommonAPI.DoReboot.Reboot(10);
             }    
 
-            DllIndex++; // 3
-            if( DllIndex > index ) {
-                RecordDllIndex(DllIndex);
-                Console.WriteLine(DllIndex);
-                Console.ReadKey();
-                // CaptainWin.CommonAPI.TestOperation.Reboot(10);
-            }    
+            // DllIndex++; // 3
+            // if( DllIndex > index ) {
+            //     RecordDllIndex(DllIndex);
+            //     CaptainWin.CommonAPI.DoReboot.Reboot(10);
+            // }    
+
+            // DllIndex++; // 4
+            // if( DllIndex > index ) {
+            //     RecordDllIndex(DllIndex);
+            //     CaptainWin.CommonAPI.DoReboot.Reboot(10);
+            // }    
             //********* SIT 依序填寫執行的DLL的項目 /End/
 
             RecordDllIndex(0);

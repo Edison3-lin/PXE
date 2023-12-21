@@ -1,7 +1,9 @@
-C:\TestManager\TestManager\Jacky\obj\Debug\Jacky.csproj.AssemblyReference.cache
-C:\TestManager\TestManager\Jacky\obj\Debug\Jacky.csproj.CoreCompileInputs.cache
 C:\TestManager\TestManager\Jacky\bin\Debug\Jacky.exe.config
 C:\TestManager\TestManager\Jacky\bin\Debug\Jacky.exe
 C:\TestManager\TestManager\Jacky\bin\Debug\Jacky.pdb
+C:\TestManager\TestManager\Jacky\obj\Debug\Jacky.csproj.AssemblyReference.cache
+C:\TestManager\TestManager\Jacky\obj\Debug\Jacky.csproj.CoreCompileInputs.cache
 C:\TestManager\TestManager\Jacky\obj\Debug\Jacky.exe
 C:\TestManager\TestManager\Jacky\obj\Debug\Jacky.pdb
+C:\TestManager\TestManager\Jacky\bin\Debug\System.Windows.Forms.Ribbon35.dll
+C:\TestManager\TestManager\Jacky\obj\Debug\Jacky.csproj.CopyComplete

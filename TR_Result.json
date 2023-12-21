@@ -1,29 +1,12 @@
 {
-  "TCM_ID": 0,
-  "TR_ID": 0,
+  "TCM_ID": 5070,
+  "TR_ID": 5107,
   "TestResult": "",
-  "TestStatus": "edison",
-  "Test_TimeOut": 0,
+  "TestStatus": "DONE",
+  "Test_TimeOut": 321,
   "Reboot": 0,
-  "TestFail_Dercription": "",
-  "PrintLog": [
-    {
-      "time": "2023/3/28 15:21:20",
-      "LogType": "Info",
-      "log": "Find API exe path"
-    },
-    {
-      "time": "2023/3/28 15:21:20",
-      "LogType": "Info",
-      "log": "exe API"
-    }
-  ],
   "Text_Log_File_Path": [
     "c:\\TestManager\\MyLog\\TestManager.log",
-    "c:\\TestManager\\MyLog\\LoadDll.log"
-  ],
-  "Image_Log_File_Path": [
-    "D:\\Windows_Captain\\AP_Testing\\test1.png",
-    "D:\\Windows_Captain\\AP_Testing\\test2.png"
+    "c:\\TestManager\\TestLog\\Common.log"
   ]
 }

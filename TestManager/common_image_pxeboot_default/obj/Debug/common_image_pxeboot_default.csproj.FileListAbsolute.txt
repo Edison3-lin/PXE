@@ -6,11 +6,5 @@ C:\Users\k\source\repos\common_image_pxeboot_default\bin\Debug\Newtonsoft.Json.d
 C:\Users\k\source\repos\common_image_pxeboot_default\obj\Debug\common_image_pxeboot_default.csproj.CopyComplete
 C:\Users\k\source\repos\common_image_pxeboot_default\obj\Debug\common_image_pxeboot_default.dll
 C:\Users\k\source\repos\common_image_pxeboot_default\obj\Debug\common_image_pxeboot_default.pdb
-C:\TestManager\TestManager\common_image_pxeboot_default\bin\Debug\common_image_pxeboot_default.dll
-C:\TestManager\TestManager\common_image_pxeboot_default\bin\Debug\common_image_pxeboot_default.pdb
-C:\TestManager\TestManager\common_image_pxeboot_default\bin\Debug\Newtonsoft.Json.dll
 C:\TestManager\TestManager\common_image_pxeboot_default\obj\Debug\common_image_pxeboot_default.csproj.AssemblyReference.cache
 C:\TestManager\TestManager\common_image_pxeboot_default\obj\Debug\common_image_pxeboot_default.csproj.CoreCompileInputs.cache
-C:\TestManager\TestManager\common_image_pxeboot_default\obj\Debug\common_image_pxeboot_default.csproj.CopyComplete
-C:\TestManager\TestManager\common_image_pxeboot_default\obj\Debug\common_image_pxeboot_default.dll
-C:\TestManager\TestManager\common_image_pxeboot_default\obj\Debug\common_image_pxeboot_default.pdb

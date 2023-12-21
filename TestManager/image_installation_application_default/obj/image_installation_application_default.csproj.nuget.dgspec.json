@@ -10,7 +10,7 @@
         "projectUniqueName": "C:\\TestManager\\TestManager\\image_installation_application_default\\image_installation_application_default.csproj",
         "projectName": "image_installation_application_default",
         "projectPath": "C:\\TestManager\\TestManager\\image_installation_application_default\\image_installation_application_default.csproj",
-        "packagesPath": "C:\\Users\\ediso\\.nuget\\packages\\",
+        "packagesPath": "C:\\Users\\edison\\.nuget\\packages\\",
         "outputPath": "C:\\TestManager\\TestManager\\image_installation_application_default\\obj\\",
         "projectStyle": "PackageReference",
         "skipContentFileWrite": true,
@@ -18,7 +18,7 @@
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\ediso\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\edison\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -43,20 +43,6 @@
               "version": "[15.0.4795.1001, )"
             }
           }
-        }
-      },
-      "runtimes": {
-        "win": {
-          "#import": []
-        },
-        "win-arm64": {
-          "#import": []
-        },
-        "win-x64": {
-          "#import": []
-        },
-        "win-x86": {
-          "#import": []
         }
       }
     }
