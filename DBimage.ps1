@@ -1,5 +1,5 @@
+<# Version: 1.0.0.5 #>
 . .\FunAll.ps1
-
     ### Create log file ###
     $file = Get-Item $PSCommandPath
     $Directory = Split-Path -Path $PSCommandPath -Parent
@@ -73,40 +73,50 @@
         # Not the first time PXE (Running)
         elseif ( $TR_Excute_Status -eq "Running" ) 
         {
-            $sqlCmd.CommandText = "
-                    update Test_Control_Main 
-                    set    TCM_Status = 'DONE'
-                    where  TCM_ID = '$TCM_ID'
-                "
-            $NULL = $SqlCmd.executenonquery()
-            # image patch write "Done" to TR_Resulte.json
-            if( $TRconfig.TestStatus -eq "DONE" )
+            $directoryPath = "c:\\TestManager\\ItemDownload"
+            $items = Get-ChildItem -Path $directoryPath
+            # check common_bios_pxeboot_default.dll exist?
+            if ($items.Length -eq 0) 
             {
-                $MySqlCmd = "
-                        update Test_Result 
-                        set    TR_Excute_Status = 'DONE',
-                               TR_Test_Result = 'Pass'
-                        where  TR_ID = '$TR_ID'
-                    "
-                DATABASE "update" $MySqlCmd    
-                $TRconfig.TestResult = "Pass"
-            }
+                $ExecuteDll = "common_bios_pxeboot_default.dll"
+            } 
             else 
-            {
-                # 'Image Flash' not finish
-                $MySqlCmd = "
-                        update Test_Result 
-                        set    TR_Excute_Status = 'DONE',
-                               TR_Test_Result = 'Fail'
-                        where  TR_ID = '$TR_ID'
+            {            
+                $sqlCmd.CommandText = "
+                        update Test_Control_Main 
+                        set    TCM_Status = 'DONE'
+                        where  TCM_ID = '$TCM_ID'
                     "
-                DATABASE "update" $MySqlCmd    
-                $TRconfig.TestResult = "Fail"
-            }  
-            $TRconfig.TestStatus = "DONE"
-            $updatedJson = $TRconfig | ConvertTo-Json -Depth 10
-            $updatedJson | Set-Content -Path $TRPath
-            $ExecuteDll = $NULL
+                $NULL = $SqlCmd.executenonquery()
+                # image patch write "Done" to TR_Resulte.json
+                if( $TRconfig.TestStatus -eq "DONE" )
+                {
+                    $MySqlCmd = "
+                            update Test_Result 
+                            set    TR_Excute_Status = 'DONE',
+                                TR_Test_Result = 'Pass'
+                            where  TR_ID = '$TR_ID'
+                        "
+                    DATABASE "update" $MySqlCmd    
+                    $TRconfig.TestResult = "Pass"
+                }
+                else 
+                {
+                    # 'Image Flash' not finish
+                    $MySqlCmd = "
+                            update Test_Result 
+                            set    TR_Excute_Status = 'DONE',
+                                TR_Test_Result = 'Fail'
+                            where  TR_ID = '$TR_ID'
+                        "
+                    DATABASE "update" $MySqlCmd    
+                    $TRconfig.TestResult = "Fail"
+                }  
+                $TRconfig.TestStatus = "DONE"
+                $updatedJson = $TRconfig | ConvertTo-Json -Depth 10
+                $updatedJson | Set-Content -Path $TRPath
+                $ExecuteDll = $NULL
+            }     
         }
     }
 
