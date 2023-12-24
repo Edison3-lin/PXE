@@ -7,7 +7,7 @@ Function FTP_Download_TM() {
         $ftpDirectory = "/Captain_Tool/TestManager/"
         $commonFilePath = ".\"
 
-        # # 删除c:\TestManager目錄下所有file
+        # # delete c:\TestManager all files
         # $files = Get-ChildItem -Path $commonFilePath -File
         # foreach ($file in $files) {
         #     if($file.Name -ne "UpdateT.ps1")

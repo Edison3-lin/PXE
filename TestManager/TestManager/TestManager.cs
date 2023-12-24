@@ -12,11 +12,73 @@ using System.Reflection;
 using System.Diagnostics;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System.Security.Cryptography;
 
 namespace TM1004 {
+    public class DigitalSignature
+    {
+        public RSAParameters PublicKey { get; private set; }
+        public RSAParameters PrivateKey { get; private set; }
+
+        public DigitalSignature()
+        {
+            GenerateKeys();
+        }
+
+        public void GenerateKeys()
+        {
+            using (var provider = new RSACryptoServiceProvider(2048))
+            {
+                PrivateKey = provider.ExportParameters(true);
+                PublicKey = provider.ExportParameters(false);
+            }
+        }
+
+        public byte[] SignData(string data, RSAParameters privateKey)
+        {
+            using (var rsa = new RSACryptoServiceProvider())
+            {
+                rsa.ImportParameters(privateKey);
+                var dataBytes = Encoding.UTF8.GetBytes(data);
+                return rsa.SignData(dataBytes, HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1);
+            }
+        }
+
+        public bool VerifySignature(string data, byte[] signature, RSAParameters publicKey)
+        {
+            using (var rsa = new RSACryptoServiceProvider())
+            {
+                rsa.ImportParameters(publicKey);
+                var dataBytes = Encoding.UTF8.GetBytes(data);
+                return rsa.VerifyData(dataBytes, signature, HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1);
+            }
+        }
+
+        public void SaveKeyToFile(string fileName, RSAParameters key, bool includePrivateParameters)
+        {
+            using (var rsa = new RSACryptoServiceProvider())
+            {
+                rsa.ImportParameters(key);
+                string keyString = rsa.ToXmlString(includePrivateParameters);
+                File.WriteAllText(fileName, keyString);
+            }
+        }
+
+        public RSAParameters LoadKeyFromFile(string fileName, bool includePrivateParameters)
+        {
+            using (var rsa = new RSACryptoServiceProvider())
+            {
+                string keyString = File.ReadAllText(fileName);
+                rsa.FromXmlString(keyString);
+                return rsa.ExportParameters(includePrivateParameters);
+            }
+        }
+    }
+
     public class TestManager {
         private const string TMDIRECTORY = "C:\\TestManager\\";
         private const string ITEMDOWNLOAD = "C:\\TestManager\\ItemDownload\\";
+        private const string SIGNKEY = "C:\\TestManager\\Key\\";
         private const string TMLOG = "C:\\TestManager\\MyLog\\TestManager.log";
         private const string TR = "C:\\TestManager\\TR_Result.json";
         static Stopwatch ItemWatch = new Stopwatch();
@@ -96,6 +158,10 @@ namespace TM1004 {
                 if (!Directory.Exists(TMDIRECTORY+"TestLog\\"))
                 {
                     Directory.CreateDirectory(TMDIRECTORY+"TestLog\\");
+                }                
+                if (!Directory.Exists(TMDIRECTORY+"Key\\"))
+                {
+                    Directory.CreateDirectory(TMDIRECTORY+"Key\\");
                 }                
 
                 if (!File.Exists(TMLOG))
@@ -316,6 +382,57 @@ namespace TM1004 {
             
         }
 
+
+        // ******* SignKey *********
+        static void SignKey(string fileName) {
+            if(fileName.Split('.').Length  > 2) {
+                ProcessLog(fileName);
+                return;
+            }
+
+            string baseName = fileName.Split('.')[0];
+            var digitalSignature = new DigitalSignature();
+
+            // 從文件加載密鑰
+            var privateKey = digitalSignature.LoadKeyFromFile(SIGNKEY+"privateKey.xml", true);
+            var publicKey = digitalSignature.LoadKeyFromFile(SIGNKEY+"publicKey.xml", false);
+
+            // 簽名
+            string fileContent = File.ReadAllText(TMDIRECTORY+fileName);
+            byte[] signature = digitalSignature.SignData(fileContent, privateKey);
+
+            // /****保存簽名到文件****/
+            // 假設 'signature' 是一個byte[]，包含簽名數據
+            string base64Signature = Convert.ToBase64String(signature);
+            File.WriteAllText(SIGNKEY+baseName+".txt", base64Signature);
+            // /****保存簽名到文件****/
+        }
+
+        // ******* CheckSignKey *********
+        static bool CheckSignKey(string fileName) {
+            if(fileName.Split('.').Length  > 2) {
+                ProcessLog(fileName);
+                return true;
+            }
+
+            string baseName = fileName.Split('.')[0];
+            var digitalSignature = new DigitalSignature();
+
+            // 從文件加載密鑰
+            var privateKey = digitalSignature.LoadKeyFromFile(SIGNKEY+"privateKey.xml", true);
+            var publicKey = digitalSignature.LoadKeyFromFile(SIGNKEY+"publicKey.xml", false);
+
+            /****讀取並使用保存的簽名****/
+            string fileContent = File.ReadAllText(TMDIRECTORY+fileName);
+            string MyBase64Signature = File.ReadAllText(SIGNKEY+baseName+".txt");
+            byte[] MySignature = Convert.FromBase64String(MyBase64Signature);
+            /****讀取並使用保存的簽名****/
+
+            // 使用公鑰驗證簽名
+            bool isVerified = digitalSignature.VerifySignature(fileContent, MySignature, publicKey);
+            return isVerified;
+        }
+
         // ============== MAIN ==============
         static void Main(string[] args) {
             string JobList;
@@ -405,6 +522,42 @@ namespace TM1004 {
             }  
             // Test DLL only          
             else {
+                // **** Use c:\TestManager\Key\privateKey.xml Sign c:\TestManager\*.*
+                // *** Generate key ***
+                // try
+                // {
+                //     string[] fileEntries = Directory.GetFiles(TMDIRECTORY);
+                //     foreach (string fName in fileEntries)
+                //     {
+                //         string fileName = Path.GetFileName(fName);
+                //         SignKey(fileName);
+                //     }
+                // }
+                // catch (IOException e)
+                // {
+                //     Console.WriteLine("An IO exception has been thrown!");
+                //     Console.WriteLine(e.Message);
+                // }                
+            
+                // **** Use c:\TestManager\Key\publicKey.xml verify c:\TestManager\*.*
+                // *** Verify key ***
+                // try
+                // {
+                //     string[] fileEntries = Directory.GetFiles(TMDIRECTORY);
+                //     foreach (string fName in fileEntries)
+                //     {
+                //         string fileName = Path.GetFileName(fName);
+                //         if(!CheckSignKey(fileName)) {
+                //             ProcessLog(fileName+" Sign key error");
+                //             // break;
+                //         }
+                //     }
+                // }
+                // catch (IOException e)
+                // {
+                //     Console.WriteLine("An IO exception has been thrown!");
+                //     Console.WriteLine(e.Message);
+                // }                
                 CreateDirectoryAndFile();
                 if( args.Length > 1 ) {
                     string strNumber = args[1];
