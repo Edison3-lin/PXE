@@ -5,7 +5,7 @@ function Get_Version() {
             if($file.Name -like "TM????.exe")
             {
                 $f = $file.Name.Substring(2, 4) 
-                process_log "TestManager ver. $f"
+                # process_log "TestManager ver. $f"
                 return $f
             }
         }
@@ -14,7 +14,7 @@ function Get_Version() {
 function TM_Version($version) {
         $ftpDirectory = "/Captain_Tool/TestManager/"
         $detailsList = FTP "$ftpServer$ftpDirectory" list 
-# Write-Host $detailsList
+
         foreach ($details in $detailsList) {
             $splitDetails = $details -split "\s+"
             $permissions = $splitDetails[0]

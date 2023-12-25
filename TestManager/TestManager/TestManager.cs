@@ -446,8 +446,8 @@ namespace TM1004 {
                 do {
                     CreateDirectoryAndFile();
 
-                    if( UpgradeCheck() )
-                    //if( false )
+                    //if( UpgradeCheck() )
+                    if( false )
                     {
                         ProcessLog("Found a new TestManager version on FTP, trying to upgrade! ");
                         UpgradTestManager();

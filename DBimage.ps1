@@ -1,5 +1,5 @@
-<# Version: 1.0.0.5 #>
 . .\FunAll.ps1
+
     ### Create log file ###
     $file = Get-Item $PSCommandPath
     $Directory = Split-Path -Path $PSCommandPath -Parent
@@ -20,7 +20,8 @@
                 TAC.TAC_Table_Index,
                 TAC.TAC_Table_Name,
                 TAC.TAC_Table_Coulmn,
-                TR.TR_Excute_Status
+                TR.TR_Excute_Status,
+                TCM.TCM_Name
             from (
                 select TOP (1) 
                     B.*
@@ -50,7 +51,12 @@
         $updatedJson = $TRconfig | ConvertTo-Json -Depth 10
         $updatedJson | Set-Content -Path $TRPath
 
-        $ExecuteDll = "common_bios_pxeboot_default.dll"
+        if(($dataSet.Tables[0].Rows[$i][8]) -eq "BIOS Update") {
+            $ExecuteDll = "common_bios_pxeboot_default.dll"
+        }
+        else {
+            $ExecuteDll = "common_image_pxeboot_default.dll.dll"
+        }
 
         # First time PXE boot (NULL)
         if ( '' -eq $TCM_Status )
@@ -78,16 +84,22 @@
             # check common_bios_pxeboot_default.dll exist?
             if ($items.Length -eq 0) 
             {
-                $ExecuteDll = "common_bios_pxeboot_default.dll"
+                if(($dataSet.Tables[0].Rows[$i][8]) -eq "BIOS Update") {
+                    $ExecuteDll = "common_bios_pxeboot_default.dll"
+                }
+                else {
+                    $ExecuteDll = "common_image_pxeboot_default.dll.dll"
+                }
             } 
             else 
             {            
-                $sqlCmd.CommandText = "
+                $MySqlCmd = "
                         update Test_Control_Main 
                         set    TCM_Status = 'DONE'
                         where  TCM_ID = '$TCM_ID'
                     "
-                $NULL = $SqlCmd.executenonquery()
+                DATABASE "update" $MySqlCmd    
+
                 # image patch write "Done" to TR_Resulte.json
                 if( $TRconfig.TestStatus -eq "DONE" )
                 {
@@ -116,6 +128,7 @@
                 $updatedJson = $TRconfig | ConvertTo-Json -Depth 10
                 $updatedJson | Set-Content -Path $TRPath
                 $ExecuteDll = $NULL
+
             }     
         }
     }

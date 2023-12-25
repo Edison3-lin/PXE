@@ -1,3 +1,7 @@
+C:\Users\edison\Downloads\GitHub\TestManager\Template\obj\Debug\Template.csproj.AssemblyReference.cache
+C:\Users\edison\Downloads\GitHub\TestManager\Template\obj\Debug\Template.csproj.CoreCompileInputs.cache
+C:\Users\edison\Downloads\GitHub\TestManager\Template\obj\Debug\Template.dll
+C:\Users\edison\Downloads\GitHub\TestManager\Template\obj\Debug\Template.pdb
 C:\TestManager\TestManager\Template\bin\Debug\Template.dll
 C:\TestManager\TestManager\Template\bin\Debug\Template.pdb
 C:\TestManager\TestManager\Template\bin\Debug\CommonLibrary.dll
@@ -9,7 +13,3 @@ C:\TestManager\TestManager\Template\obj\Debug\Template.csproj.CoreCompileInputs.
 C:\TestManager\TestManager\Template\obj\Debug\Template.csproj.CopyComplete
 C:\TestManager\TestManager\Template\obj\Debug\Template.dll
 C:\TestManager\TestManager\Template\obj\Debug\Template.pdb
-C:\Users\edison\Downloads\GitHub\TestManager\Template\obj\Debug\Template.csproj.AssemblyReference.cache
-C:\Users\edison\Downloads\GitHub\TestManager\Template\obj\Debug\Template.csproj.CoreCompileInputs.cache
-C:\Users\edison\Downloads\GitHub\TestManager\Template\obj\Debug\Template.dll
-C:\Users\edison\Downloads\GitHub\TestManager\Template\obj\Debug\Template.pdb

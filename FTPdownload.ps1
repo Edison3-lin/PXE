@@ -9,8 +9,7 @@
     $outputfile = $Directory+'\'+$baseName+'_result.log'
 
     # TestManager pass $remoteFile
-    process_log "remoteFile: $remoteFile"
-    #$remoteFile = "common_image_pxeboot_default.dll"
+    process_log("remot:  $remoteFile")
     $attDir = $remoteFile.split('.')[0]
     process_log "attDir: $attDir"
     $ftpPath = "/Test_Item/$attDir/"

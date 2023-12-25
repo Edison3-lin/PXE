@@ -193,6 +193,3 @@ function CreateDir($directoryName) {
     # DATABASE "update" $MySqlCmd2
     # DATABASE test
     # FTP "$ftpServer/" test 
-
-
-# FTP  "ftp://172.0.0.9:2121/Test_Item/image_installation_driver_default/Items.md5" down "c:\\TestManager\\ItemDownload\\Items.md5"
