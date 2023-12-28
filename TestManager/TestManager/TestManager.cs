@@ -14,7 +14,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Security.Cryptography;
 
-namespace TM1004 {
+namespace TM1005 {
     public class DigitalSignature
     {
         public RSAParameters PublicKey { get; private set; }
@@ -333,7 +333,7 @@ namespace TM1004 {
             string callingDomainName = AppDomain.CurrentDomain.FriendlyName;
             string basePath = AppDomain.CurrentDomain.BaseDirectory;
             AppDomain ad = AppDomain.CreateDomain("TestManager DLL");
-            ProxyObject obj = (ProxyObject)ad.CreateInstanceFromAndUnwrap(basePath+callingDomainName, "TM1004.ProxyObject");
+            ProxyObject obj = (ProxyObject)ad.CreateInstanceFromAndUnwrap(basePath+callingDomainName, "TM1005.ProxyObject");
             try {
                 ProcessLog(".... Loading LoadDll.dll ....");
                 obj.LoadAssembly(TMDIRECTORY+"LoadDll.dll");
@@ -382,7 +382,6 @@ namespace TM1004 {
             
         }
 
-
         // ******* SignKey *********
         static void SignKey(string fileName) {
             if(fileName.Split('.').Length  > 2) {
@@ -393,23 +392,23 @@ namespace TM1004 {
             string baseName = fileName.Split('.')[0];
             var digitalSignature = new DigitalSignature();
 
-            // 從文件加載密鑰
+            // Load key from file
             var privateKey = digitalSignature.LoadKeyFromFile(SIGNKEY+"privateKey.xml", true);
             var publicKey = digitalSignature.LoadKeyFromFile(SIGNKEY+"publicKey.xml", false);
 
-            // 簽名
+            // Sign
             string fileContent = File.ReadAllText(TMDIRECTORY+fileName);
             byte[] signature = digitalSignature.SignData(fileContent, privateKey);
 
-            // /****保存簽名到文件****/
-            // 假設 'signature' 是一個byte[]，包含簽名數據
+            /****Save signature to file****/
             string base64Signature = Convert.ToBase64String(signature);
             File.WriteAllText(SIGNKEY+baseName+".txt", base64Signature);
-            // /****保存簽名到文件****/
+            /****Save signature to file****/
         }
 
         // ******* CheckSignKey *********
         static bool CheckSignKey(string fileName) {
+            // Skip 11.22.33 file name
             if(fileName.Split('.').Length  > 2) {
                 ProcessLog(fileName);
                 return true;
@@ -418,17 +417,17 @@ namespace TM1004 {
             string baseName = fileName.Split('.')[0];
             var digitalSignature = new DigitalSignature();
 
-            // 從文件加載密鑰
+            // Load key from file
             var privateKey = digitalSignature.LoadKeyFromFile(SIGNKEY+"privateKey.xml", true);
             var publicKey = digitalSignature.LoadKeyFromFile(SIGNKEY+"publicKey.xml", false);
 
-            /****讀取並使用保存的簽名****/
+            /****Read and use saved signatures****/
             string fileContent = File.ReadAllText(TMDIRECTORY+fileName);
             string MyBase64Signature = File.ReadAllText(SIGNKEY+baseName+".txt");
             byte[] MySignature = Convert.FromBase64String(MyBase64Signature);
-            /****讀取並使用保存的簽名****/
+            /****Read and use saved signatures****/
 
-            // 使用公鑰驗證簽名
+            // Verify signature using public key
             bool isVerified = digitalSignature.VerifySignature(fileContent, MySignature, publicKey);
             return isVerified;
         }
@@ -472,18 +471,17 @@ namespace TM1004 {
 
                     // step 1. Got Job then downloading
                     ProcessLog("<<Step 1>> Got Job then downloading");
-                    // if (!File.Exists(ITEMDOWNLOAD+"DoneDll.txt"))
-                        if(!FTPdownload(JobList)) {
-                            ProcessLog(" <Job abort!>  MD5 check of FTP download failed");
-                            // Update TR_Result.json 
-                            string ftpJson = System.IO.File.ReadAllText(TR);
-                            JObject fjson = JObject.Parse(ftpJson);
-                            fjson["TestStatus"] = "DONE";
-                            string updatedJson = fjson.ToString();
-                            System.IO.File.WriteAllText(TR, updatedJson);
-                            DBupdateStatus();
-                            continue;
-                        }
+                    if(!FTPdownload(JobList)) {
+                        ProcessLog(" <Job abort!>  MD5 check of FTP download failed");
+                        // Update TR_Result.json 
+                        string ftpJson = System.IO.File.ReadAllText(TR);
+                        JObject fjson = JObject.Parse(ftpJson);
+                        fjson["TestStatus"] = "DONE";
+                        string updatedJson = fjson.ToString();
+                        System.IO.File.WriteAllText(TR, updatedJson);
+                        DBupdateStatus();
+                        continue;
+                    }
                     // else    
                     //     ProcessLog("Skip downloading again for reboot");
 
@@ -499,8 +497,12 @@ namespace TM1004 {
                         ProcessLog("<<Step 2>> Executing "+ITEMDOWNLOAD+JobList);
                         ExecuteDll(ITEMDOWNLOAD+JobList);
                     }
-                    catch (Exception ex) {
-                        ProcessLog("Run test Error!!! " + ex.Message);
+                    catch (Exception ex)
+                    {
+                        ProcessLog("--- ExecuteDll Exception caught ---");
+                        ProcessLog("Exception type:  " + ex.GetType().Name);
+                        ProcessLog("error message:  " + ex.Message);
+                        ProcessLog("stack trace:  " + ex.StackTrace);
                     }
                     // step 3. update test status to DB
                     ProcessLog("<<Step 3>>  update test status to DB ");
@@ -578,9 +580,14 @@ namespace TM1004 {
                     ProcessLog("<<Step 1>> Executing "+args[0]+" TimeOut: "+timeout+" seconds");
                     ExecuteDll(ITEMDOWNLOAD+args[0]);
                 }
-                catch (Exception ex) {
-                    ProcessLog("Run test Error!!! " + ex.Message);
-                }
+				catch (Exception ex)
+				{
+                    ProcessLog("--- ExecuteDll Exception caught ---");
+				    ProcessLog("Exception caught:");
+				    ProcessLog("Exception type:  " + ex.GetType().Name);
+				    ProcessLog("error message:  " + ex.Message);
+				    ProcessLog("stack trace:  " + ex.StackTrace);
+				}
             }   // Test DLL only 
 
             // Close window
@@ -606,11 +613,8 @@ namespace TM1004 {
             if (method == null)
                 return false;
             Object obj = Activator.CreateInstance(tp);
-            var r = method.Invoke(obj, args);
-            if(r.ToString() == "True") 
-                return true;
-            else 
-                return false;
+            method.Invoke(obj, args);
+            return true;
         }
     }    
 }

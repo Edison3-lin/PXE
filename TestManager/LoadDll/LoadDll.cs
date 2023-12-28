@@ -40,31 +40,46 @@ namespace LoadDll {
             try {
                 myTest.GetMethod("Setup").Invoke(myObj, new object[] {});
             }
-            catch (Exception ex) {
-                WriteLog( "Setup() Error!!! " + ex.Message);
-            }  
+            catch (Exception ex)
+            {
+                WriteLog("--- Setup() Exception caught ---");
+                WriteLog("Exception type:  " + ex.GetType().Name);
+                WriteLog("error message:  " + ex.Message);
+                WriteLog("stack trace:  " + ex.StackTrace);
+            }
 
             try {
                 myTest.GetMethod("Run").Invoke(myObj, new object[] {});            
             }
-            catch (Exception ex) {
-                WriteLog( "Run() Error!!! " + ex.Message);
-            }   
+            catch (Exception ex)
+            {
+                WriteLog("--- Run() Exception caught ---");
+                WriteLog("Exception type:  " + ex.GetType().Name);
+                WriteLog("error message:  " + ex.Message);
+                WriteLog("stack trace:  " + ex.StackTrace);
+            }
 
             try {
                 myTest.GetMethod("UpdateResults").Invoke(myObj, new object[] {});            
             }
-            catch (Exception ex) {
-                WriteLog( "UpdateResults() Error!!! " + ex.Message);
-            }   
+            catch (Exception ex)
+            {
+                WriteLog("--- UpdateResults() Exception caught ---");
+                WriteLog("Exception type:  " + ex.GetType().Name);
+                WriteLog("error message:  " + ex.Message);
+                WriteLog("stack trace:  " + ex.StackTrace);
+            }
 
             try {
                myTest.GetMethod("TearDown").Invoke(myObj, new object[] {});   
             }   
-            catch (Exception ex) {
-                WriteLog( "TearDown() Error!!! " + ex.Message);
-            }   
-
+            catch (Exception ex)
+            {
+                WriteLog("--- TearDown() Exception caught ---");
+                WriteLog("Exception type:  " + ex.GetType().Name);
+                WriteLog("error message:  " + ex.Message);
+                WriteLog("stack trace:  " + ex.StackTrace);
+            }
         }
     }
 }

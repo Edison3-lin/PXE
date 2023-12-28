@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\TestManager\\TestManager\\image_installation_driver_default\\image_installation_driver_default.csproj": {}
+    "C:\\Users\\edison\\Downloads\\GitHub\\PXE\\TestManager\\image_installation_driver_default\\image_installation_driver_default.csproj": {}
   },
   "projects": {
-    "C:\\TestManager\\TestManager\\image_installation_driver_default\\image_installation_driver_default.csproj": {
+    "C:\\Users\\edison\\Downloads\\GitHub\\PXE\\TestManager\\image_installation_driver_default\\image_installation_driver_default.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\TestManager\\TestManager\\image_installation_driver_default\\image_installation_driver_default.csproj",
+        "projectUniqueName": "C:\\Users\\edison\\Downloads\\GitHub\\PXE\\TestManager\\image_installation_driver_default\\image_installation_driver_default.csproj",
         "projectName": "image_installation_driver_default",
-        "projectPath": "C:\\TestManager\\TestManager\\image_installation_driver_default\\image_installation_driver_default.csproj",
+        "projectPath": "C:\\Users\\edison\\Downloads\\GitHub\\PXE\\TestManager\\image_installation_driver_default\\image_installation_driver_default.csproj",
         "packagesPath": "C:\\Users\\edison\\.nuget\\packages\\",
-        "outputPath": "C:\\TestManager\\TestManager\\image_installation_driver_default\\obj\\",
+        "outputPath": "C:\\Users\\edison\\Downloads\\GitHub\\PXE\\TestManager\\image_installation_driver_default\\obj\\",
         "projectStyle": "PackageReference",
         "skipContentFileWrite": true,
         "fallbackFolders": [
@@ -38,6 +38,10 @@
       "frameworks": {
         "net472": {
           "dependencies": {
+            "EPPlus": {
+              "target": "Package",
+              "version": "[7.0.5, )"
+            },
             "Microsoft.Office.Interop.Excel": {
               "target": "Package",
               "version": "[15.0.4795.1001, )"
@@ -47,6 +51,20 @@
               "version": "[13.0.3, )"
             }
           }
+        }
+      },
+      "runtimes": {
+        "win": {
+          "#import": []
+        },
+        "win-arm64": {
+          "#import": []
+        },
+        "win-x64": {
+          "#import": []
+        },
+        "win-x86": {
+          "#import": []
         }
       }
     }

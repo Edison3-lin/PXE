@@ -17,9 +17,6 @@ using CaptainWin.CommonAPI;
 namespace Template {
     public class MyTemplate {
         private const string TR = "C:\\TestManager\\TR_Result.json";
-        public static void Setup() {
-        }
-
         public static void Run()
         {
             string ftpJson = System.IO.File.ReadAllText(TR);
@@ -34,28 +31,28 @@ namespace Template {
             //     CaptainWin.CommonAPI.DoSleep.Sleep(3, 1);
             // }    
 
-            DllIndex++; // 2
-            if( DllIndex > index ) {
-                RecordDllIndex(DllIndex);
-                CaptainWin.CommonAPI.Smode.GetSmode();
-            }    
-
-            DllIndex++; // 2
-            if( DllIndex > index ) {
-                RecordDllIndex(DllIndex);
-                CaptainWin.CommonAPI.HDMI.HdmiConnectionStatus();
-            }    
+            // DllIndex++; // 2
+            // if( DllIndex > index ) {
+            //     RecordDllIndex(DllIndex);
+            //     CaptainWin.CommonAPI.Smode.GetSmode();
+            // }    
 
             // DllIndex++; // 2
             // if( DllIndex > index ) {
             //     RecordDllIndex(DllIndex);
-            //     CaptainWin.CommonAPI.SysInfo.GetWMI("Win32_OperatingSystem");
+            //    CaptainWin.CommonAPI.HDMI.HdmiConnectionStatus();
+            // }    
+
+            // DllIndex++; // 2
+            // if( DllIndex > index ) {
+            //     RecordDllIndex(DllIndex);
+            //     CaptainWin.CommonAPI.SysInfo.GetWMI("Win32_BIOS");
             // }    
 
             // DllIndex++; // 3
             // if( DllIndex > index ) {
             //     RecordDllIndex(DllIndex);
-            //     CaptainWin.CommonAPI.DoReboot.Reboot(10);
+            //     CaptainWin.CommonAPI.DoReboot.Reboot(60);
             // }    
 
             // DllIndex++; // 4
@@ -64,23 +61,12 @@ namespace Template {
             //     CaptainWin.CommonAPI.SysInfo.GetWMI("Win32_SMBIOSMemory");
             // }    
 
-            // DllIndex++; // 4
-            // if( DllIndex > index ) {
-            //     RecordDllIndex(DllIndex);
-            //     CaptainWin.CommonAPI.SysInfo.GetWMI("Win32_PhysicalMemoryLocation");
-            // }    
-
             // DllIndex++; // 5
             // if( DllIndex > index ) {
             //     RecordDllIndex(DllIndex);
-            //     CaptainWin.CommonAPI.SysInfo.GetWMI("Win32_MemoryArray");
+            //     CaptainWin.CommonAPI.SysInfo.GetWMI("Win32_OperatingSystem");
             // }    
 
-            // DllIndex++; // 6
-            // if( DllIndex > index ) {
-            //     RecordDllIndex(DllIndex);
-            //     CaptainWin.CommonAPI.SysInfo.GetWMI("Win32_MemoryDevice");
-            // }    
 
             // DllIndex++; // 7
             // if( DllIndex > index ) {
@@ -88,28 +74,34 @@ namespace Template {
             //     CaptainWin.CommonAPI.Culture.GetCulture();
             // }    
 
-            // DllIndex++; // 4
-            // if( DllIndex > index ) {
-            //     RecordDllIndex(DllIndex);
-            //     CaptainWin.CommonAPI.GetSystemInfo.GetOSVersion();
-            //     CaptainWin.CommonAPI.GetSystemInfo.GetSystemType();
-            //     CaptainWin.CommonAPI.GetSystemInfo.GetProcessorName();
-            //     CaptainWin.CommonAPI.GetSystemInfo.GetRunningTime();
-            //     CaptainWin.CommonAPI.GetSystemInfo.GetPhysicalMemory();
-            //     CaptainWin.CommonAPI.GetSystemInfo.GetAvailableMemory();
-            //     CaptainWin.CommonAPI.GetSystemInfo.GetCpuId();
-            //     CaptainWin.CommonAPI.GetSystemInfo.GetCPUCount();
-            //     CaptainWin.CommonAPI.GetSystemInfo.GetDiskDevice();
-            // }    
+            DllIndex++; // 4
+            if( DllIndex > index ) {
+                RecordDllIndex(DllIndex);
+                // CaptainWin.CommonAPI.GetSystemInfo.GetOSVersion();
+                // CaptainWin.CommonAPI.GetSystemInfo.GetSystemType();
+                // CaptainWin.CommonAPI.GetSystemInfo.GetProcessorName();
+                // CaptainWin.CommonAPI.GetSystemInfo.GetRunningTime();
+                // CaptainWin.CommonAPI.GetSystemInfo.GetPhysicalMemory();
+                // CaptainWin.CommonAPI.GetSystemInfo.GetCpuId();
+                // CaptainWin.CommonAPI.GetSystemInfo.GetCPUCount();
+                // CaptainWin.CommonAPI.GetSystemInfo.GetDiskDevice();
+                CaptainWin.CommonAPI.GetSystemInfo.GetDiskSpace();
+            }    
             //********* SIT 依序填寫執行的DLL的項目 /End/
 
             RecordDllIndex(0);
         }
 
         public static void UpdateResults() {
+                CaptainWin.CommonAPI.GetSystemInfo.GetOSVersion();
+        }
+
+        public static void Setup() {
+                CaptainWin.CommonAPI.GetSystemInfo.GetPhysicalMemory();
         }
 
         public static void TearDown() {
+                CaptainWin.CommonAPI.GetSystemInfo.GetSystemType();
         }
 
         public static void RecordDllIndex(int DllIndex) {

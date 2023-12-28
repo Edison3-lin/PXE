@@ -11,3 +11,15 @@ C:\TestManager\TestManager\image_installation_driver_default\obj\Debug\image_ins
 C:\TestManager\TestManager\image_installation_driver_default\obj\Debug\image_installation_driver_default.csproj.CoreCompileInputs.cache
 C:\TestManager\TestManager\image_installation_driver_default\obj\Debug\image_installation_driver_default.dll
 C:\TestManager\TestManager\image_installation_driver_default\obj\Debug\image_installation_driver_default.pdb
+C:\TestManager\TestManager\image_installation_driver_default\bin\Debug\image_installation_driver_default.dll
+C:\TestManager\TestManager\image_installation_driver_default\bin\Debug\image_installation_driver_default.pdb
+C:\TestManager\TestManager\image_installation_driver_default\bin\Debug\Microsoft.Office.Interop.Excel.dll
+C:\TestManager\TestManager\image_installation_driver_default\bin\Debug\Newtonsoft.Json.dll
+C:\TestManager\TestManager\image_installation_driver_default\bin\Debug\LoadDll.dll
+C:\TestManager\TestManager\image_installation_driver_default\obj\Debug\image_installation_driver_default.csproj.CopyComplete
+C:\TestManager\TestManager\image_installation_driver_default\obj\Debug\image_installation_driver_default.csproj.ResolveComReference.cache
+C:\TestManager\TestManager\image_installation_driver_default\bin\Debug\EPPlus.dll
+C:\TestManager\TestManager\image_installation_driver_default\bin\Debug\EPPlus.Interfaces.dll
+C:\TestManager\TestManager\image_installation_driver_default\bin\Debug\EPPlus.System.Drawing.dll
+C:\TestManager\TestManager\image_installation_driver_default\bin\Debug\Microsoft.IO.RecyclableMemoryStream.dll
+C:\TestManager\TestManager\image_installation_driver_default\bin\Debug\System.ComponentModel.Annotations.dll
