@@ -335,11 +335,11 @@ namespace TM1005 {
             AppDomain ad = AppDomain.CreateDomain("TestManager DLL");
             ProxyObject obj = (ProxyObject)ad.CreateInstanceFromAndUnwrap(basePath+callingDomainName, "TM1005.ProxyObject");
             try {
-                ProcessLog(".... Loading LoadDll.dll ....");
-                obj.LoadAssembly(TMDIRECTORY+"LoadDll.dll");
+                ProcessLog("Load... "+dllPath);
+                obj.LoadAssembly(dllPath);
             }
             catch (System.IO.FileNotFoundException) {
-                ProcessLog("!!! Can't find out LoadDll.dll");
+                ProcessLog("!!! Can't find out "+dllPath);
                 return;
             }
 
@@ -347,9 +347,52 @@ namespace TM1005 {
             ItemWatch = new Stopwatch();
             ItemWatch.Start();
 
-            ProcessLog(".... Loading "+dllPath+" ....");
-            Object[] p = new object[]{ dllPath };
-            obj.Invoke("RunTestItem",p);
+            ProcessLog("Run... "+dllPath);
+            Object[] p = new object[]{};
+
+            try {
+                obj.Invoke("Setup",p);
+            }
+            catch (Exception ex)
+            {
+                ProcessLog("--- Setup() Exception caught ---");
+                ProcessLog("Exception type:  " + ex.GetType().Name);
+                ProcessLog("error message:  " + ex.Message);
+                ProcessLog("stack trace:  " + ex.StackTrace);
+            }
+
+            try {
+                obj.Invoke("Run",p);
+            }
+            catch (Exception ex)
+            {
+                ProcessLog("--- Run() Exception caught ---");
+                ProcessLog("Exception type:  " + ex.GetType().Name);
+                ProcessLog("error message:  " + ex.Message);
+                ProcessLog("stack trace:  " + ex.StackTrace);
+            }
+
+            try {
+                obj.Invoke("UpdateResults",p);
+            }
+            catch (Exception ex)
+            {
+                ProcessLog("--- UpdateResults() Exception caught ---");
+                ProcessLog("Exception type:  " + ex.GetType().Name);
+                ProcessLog("error message:  " + ex.Message);
+                ProcessLog("stack trace:  " + ex.StackTrace);
+            }
+
+            try {
+                obj.Invoke("TearDown",p);
+            }   
+            catch (Exception ex)
+            {
+                ProcessLog("--- TearDown() Exception caught ---");
+                ProcessLog("Exception type:  " + ex.GetType().Name);
+                ProcessLog("error message:  " + ex.Message);
+                ProcessLog("stack trace:  " + ex.StackTrace);
+            }
 
             // Stop Stopwatch
             ItemWatch.Stop();
@@ -441,89 +484,9 @@ namespace TM1005 {
             Thread monitoringThread = new Thread(MonitorExecutionTime);     // Another Thread to watch timeout
             monitoringThread.Start();
 
-            if(args.Length == 0) {
-                do {
-                    CreateDirectoryAndFile();
 
-                    //if( UpgradeCheck() )
-                    if( false )
-                    {
-                        ProcessLog("Found a new TestManager version on FTP, trying to upgrade! ");
-                        UpgradTestManager();
-                    }   
 
-                    JobList = DBimage();
-                    if(JobList == null)
-                    {
-                        JobList = DBjob();
-                    }
-                    if(JobList == null)
-                    {
-                        Thread.Sleep(2000);
-                        continue;
-                    } 
-                    else if (JobList == "Unconnected_")
-                    {
-                        ProcessLog("Waiting 5 sec for DB connected !!!");
-                        Thread.Sleep(5000);
-                        continue;
-                    }    
-
-                    // step 1. Got Job then downloading
-                    ProcessLog("<<Step 1>> Got Job then downloading");
-                    if(!FTPdownload(JobList)) {
-                        ProcessLog(" <Job abort!>  MD5 check of FTP download failed");
-                        // Update TR_Result.json 
-                        string ftpJson = System.IO.File.ReadAllText(TR);
-                        JObject fjson = JObject.Parse(ftpJson);
-                        fjson["TestStatus"] = "DONE";
-                        string updatedJson = fjson.ToString();
-                        System.IO.File.WriteAllText(TR, updatedJson);
-                        DBupdateStatus();
-                        continue;
-                    }
-                    // else    
-                    //     ProcessLog("Skip downloading again for reboot");
-
-                    startTime = DateTime.Now;
-
-                    // Read TR_Result.json timeout
-                    string jsonString = System.IO.File.ReadAllText(TR);
-                    JObject json = JObject.Parse(jsonString);
-                    timeout = (int)json["Test_TimeOut"];
-
-                    try {
-                        // step 2. Execute Dll
-                        ProcessLog("<<Step 2>> Executing "+ITEMDOWNLOAD+JobList);
-                        ExecuteDll(ITEMDOWNLOAD+JobList);
-                    }
-                    catch (Exception ex)
-                    {
-                        ProcessLog("--- ExecuteDll Exception caught ---");
-                        ProcessLog("Exception type:  " + ex.GetType().Name);
-                        ProcessLog("error message:  " + ex.Message);
-                        ProcessLog("stack trace:  " + ex.StackTrace);
-                    }
-                    // step 3. update test status to DB
-                    ProcessLog("<<Step 3>>  update test status to DB ");
-                    DBupdateStatus();   //Update test result
-
-                    // step 5. Job_List的PowerShell程式都完成，繼續Listening job status
-                    ProcessLog("<<Step 4>>  Keep listening job status");
-                    endTime = DateTime.Now;
-                    timeSpan = endTime - startTime;
-                    ProcessLog("Spend " + timeSpan.Minutes + " Minutes " + timeSpan.Seconds + " Senconds");
-
-                    // step 5. upload log to FTP
-                    ProcessLog("<<Step 5>>  upload log to FTP");
-                    ProcessLog("=================Completed================");
-
-                    FTPupload();
-
-                } while (!(Console.KeyAvailable && Console.ReadKey(true).Key == ConsoleKey.Escape));
-            }  
             // Test DLL only          
-            else {
                 // **** Use c:\TestManager\Key\privateKey.xml Sign c:\TestManager\*.*
                 // *** Generate key ***
                 // try
@@ -561,7 +524,7 @@ namespace TM1005 {
                 //     Console.WriteLine(e.Message);
                 // }                
                 CreateDirectoryAndFile();
-                if( args.Length > 1 ) {
+                if( false ) {
                     string strNumber = args[1];
                     try {
                         timeout = int.Parse(strNumber);
@@ -577,7 +540,6 @@ namespace TM1005 {
                 }
 
                 try {
-                    ProcessLog("<<Step 1>> Executing "+args[0]+" TimeOut: "+timeout+" seconds");
                     ExecuteDll(ITEMDOWNLOAD+args[0]);
                 }
 				catch (Exception ex)
@@ -588,7 +550,6 @@ namespace TM1005 {
 				    ProcessLog("error message:  " + ex.Message);
 				    ProcessLog("stack trace:  " + ex.StackTrace);
 				}
-            }   // Test DLL only 
 
             // Close window
             ProcessLog("**** Exit ****");            

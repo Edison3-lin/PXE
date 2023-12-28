@@ -1,16 +1,24 @@
-[2023/12/28 AM 11:09:42] <<Step 1>> Executing common_bios_pxeboot_default.dll TimeOut: 2147483647 seconds
-[2023/12/28 AM 11:09:42] .... Loading LoadDll.dll ....
-[2023/12/28 AM 11:09:42] .... Loading C:\TestManager\ItemDownload\common_bios_pxeboot_default.dll ....
-[2023/12/28 AM 11:09:42] **** Exit ****
-[2023/12/28 AM 11:12:19] <<Step 1>> Executing common_bios_pxeboot_default.dll TimeOut: 2147483647 seconds
-[2023/12/28 AM 11:12:19] .... Loading LoadDll.dll ....
-[2023/12/28 AM 11:12:19] .... Loading C:\TestManager\ItemDownload\common_bios_pxeboot_default.dll ....
-[2023/12/28 AM 11:12:19] **** Exit ****
-[2023/12/28 AM 11:13:49] <<Step 1>> Executing common_bios_pxeboot_default.dll TimeOut: 2147483647 seconds
-[2023/12/28 AM 11:13:49] .... Loading LoadDll.dll ....
-[2023/12/28 AM 11:13:49] .... Loading C:\TestManager\ItemDownload\common_bios_pxeboot_default.dll ....
-[2023/12/28 AM 11:13:49] **** Exit ****
-[2023/12/28 AM 11:16:26] <<Step 1>> Executing common_bios_pxeboot_default.dll TimeOut: 2147483647 seconds
-[2023/12/28 AM 11:16:26] .... Loading LoadDll.dll ....
-[2023/12/28 AM 11:16:26] .... Loading C:\TestManager\ItemDownload\common_bios_pxeboot_default.dll ....
-[2023/12/28 AM 11:16:26] **** Exit ****
+[2023/12/28 下午 09:25:00] Load... C:\TestManager\ItemDownload\Template.dll
+[2023/12/28 下午 09:25:00] Run... C:\TestManager\ItemDownload\Template.dll
+[2023/12/28 下午 09:25:03] **** Exit ****
+[2023/12/28 下午 09:29:53] Load... C:\TestManager\ItemDownload\Template.dll
+[2023/12/28 下午 09:29:53] Run... C:\TestManager\ItemDownload\Template.dll
+[2023/12/28 下午 09:29:53] **** Exit ****
+[2023/12/28 下午 09:30:31] Load... C:\TestManager\ItemDownload\Template.dll
+[2023/12/28 下午 09:30:31] Run... C:\TestManager\ItemDownload\Template.dll
+[2023/12/28 下午 09:30:32] **** Exit ****
+[2023/12/28 下午 09:32:36] Load... C:\TestManager\ItemDownload\Template.dll
+[2023/12/28 下午 09:32:36] Run... C:\TestManager\ItemDownload\Template.dll
+[2023/12/28 下午 09:32:36] **** Exit ****
+[2023/12/28 下午 09:33:08] Load... C:\TestManager\ItemDownload\Template.dll
+[2023/12/28 下午 09:33:08] Run... C:\TestManager\ItemDownload\Template.dll
+[2023/12/28 下午 09:33:08] **** Exit ****
+[2023/12/28 下午 09:33:31] Load... C:\TestManager\ItemDownload\Template.dll
+[2023/12/28 下午 09:33:31] Run... C:\TestManager\ItemDownload\Template.dll
+[2023/12/28 下午 09:33:32] **** Exit ****
+[2023/12/28 下午 09:34:49] Load... C:\TestManager\ItemDownload\Template.dll
+[2023/12/28 下午 09:34:49] Run... C:\TestManager\ItemDownload\Template.dll
+[2023/12/28 下午 09:34:50] **** Exit ****
+[2023/12/28 下午 09:36:03] Load... C:\TestManager\ItemDownload\Template.dll
+[2023/12/28 下午 09:36:03] Run... C:\TestManager\ItemDownload\Template.dll
+[2023/12/28 下午 09:36:04] **** Exit ****
