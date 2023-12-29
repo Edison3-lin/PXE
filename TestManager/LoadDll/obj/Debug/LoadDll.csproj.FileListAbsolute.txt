@@ -1,6 +1,0 @@
-C:\TestManager\TestManager\LoadDll\bin\Debug\LoadDll.dll
-C:\TestManager\TestManager\LoadDll\bin\Debug\LoadDll.pdb
-C:\TestManager\TestManager\LoadDll\obj\Debug\LoadDll.csproj.AssemblyReference.cache
-C:\TestManager\TestManager\LoadDll\obj\Debug\LoadDll.csproj.CoreCompileInputs.cache
-C:\TestManager\TestManager\LoadDll\obj\Debug\LoadDll.dll
-C:\TestManager\TestManager\LoadDll\obj\Debug\LoadDll.pdb

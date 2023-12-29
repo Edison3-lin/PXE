@@ -1,12 +1,12 @@
 {
-  "TCM_ID": 0,
-  "TR_ID": 0,
-  "TestResult": "",
-  "TestStatus": "",
-  "Test_TimeOut": 0,
-  "Reboot": 0,
-  "Text_Log_File_Path": [
-    "c:\\TestManager\\MyLog\\TestManager.log",
-    "c:\\TestManager\\MyLog\\LoadDll.log"
-  ]
+    "TCM_ID":  7,
+    "TR_ID":  7,
+    "TestResult":  "Error",
+    "TestStatus":  "Done",
+    "Test_TimeOut":  10,
+    "Reboot":  0,
+    "Text_Log_File_Path":  [
+                               "c:\\TestManager\\MyLog\\TestManager.log",
+                               "c:\\TestManager\\MyLog\\LoadDll.log"
+                           ]
 }

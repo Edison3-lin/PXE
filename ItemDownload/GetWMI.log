@@ -1,0 +1,254 @@
+
+[[ 2023/12/29 下午 04:08:57 ]] WMI Class - Win32_BIOS
+Class Name: Win32_BIOS
+Description: Win32_BIOS
+Properties:
+BiosCharacteristics: 7
+BiosCharacteristics: 11
+BiosCharacteristics: 12
+BiosCharacteristics: 15
+BiosCharacteristics: 16
+BiosCharacteristics: 19
+BiosCharacteristics: 20
+BiosCharacteristics: 21
+BiosCharacteristics: 22
+BiosCharacteristics: 23
+BiosCharacteristics: 24
+BiosCharacteristics: 25
+BiosCharacteristics: 27
+BiosCharacteristics: 30
+BiosCharacteristics: 32
+BiosCharacteristics: 33
+BiosCharacteristics: 40
+BiosCharacteristics: 42
+BiosCharacteristics: 43
+BIOSVersion: ACRSYS - 2
+BIOSVersion: V1.15
+BIOSVersion: INSYDE Corp. - 54441115
+BuildNumber: Not available
+Caption: V1.15
+CodeSet: Not available
+CurrentLanguage: Not available
+Description: V1.15
+EmbeddedControllerMajorVersion: 1
+EmbeddedControllerMinorVersion: 6
+IdentificationCode: Not available
+InstallableLanguages: Not available
+InstallDate: Not available
+LanguageEdition: Not available
+ListOfLanguages: Not available
+Manufacturer: INSYDE Corp.
+Name: V1.15
+OtherTargetOS: Not available
+PrimaryBIOS: True
+ReleaseDate: 20230907000000.000000+000
+SerialNumber: N8ZGRBC2K125007DD17600
+SMBIOSBIOSVersion: V1.15
+SMBIOSMajorVersion: 3
+SMBIOSMinorVersion: 4
+SMBIOSPresent: True
+SoftwareElementID: V1.15
+SoftwareElementState: 3
+Status: OK
+SystemBiosMajorVersion: 1
+SystemBiosMinorVersion: 15
+TargetOperatingSystem: 0
+Version: ACRSYS - 2
+-- Next Device --
+
+
+[[ 2023/12/29 下午 04:12:53 ]] WMI Class - Win32_SMBIOSMemory
+Class Name: Win32_SMBIOSMemory
+Description: Win32_SMBIOSMemory
+Properties:
+Access: Not available
+AdditionalErrorData: Not available
+Availability: Not available
+BlockSize: Not available
+Caption: 記憶體陣列
+ConfigManagerErrorCode: Not available
+ConfigManagerUserConfig: Not available
+CorrectableError: Not available
+CreationClassName: Win32_MemoryArray
+Description: 記憶體陣列
+DeviceID: Memory Array 0
+EndingAddress: 33554431
+ErrorAccess: Not available
+ErrorAddress: Not available
+ErrorCleared: Not available
+ErrorData: Not available
+ErrorDataOrder: Not available
+ErrorDescription: Not available
+ErrorInfo: Not available
+ErrorMethodology: Not available
+ErrorResolution: Not available
+ErrorTime: Not available
+ErrorTransferSize: Not available
+InstallDate: Not available
+LastErrorCode: Not available
+Name: 記憶體陣列
+NumberOfBlocks: Not available
+OtherErrorDescription: Not available
+PNPDeviceID: Not available
+PowerManagementCapabilities: Not available
+PowerManagementSupported: Not available
+Purpose: Not available
+StartingAddress: 0
+Status: Not available
+StatusInfo: Not available
+SystemCreationClassName: Win32_ComputerSystem
+SystemLevelAddress: Not available
+SystemName: DESKTOP-VD92848
+-- Next Device --
+
+Access: Not available
+AdditionalErrorData: Not available
+Availability: Not available
+BlockSize: Not available
+Caption: 記憶體裝置
+ConfigManagerErrorCode: Not available
+ConfigManagerUserConfig: Not available
+CorrectableError: Not available
+CreationClassName: Win32_MemoryDevice
+Description: 記憶體裝置
+DeviceID: Memory Device 0
+EndingAddress: 16777215
+ErrorAccess: Not available
+ErrorAddress: Not available
+ErrorCleared: Not available
+ErrorData: Not available
+ErrorDataOrder: Not available
+ErrorDescription: Not available
+ErrorInfo: Not available
+ErrorMethodology: Not available
+ErrorResolution: Not available
+ErrorTime: Not available
+ErrorTransferSize: Not available
+InstallDate: Not available
+LastErrorCode: Not available
+Name: 記憶體裝置
+NumberOfBlocks: Not available
+OtherErrorDescription: Not available
+PNPDeviceID: Not available
+PowerManagementCapabilities: Not available
+PowerManagementSupported: Not available
+Purpose: Not available
+StartingAddress: 0
+Status: Not available
+StatusInfo: Not available
+SystemCreationClassName: Win32_ComputerSystem
+SystemLevelAddress: Not available
+SystemName: DESKTOP-VD92848
+-- Next Device --
+
+Access: Not available
+AdditionalErrorData: Not available
+Availability: Not available
+BlockSize: Not available
+Caption: 記憶體裝置
+ConfigManagerErrorCode: Not available
+ConfigManagerUserConfig: Not available
+CorrectableError: Not available
+CreationClassName: Win32_MemoryDevice
+Description: 記憶體裝置
+DeviceID: Memory Device 1
+EndingAddress: 16777215
+ErrorAccess: Not available
+ErrorAddress: Not available
+ErrorCleared: Not available
+ErrorData: Not available
+ErrorDataOrder: Not available
+ErrorDescription: Not available
+ErrorInfo: Not available
+ErrorMethodology: Not available
+ErrorResolution: Not available
+ErrorTime: Not available
+ErrorTransferSize: Not available
+InstallDate: Not available
+LastErrorCode: Not available
+Name: 記憶體裝置
+NumberOfBlocks: Not available
+OtherErrorDescription: Not available
+PNPDeviceID: Not available
+PowerManagementCapabilities: Not available
+PowerManagementSupported: Not available
+Purpose: Not available
+StartingAddress: 0
+Status: Not available
+StatusInfo: Not available
+SystemCreationClassName: Win32_ComputerSystem
+SystemLevelAddress: Not available
+SystemName: DESKTOP-VD92848
+-- Next Device --
+
+
+[[ 2023/12/29 下午 04:12:53 ]] WMI Class - Win32_OperatingSystem
+Class Name: Win32_OperatingSystem
+Description: Win32_OperatingSystem
+Properties:
+BootDevice: \Device\HarddiskVolume1
+BuildNumber: 22621
+BuildType: Multiprocessor Free
+Caption: Microsoft Windows 11 專業版
+CodeSet: 950
+CountryCode: 886
+CreationClassName: Win32_OperatingSystem
+CSCreationClassName: Win32_ComputerSystem
+CSDVersion: Not available
+CSName: DESKTOP-VD92848
+CurrentTimeZone: 480
+DataExecutionPrevention_32BitApplications: True
+DataExecutionPrevention_Available: True
+DataExecutionPrevention_Drivers: True
+DataExecutionPrevention_SupportPolicy: 2
+Debug: False
+Description: 
+Distributed: False
+EncryptionLevel: 256
+ForegroundApplicationBoost: 2
+FreePhysicalMemory: 24187660
+FreeSpaceInPagingFiles: 2097152
+FreeVirtualMemory: 23996828
+InstallDate: 20230814081820.000000+480
+LargeSystemCache: Not available
+LastBootUpTime: 20231229161019.500000+480
+LocalDateTime: 20231229161253.435000+480
+Locale: 0404
+Manufacturer: Microsoft Corporation
+MaxNumberOfProcesses: 4294967295
+MaxProcessMemorySize: 137438953344
+MUILanguages: zh-TW
+Name: Microsoft Windows 11 專業版|C:\Windows|\Device\Harddisk0\Partition3
+NumberOfLicensedUsers: 0
+NumberOfProcesses: 240
+NumberOfUsers: 3
+OperatingSystemSKU: 48
+Organization: 
+OSArchitecture: 64 位元
+OSLanguage: 1028
+OSProductSuite: 256
+OSType: 18
+OtherTypeDescription: Not available
+PAEEnabled: Not available
+PlusProductID: Not available
+PlusVersionNumber: Not available
+PortableOperatingSystem: False
+Primary: True
+ProductType: 1
+RegisteredUser: Windows 使用者
+SerialNumber: 00330-80000-00000-AA711
+ServicePackMajorVersion: 0
+ServicePackMinorVersion: 0
+SizeStoredInPagingFiles: 2097152
+Status: OK
+SuiteMask: 272
+SystemDevice: \Device\HarddiskVolume3
+SystemDirectory: C:\Windows\system32
+SystemDrive: C:
+TotalSwapSpaceSize: Not available
+TotalVirtualMemorySize: 35381112
+TotalVisibleMemorySize: 33283960
+Version: 10.0.22621
+WindowsDirectory: C:\Windows
+-- Next Device --
+

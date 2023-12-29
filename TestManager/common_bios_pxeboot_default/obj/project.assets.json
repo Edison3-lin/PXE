@@ -1306,11 +1306,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\edison\\Downloads\\GitHub\\PXE\\TestManager\\common_bios_pxeboot_default\\common_bios_pxeboot_default.csproj",
+      "projectUniqueName": "C:\\TestManager\\TestManager\\common_bios_pxeboot_default\\common_bios_pxeboot_default.csproj",
       "projectName": "common_bios_pxeboot_default",
-      "projectPath": "C:\\Users\\edison\\Downloads\\GitHub\\PXE\\TestManager\\common_bios_pxeboot_default\\common_bios_pxeboot_default.csproj",
+      "projectPath": "C:\\TestManager\\TestManager\\common_bios_pxeboot_default\\common_bios_pxeboot_default.csproj",
       "packagesPath": "C:\\Users\\edison\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\edison\\Downloads\\GitHub\\PXE\\TestManager\\common_bios_pxeboot_default\\obj\\",
+      "outputPath": "C:\\TestManager\\TestManager\\common_bios_pxeboot_default\\obj\\",
       "projectStyle": "PackageReference",
       "skipContentFileWrite": true,
       "fallbackFolders": [

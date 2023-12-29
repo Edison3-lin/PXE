@@ -14,7 +14,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Security.Cryptography;
 
-namespace TM1005 {
+namespace TM1006 {
     public class DigitalSignature
     {
         public RSAParameters PublicKey { get; private set; }
@@ -253,12 +253,12 @@ namespace TM1005 {
 
         // ***** FTPdownload *****
         static bool FTPdownload(string jobList) {
+            ProcessLog("   Log => C:\\TestManager\\MyLog\\FTPdownload_process.log");
             Runspace runspace = RunspaceFactory.CreateRunspace();
             runspace.Open();
             Pipeline pipeline = runspace.CreatePipeline();
 
             try {
-                // pipeline.Commands.AddScript(TMDIRECTORY+"RunAs.ps1");
                 pipeline.Commands.AddScript("$remoteFile = \""+jobList+"\"");
                 pipeline.Commands.AddScript(TMDIRECTORY+"FTPdownload.ps1");
                 var result = pipeline.Invoke();
@@ -303,14 +303,41 @@ namespace TM1005 {
             return;
         }
 
+        // ***** DB test *****
+        static bool DBtest() {
+            Runspace runspace = RunspaceFactory.CreateRunspace();
+            runspace.Open();
+            Pipeline pipeline = runspace.CreatePipeline();
+            try {
+                pipeline.Commands.AddScript(TMDIRECTORY+"DBtest.ps1");
+                var result = pipeline.Invoke();
+                if(result[0].ToString() != "Open")
+                {
+                    runspace.Close();
+                    return false;
+                }
+            }    
+            catch (Exception ex) {
+                ProcessLog("DB test "+ex.Message);
+                runspace.Close();
+                return false;
+            }
+            return true;
+        }
+
         // ***** update job_status to DB *****
-        static bool DBupdateStatus() {
+        static bool DBupdateStatus(string TestStatus) {
             Runspace runspace = RunspaceFactory.CreateRunspace();
             runspace.Open();
             Pipeline pipeline = runspace.CreatePipeline();
 
             try {
-                pipeline.Commands.AddScript(TMDIRECTORY+"DBupdateStatus.ps1");
+                if( TestStatus == " ") {
+                    pipeline.Commands.AddScript(TMDIRECTORY+"DBupdateStatus.ps1");
+                }
+                else {
+                    pipeline.Commands.AddScript(TMDIRECTORY+"DBupdateStatus.ps1 "+TestStatus);
+                }
                 var result = pipeline.Invoke();
                 if(result[0].ToString() == "Unconnected_")
                 {
@@ -333,27 +360,81 @@ namespace TM1005 {
             string callingDomainName = AppDomain.CurrentDomain.FriendlyName;
             string basePath = AppDomain.CurrentDomain.BaseDirectory;
             AppDomain ad = AppDomain.CreateDomain("TestManager DLL");
-            ProxyObject obj = (ProxyObject)ad.CreateInstanceFromAndUnwrap(basePath+callingDomainName, "TM1005.ProxyObject");
+            ProxyObject obj = (ProxyObject)ad.CreateInstanceFromAndUnwrap(basePath+callingDomainName, "TM1006.ProxyObject");
             try {
-                ProcessLog(".... Loading LoadDll.dll ....");
-                obj.LoadAssembly(TMDIRECTORY+"LoadDll.dll");
+                ProcessLog("Loading.."+dllPath);
+                obj.LoadAssembly(dllPath);
             }
             catch (System.IO.FileNotFoundException) {
-                ProcessLog("!!! Can't find out LoadDll.dll");
+                ProcessLog("!!! Can't find out Dll");
                 return;
             }
+
+            // Read Reboot status    
+            string ftpJson = System.IO.File.ReadAllText(TR);
+            JObject fjson = JObject.Parse(ftpJson);
+            bool Reboot = ( (int)fjson["Reboot"] > 0 ); //Reboot?
 
             // Start Stopwatch
             ItemWatch = new Stopwatch();
             ItemWatch.Start();
 
-            ProcessLog(".... Loading "+dllPath+" ....");
-            Object[] p = new object[]{ dllPath };
-            obj.Invoke("RunTestItem",p);
+            /* Setup() */
+            try {
+                if(!Reboot) {
+                    obj.Invoke("Setup", null);
+                    ProcessLog("Setup() - Success! ");
+                }    
+            }
+            catch (Exception ex)
+            {
+                ProcessLog("--- Setup() Exception caught ---");
+                ProcessLog("Exception type:  " + ex.GetType().Name);
+                ProcessLog("error message:  " + ex.Message);
+                ProcessLog("stack trace:  " + ex.StackTrace);
+            }
+
+            /* Run() */
+            try {
+                obj.Invoke("Run", null);
+                ProcessLog("Run() - Success! ");
+            }
+            catch (Exception ex)
+            {
+                ProcessLog("--- Run() Exception caught ---");
+                ProcessLog("Exception type:  " + ex.GetType().Name);
+                ProcessLog("error message:  " + ex.Message);
+                ProcessLog("stack trace:  " + ex.StackTrace);
+            }
+
+            /* UpdateResults() */
+            try {
+                obj.Invoke("UpdateResults", null);
+                ProcessLog("UpdateResults() - Success! ");
+            }
+            catch (Exception ex)
+            {
+                ProcessLog("--- UpdateResults() Exception caught ---");
+                ProcessLog("Exception type:  " + ex.GetType().Name);
+                ProcessLog("error message:  " + ex.Message);
+                ProcessLog("stack trace:  " + ex.StackTrace);
+            }
+
+            /* TearDown() */
+            try {
+                obj.Invoke("TearDown", null);
+                ProcessLog("TearDown() - Success! ");
+            }
+            catch (Exception ex)
+            {
+                ProcessLog("--- TearDown() Exception caught ---");
+                ProcessLog("Exception type:  " + ex.GetType().Name);
+                ProcessLog("error message:  " + ex.Message);
+                ProcessLog("stack trace:  " + ex.StackTrace);
+            }
 
             // Stop Stopwatch
             ItemWatch.Stop();
-			
             AppDomain.Unload(ad);
             obj = null;
         }
@@ -444,6 +525,15 @@ namespace TM1005 {
             if(args.Length == 0) {
                 do {
                     CreateDirectoryAndFile();
+                    while(!DBtest()) {
+                        ProcessLog("Waiting 3 sec for database connection... ");
+                        Thread.Sleep(3000);
+                    };
+
+                    // Read Reboot status    
+                    string ftpJson = System.IO.File.ReadAllText(TR);
+                    JObject fjson = JObject.Parse(ftpJson);
+                    bool Reboot = ( (int)fjson["Reboot"] > 0 ); //Reboot?
 
                     //if( UpgradeCheck() )
                     if( false )
@@ -471,19 +561,16 @@ namespace TM1005 {
 
                     // step 1. Got Job then downloading
                     ProcessLog("<<Step 1>> Got Job then downloading");
-                    if(!FTPdownload(JobList)) {
-                        ProcessLog(" <Job abort!>  MD5 check of FTP download failed");
-                        // Update TR_Result.json 
-                        string ftpJson = System.IO.File.ReadAllText(TR);
-                        JObject fjson = JObject.Parse(ftpJson);
-                        fjson["TestStatus"] = "DONE";
-                        string updatedJson = fjson.ToString();
-                        System.IO.File.WriteAllText(TR, updatedJson);
-                        DBupdateStatus();
-                        continue;
-                    }
-                    // else    
-                    //     ProcessLog("Skip downloading again for reboot");
+                    if(!Reboot) {
+                        if(!FTPdownload(JobList)) {
+                            ProcessLog(" <<Drop!>> MD5 check failed");
+                            ProcessLog("=================Completed================");
+                            DBupdateStatus("Drop");
+                            continue;
+                        }
+                    }    
+                    else    
+                        ProcessLog("Skip downloading after reboot");
 
                     startTime = DateTime.Now;
 
@@ -495,6 +582,7 @@ namespace TM1005 {
                     try {
                         // step 2. Execute Dll
                         ProcessLog("<<Step 2>> Executing "+ITEMDOWNLOAD+JobList);
+                        DBupdateStatus("Running");
                         ExecuteDll(ITEMDOWNLOAD+JobList);
                     }
                     catch (Exception ex)
@@ -506,9 +594,9 @@ namespace TM1005 {
                     }
                     // step 3. update test status to DB
                     ProcessLog("<<Step 3>>  update test status to DB ");
-                    DBupdateStatus();   //Update test result
+                    DBupdateStatus(" ");   //Update test result
 
-                    // step 5. Job_List的PowerShell程式都完成，繼續Listening job status
+                    // step 4. Listening job status
                     ProcessLog("<<Step 4>>  Keep listening job status");
                     endTime = DateTime.Now;
                     timeSpan = endTime - startTime;
@@ -517,7 +605,6 @@ namespace TM1005 {
                     // step 5. upload log to FTP
                     ProcessLog("<<Step 5>>  upload log to FTP");
                     ProcessLog("=================Completed================");
-
                     FTPupload();
 
                 } while (!(Console.KeyAvailable && Console.ReadKey(true).Key == ConsoleKey.Escape));

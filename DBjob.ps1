@@ -38,13 +38,15 @@
         where 
             A.DP_UUID = '$UUID' and
             (UPPER(A.TCM_Status) != 'DROP' and UPPER(A.TCM_Status) != 'DONE' and UPPER(A.TCM_Status) != 'OK' 
-            and  UPPER(A.TCM_Status) != 'ERROR' or A.TCM_Status is null)
-                        and B.TCM_ID = A.TCM_ID
+            and UPPER(A.TCM_Status) != 'ERROR' or A.TCM_Status is null)
+            and B.TCM_ID = A.TCM_ID
             and A.TCM_FinishDate is null
             and (UPPER(B.TR_Excute_Status) != 'DONE' or B.TR_Excute_Status is null)
-                and B.TMD_ID = C.TMD_ID
-                and C.TA_ID = D.TA_ID
-                and C.TPD_ID = E.TPD_ID
+            and (UPPER(B.TR_Excute_Status) != 'DROP' or B.TR_Excute_Status is null)
+            and (UPPER(B.TR_Excute_Status) != 'ABORT' or B.TR_Excute_Status is null)
+            and B.TMD_ID = C.TMD_ID
+            and C.TA_ID = D.TA_ID
+            and C.TPD_ID = E.TPD_ID
             order by A.TCM_ID
                 ,E.TPD_Priority
                 ,C.TMD_Priority

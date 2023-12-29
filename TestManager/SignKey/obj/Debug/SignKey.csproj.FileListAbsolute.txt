@@ -1,7 +1,0 @@
-C:\TestManager\TestManager\SignKey\bin\Debug\SignKey.exe.config
-C:\TestManager\TestManager\SignKey\bin\Debug\SignKey.exe
-C:\TestManager\TestManager\SignKey\bin\Debug\SignKey.pdb
-C:\TestManager\TestManager\SignKey\obj\Debug\SignKey.csproj.AssemblyReference.cache
-C:\TestManager\TestManager\SignKey\obj\Debug\SignKey.csproj.CoreCompileInputs.cache
-C:\TestManager\TestManager\SignKey\obj\Debug\SignKey.exe
-C:\TestManager\TestManager\SignKey\obj\Debug\SignKey.pdb

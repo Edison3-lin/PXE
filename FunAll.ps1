@@ -24,9 +24,9 @@ Function DATABASE($do, $mySqlCmd) {
     $timer.Stop()
 
     if ($do -eq "test") {
-        Write-Host $SqlConn.State
+        $connect = $SqlConn.State
         $SqlConn.close()
-        return
+        return $connect
     }    
     # Check connection status
     if ($SqlConn.State -ne 'Open') {

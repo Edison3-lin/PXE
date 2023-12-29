@@ -1,0 +1,43 @@
+
+[[ 2023/12/29 下午 04:08:51 ]] -- GetPhysicalMemory --
+Total Physical Memory:     32,504 MB
+Available Physical Memory: 22,583 MB
+
+[[ 2023/12/29 下午 04:12:53 ]] -- GetOSVersion --
+Microsoft Windows 11 專業版
+
+[[ 2023/12/29 下午 04:12:53 ]] -- GetSystemType --
+64bit operating system
+
+[[ 2023/12/29 下午 04:12:53 ]] -- GetProcessorName --
+13th Gen Intel(R) Core(TM) i9-13900HX
+
+[[ 2023/12/29 下午 04:12:55 ]] -- GetRunningTime --
+0 day 0:2:35
+
+[[ 2023/12/29 下午 04:12:55 ]] -- GetPhysicalMemory --
+Total Physical Memory:     32,504 MB
+Available Physical Memory: 23,621 MB
+
+[[ 2023/12/29 下午 04:12:58 ]] -- GetCpuId --
+BFEBFBFF000B0671
+
+[[ 2023/12/29 下午 04:12:59 ]] -- GetCPUCount --
+32
+
+[[ 2023/12/29 下午 04:12:59 ]] -- GetDiskDevice --
+1. SDXC Card
+2.  USB  SanDisk 3.2Gen1 USB Device
+3. SAMSUNG MZVL21T0HCLR-00B07
+4. SAMSUNG MZVL21T0HCLR-00B07
+
+[[ 2023/12/29 下午 04:12:59 ]] -- GetDiskSpace --
+C: <VolumeName>:            <Size>:    953 GB <Free Space>:    819 GB
+D: <VolumeName>: SD_64G     <Size>:     59 GB <Free Space>:     54 GB
+E: <VolumeName>: My32G      <Size>:     28 GB <Free Space>:     26 GB
+
+[[ 2023/12/29 下午 04:12:59 ]] -- GetOSVersion --
+Microsoft Windows 11 專業版
+
+[[ 2023/12/29 下午 04:12:59 ]] -- GetSystemType --
+64bit operating system

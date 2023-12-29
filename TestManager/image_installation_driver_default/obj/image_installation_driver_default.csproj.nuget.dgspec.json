@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\edison\\Downloads\\GitHub\\PXE\\TestManager\\image_installation_driver_default\\image_installation_driver_default.csproj": {}
+    "C:\\TestManager\\TestManager\\image_installation_driver_default\\image_installation_driver_default.csproj": {}
   },
   "projects": {
-    "C:\\Users\\edison\\Downloads\\GitHub\\PXE\\TestManager\\image_installation_driver_default\\image_installation_driver_default.csproj": {
+    "C:\\TestManager\\TestManager\\image_installation_driver_default\\image_installation_driver_default.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\edison\\Downloads\\GitHub\\PXE\\TestManager\\image_installation_driver_default\\image_installation_driver_default.csproj",
+        "projectUniqueName": "C:\\TestManager\\TestManager\\image_installation_driver_default\\image_installation_driver_default.csproj",
         "projectName": "image_installation_driver_default",
-        "projectPath": "C:\\Users\\edison\\Downloads\\GitHub\\PXE\\TestManager\\image_installation_driver_default\\image_installation_driver_default.csproj",
+        "projectPath": "C:\\TestManager\\TestManager\\image_installation_driver_default\\image_installation_driver_default.csproj",
         "packagesPath": "C:\\Users\\edison\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\edison\\Downloads\\GitHub\\PXE\\TestManager\\image_installation_driver_default\\obj\\",
+        "outputPath": "C:\\TestManager\\TestManager\\image_installation_driver_default\\obj\\",
         "projectStyle": "PackageReference",
         "skipContentFileWrite": true,
         "fallbackFolders": [

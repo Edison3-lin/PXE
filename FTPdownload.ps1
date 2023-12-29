@@ -9,9 +9,9 @@
     $outputfile = $Directory+'\'+$baseName+'_result.log'
 
     # TestManager pass $remoteFile
-    process_log("remot:  $remoteFile")
+    # process_log("remot:  $remoteFile")
     $attDir = $remoteFile.split('.')[0]
-    process_log "attDir: $attDir"
+    # process_log "attDir: $attDir"
     $ftpPath = "/Test_Item/$attDir/"
     $localPath = "c:\\TestManager\\ItemDownload\\"
     if (-not (Test-Path -Path $localPath -PathType Container)) {
@@ -24,7 +24,8 @@
         FTP "$ftpServer/Test_Item/$attDir/Items.md5" down "$($localPath)Items.md5"
     }
     catch {
-        process_log "Can't found out MD5 file"
+        process_log "- No MD5 file -"
+        process_log  "======Download finished======"
         return $false
     }
 
@@ -54,12 +55,13 @@
                     $f = Get-Item "$localPath$name"
                     $DownOK = CheckMD5 $f ".\\ItemDownload\\Items.md5"
                     if($DownOK) {
-                        process_log "  <$name> MD5 OK!"
+                        # process_log "  <$name> MD5 OK!"
                         break
                     }
                 }
                 if(-not $DownOK) {                
-                    process_log "!!!!!! <$name> MD5 ERROR !!!!!!"
+                    process_log "<<$name>> MD5 fail!"
+                    process_log  "======Download finished======"
                     return $false
                 }    
             }
@@ -70,5 +72,5 @@
         }
     }
 
-process_log  "======MD5 veriry OK! Download finished======"
+process_log  "======Download finished======"
 return $true

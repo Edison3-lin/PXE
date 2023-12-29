@@ -1,16 +1,20 @@
-[2023/12/28 AM 11:09:42] <<Step 1>> Executing common_bios_pxeboot_default.dll TimeOut: 2147483647 seconds
-[2023/12/28 AM 11:09:42] .... Loading LoadDll.dll ....
-[2023/12/28 AM 11:09:42] .... Loading C:\TestManager\ItemDownload\common_bios_pxeboot_default.dll ....
-[2023/12/28 AM 11:09:42] **** Exit ****
-[2023/12/28 AM 11:12:19] <<Step 1>> Executing common_bios_pxeboot_default.dll TimeOut: 2147483647 seconds
-[2023/12/28 AM 11:12:19] .... Loading LoadDll.dll ....
-[2023/12/28 AM 11:12:19] .... Loading C:\TestManager\ItemDownload\common_bios_pxeboot_default.dll ....
-[2023/12/28 AM 11:12:19] **** Exit ****
-[2023/12/28 AM 11:13:49] <<Step 1>> Executing common_bios_pxeboot_default.dll TimeOut: 2147483647 seconds
-[2023/12/28 AM 11:13:49] .... Loading LoadDll.dll ....
-[2023/12/28 AM 11:13:49] .... Loading C:\TestManager\ItemDownload\common_bios_pxeboot_default.dll ....
-[2023/12/28 AM 11:13:49] **** Exit ****
-[2023/12/28 AM 11:16:26] <<Step 1>> Executing common_bios_pxeboot_default.dll TimeOut: 2147483647 seconds
-[2023/12/28 AM 11:16:26] .... Loading LoadDll.dll ....
-[2023/12/28 AM 11:16:26] .... Loading C:\TestManager\ItemDownload\common_bios_pxeboot_default.dll ....
-[2023/12/28 AM 11:16:26] **** Exit ****
+[2023/12/29 下午 04:08:49] <<Step 1>> Got Job then downloading
+[2023/12/29 下午 04:08:49]    Log => C:\TestManager\MyLog\FTPdownload_process.log
+[2023/12/29 下午 04:08:50] <<Step 2>> Executing C:\TestManager\ItemDownload\Template.dll
+[2023/12/29 下午 04:08:51] Loading..C:\TestManager\ItemDownload\Template.dll
+[2023/12/29 下午 04:08:54] Setup() - Success! 
+[2023/12/29 下午 04:11:07] Waiting 3 sec for database connection... 
+[2023/12/29 下午 04:11:40] Waiting 3 sec for database connection... 
+[2023/12/29 下午 04:12:13] Waiting 3 sec for database connection... 
+[2023/12/29 下午 04:12:51] <<Step 1>> Got Job then downloading
+[2023/12/29 下午 04:12:51] Skip downloading after reboot
+[2023/12/29 下午 04:12:51] <<Step 2>> Executing C:\TestManager\ItemDownload\Template.dll
+[2023/12/29 下午 04:12:52] Loading..C:\TestManager\ItemDownload\Template.dll
+[2023/12/29 下午 04:12:59] Run() - Success! 
+[2023/12/29 下午 04:12:59] UpdateResults() - Success! 
+[2023/12/29 下午 04:12:59] TearDown() - Success! 
+[2023/12/29 下午 04:12:59] <<Step 3>>  update test status to DB 
+[2023/12/29 下午 04:13:00] <<Step 4>>  Keep listening job status
+[2023/12/29 下午 04:13:00] Spend 0 Minutes 9 Senconds
+[2023/12/29 下午 04:13:00] <<Step 5>>  upload log to FTP
+[2023/12/29 下午 04:13:00] =================Completed================
