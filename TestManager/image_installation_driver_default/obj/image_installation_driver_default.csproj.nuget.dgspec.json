@@ -10,7 +10,7 @@
         "projectUniqueName": "C:\\TestManager\\TestManager\\image_installation_driver_default\\image_installation_driver_default.csproj",
         "projectName": "image_installation_driver_default",
         "projectPath": "C:\\TestManager\\TestManager\\image_installation_driver_default\\image_installation_driver_default.csproj",
-        "packagesPath": "C:\\Users\\edison\\.nuget\\packages\\",
+        "packagesPath": "C:\\Users\\ediso\\.nuget\\packages\\",
         "outputPath": "C:\\TestManager\\TestManager\\image_installation_driver_default\\obj\\",
         "projectStyle": "PackageReference",
         "skipContentFileWrite": true,
@@ -18,7 +18,7 @@
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\edison\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\ediso\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],

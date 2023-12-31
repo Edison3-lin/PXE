@@ -84,6 +84,8 @@ namespace TM1006 {
         static Stopwatch ItemWatch = new Stopwatch();
         private static int timeout = int.MaxValue;
 
+        private static string arg0 = null;
+        private static string arg1 = null;
         // **** Check Need Update ****
         static bool UpgradeCheck() {
             Runspace runspace = RunspaceFactory.CreateRunspace();
@@ -447,10 +449,24 @@ namespace TM1006 {
 
                 if( NewWatch ) {
                     if(ItemWatch.Elapsed.TotalSeconds >= timeout) {
-                        Console.WriteLine("\n======================================================");
-                        Console.WriteLine($"Has been executed for <{ItemWatch.Elapsed.TotalSeconds}> seconds, Time-out time exceeded !!!!");
-                        Console.WriteLine("========================================================\n");
+                        Console.WriteLine("\n==========================================");
+                        Console.WriteLine($"    Time-out <{ItemWatch.Elapsed.TotalSeconds}> time exceeded !!!!");
+                        Console.WriteLine("==========================================\n");
+
+                        ProcessLog("==========================================");
+                        ProcessLog($"    Time-out <{ItemWatch.Elapsed.TotalSeconds}> time exceeded !!!!");
+                        ProcessLog("==========================================\n");
+
                         NewWatch = false;
+                        string exePath = Assembly.GetExecutingAssembly().Location;  // Get the path of the currently executing program
+                        string arguments;
+                        if (arg0 != null) {
+                            arguments = string.Format("{0} {1}", arg0, arg1);
+                        } else {
+                            arguments = null;
+                        }  
+                        Process.Start(exePath, arguments);                        
+                        Environment.Exit(0);                                        // Close current program
                     }
                 }
                 else {
@@ -611,6 +627,10 @@ namespace TM1006 {
             }  
             // Test DLL only          
             else {
+                arg0 = args[0];
+                arg1 = args[1];
+
+do{                
                 // **** Use c:\TestManager\Key\privateKey.xml Sign c:\TestManager\*.*
                 // *** Generate key ***
                 // try
@@ -675,6 +695,8 @@ namespace TM1006 {
 				    ProcessLog("error message:  " + ex.Message);
 				    ProcessLog("stack trace:  " + ex.StackTrace);
 				}
+} while (!(Console.KeyAvailable && Console.ReadKey(true).Key == ConsoleKey.Escape));
+
             }   // Test DLL only 
 
             // Close window
