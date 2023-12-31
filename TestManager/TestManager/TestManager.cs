@@ -120,7 +120,8 @@ namespace TM1006 {
         // **** Update TestManager ****
         static void UpgradTestManager() {
             int currentProcessId = Process.GetCurrentProcess().Id;
-            string scriptCommand = $"Start-Process powershell -ArgumentList '-NoExit -File C:\\TestManager\\UpgradTestManager.ps1' -WindowStyle Hidden; Stop-Process -Id {currentProcessId}";
+            File.Copy("C:\\TestManager\\UpgradTestManager.ps1", "C:\\TestManager\\UT.ps1");
+            string scriptCommand = $"Start-Process powershell -ArgumentList '-NoExit -File C:\\TestManager\\UT.ps1' -WindowStyle Hidden; Stop-Process -Id {currentProcessId}";
 
             // Build ProcessStartInfo object，setting process information
              ProcessStartInfo psi = new ProcessStartInfo
@@ -458,15 +459,19 @@ namespace TM1006 {
                         ProcessLog("==========================================\n");
 
                         NewWatch = false;
-                        string exePath = Assembly.GetExecutingAssembly().Location;  // Get the path of the currently executing program
-                        string arguments;
-                        if (arg0 != null) {
-                            arguments = string.Format("{0} {1}", arg0, arg1);
-                        } else {
-                            arguments = null;
-                        }  
-                        Process.Start(exePath, arguments);                        
-                        Environment.Exit(0);                                        // Close current program
+
+                        /* Reset TestManager */
+                        if( false ) {
+                            string exePath = Assembly.GetExecutingAssembly().Location;  // Get the path of the currently executing program
+                            string arguments;
+                            if (arg0 != null) {
+                                arguments = string.Format("{0} {1}", arg0, arg1);
+                            } else {
+                                arguments = null;
+                            }  
+                            Process.Start(exePath, arguments);                        
+                            Environment.Exit(0);                                        // Close current program
+                        }    
                     }
                 }
                 else {
@@ -551,8 +556,8 @@ namespace TM1006 {
                     JObject fjson = JObject.Parse(ftpJson);
                     bool Reboot = ( (int)fjson["Reboot"] > 0 ); //Reboot?
 
-                    //if( UpgradeCheck() )
-                    if( false )
+                    if( UpgradeCheck() )
+                    // if( false )
                     {
                         ProcessLog("Found a new TestManager version on FTP, trying to upgrade! ");
                         UpgradTestManager();
@@ -629,8 +634,6 @@ namespace TM1006 {
             else {
                 arg0 = args[0];
                 arg1 = args[1];
-
-do{                
                 // **** Use c:\TestManager\Key\privateKey.xml Sign c:\TestManager\*.*
                 // *** Generate key ***
                 // try
@@ -695,8 +698,6 @@ do{
 				    ProcessLog("error message:  " + ex.Message);
 				    ProcessLog("stack trace:  " + ex.StackTrace);
 				}
-} while (!(Console.KeyAvailable && Console.ReadKey(true).Key == ConsoleKey.Escape));
-
             }   // Test DLL only 
 
             // Close window

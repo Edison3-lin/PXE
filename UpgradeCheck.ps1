@@ -24,6 +24,7 @@ function TM_Version($version) {
             if ($permissions -like "d*") {
                 if([int]$name -gt [int]$version )
                 {
+                    process_log "Now=$([int]$name) ,  FTP=$([int]$version)"
                     return $true
                 }
             }    

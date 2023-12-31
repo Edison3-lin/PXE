@@ -13,6 +13,8 @@ using Newtonsoft.Json.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading;
 using CaptainWin.CommonAPI;
+using System.Management.Automation;             // *.csproj 手動加入 <Reference Include="System.Management.Automation" />
+using System.Management.Automation.Runspaces;   // *.csproj 手動加入 <Reference Include="System.Management.Automation" />
 
 namespace Template {
     public class MyTemplate {
@@ -97,7 +99,23 @@ namespace Template {
         }
 
         public static void Setup() {
-                CaptainWin.CommonAPI.GetSystemInfo.GetPhysicalMemory();
+
+            try
+            {
+             Runspace runspace = RunspaceFactory.CreateRunspace();
+             runspace.Open();
+             Pipeline pipeline = runspace.CreatePipeline();
+             pipeline.Commands.AddScript("c:\\TestManager\\ItemDownload\\Abt1.ps1");
+             pipeline.Invoke();
+             runspace.Close();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error!!! " + ex.Message);
+            }
+
+
+                // CaptainWin.CommonAPI.GetSystemInfo.GetPhysicalMemory();
                 Console.ReadKey();
         }
 
