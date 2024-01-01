@@ -8,31 +8,31 @@ Function FTP_Download_TM() {
         $commonFilePath = ".\"
 
         # delete c:\TestManager all files
-        $files = Get-ChildItem -Path $commonFilePath -File
-        foreach ($file in $files) {
-            if ($file.Name -ne "UT.ps1")
-            {
-                if ($file.Name -notlike "TMservice*") 
-                { 
-                    if ($file.Name -notlike "Service*") 
-                    {
-                        if ($file.Name -notlike "InstallUtil*") 
-                        {
-                            Remove-Item $file.FullName -Force
-                        }
-                    }    
-                }    
-            }    
-        }
-
-        # # Get all files 
-        # $files = Get-ChildItem -Path ".\" -File
+        # $files = Get-ChildItem -Path $commonFilePath -File
         # foreach ($file in $files) {
-        #     if($file.Name -like "TM1*") {
-        #         process_log "delete.. $($file.FullName)" 
-        #         Remove-Item $file.FullName -Force
-        #     }
+        #     if ($file.Name -ne "UT.ps1")
+        #     {
+        #         if ($file.Name -notlike "TMservice*") 
+        #         { 
+        #             if ($file.Name -notlike "Service*") 
+        #             {
+        #                 if ($file.Name -notlike "InstallUtil*") 
+        #                 {
+        #                     # Remove-Item $file.FullName -Force
+        #                 }
+        #             }    
+        #         }    
+        #     }    
         # }
+
+        # Get all files 
+        $files = Get-ChildItem -Path ".\" -File
+        foreach ($file in $files) {
+            if($file.Name -like "TM1*") {
+                process_log "delete.. $($file.FullName)" 
+                Remove-Item $file.FullName -Force
+            }
+        }
 
         $ftpRequest = [System.Net.FtpWebRequest]::Create("$ftpServer$ftpDirectory")
         $ftpRequest.Credentials = New-Object System.Net.NetworkCredential($username, $password)

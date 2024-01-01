@@ -1,10 +1,11 @@
 {
-  "TCM_ID": 5070,
-  "TR_ID": 5107,
-  "TestResult": "",
-  "TestStatus": "DONE",
-  "Test_TimeOut": 321,
+  "TCM_ID": 2,
+  "TR_ID": 10,
+  "TestResult": "Pass",
+  "TestStatus": "Done",
+  "Test_TimeOut": 20,
   "Reboot": 0,
+  "TCM_Done": true,
   "Text_Log_File_Path": [
     "c:\\TestManager\\MyLog\\TestManager.log",
     "c:\\TestManager\\TestLog\\Common.log"

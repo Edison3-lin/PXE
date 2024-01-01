@@ -38,12 +38,11 @@
                             TR_Excute_Status = '$TestStatus' ,
                             TR_TestEndTime   = SYSDATETIME()
                     where   TR_ID = '$TR_ID'
-
-                    update  Test_Control_Main 
-                    set     TCM_Status     = 'DONE',  
-                            TCM_FinishDate = SYSDATETIME() 
-                    where   TCM_ID = '$TR_ID'
                     "
+                #     update  Test_Control_Main 
+                #     set     TCM_Status     = 'DONE',  
+                #             TCM_FinishDate = SYSDATETIME() 
+                #     where   TCM_ID = '$TR_ID'
         }
     }
     else
@@ -62,5 +61,15 @@
     }
 
     DATABASE "update" $MySqlCmd    
+
+    if( $TRconfig.TCM_Done ) {
+        $MySqlCmd = "
+                    update  Test_Control_Main 
+                    set     TCM_Status     = 'DONE',  
+                            TCM_FinishDate = SYSDATETIME() 
+                    where   TCM_ID = '$TCM_ID'
+                    "
+        DATABASE "update" $MySqlCmd    
+    }
 
 return 0

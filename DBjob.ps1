@@ -53,6 +53,15 @@
     "
 
     $dataSet = DATABASE "read" $MySqlCmd
+
+    # Write-Host $dataSet.Tables[0].Rows.Count
+    $TCM_list = New-Object System.Collections.Generic.List[Object]
+    for ($i=0; $i -lt $dataSet.Tables[0].Rows.Count; $i++) 
+    {
+        $TCM_list.Add($dataSet.Tables[0].Rows[$i][0])
+    }    
+
+
     if($dataSet -ne "Unconnected_") {
        for ($i=0; $i -lt $dataSet.Tables[0].Rows.Count; $i++) {
            $Test_Result = $dataSet.Tables[0].Rows[$i][4]
@@ -61,6 +70,16 @@
                $updatedJson = $TRconfig | ConvertTo-Json -Depth 10
                $updatedJson | Set-Content -Path $TRPath
                $TCM_ID = ($dataSet.Tables[0].Rows[$i][0])
+
+               # All TCM_ID done? 
+               $TCM_list.Remove($TCM_ID)
+               if($TCM_ID -notin $TCM_list) {
+                   $TRconfig.TCM_Done = $true
+               }
+               else {
+                   $TRconfig.TCM_Done = $false
+               }
+
                $TR_ID = ($dataSet.Tables[0].Rows[$i][3])
                $TA_Execute_Path = $dataSet.Tables[0].Rows[$i][12]
                $TRconfig.TCM_ID = $TCM_ID

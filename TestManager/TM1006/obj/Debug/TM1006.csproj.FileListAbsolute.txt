@@ -1,0 +1,8 @@
+C:\TestManager\TestManager\TestManager\obj\Debug\TM1006.csproj.AssemblyReference.cache
+C:\TestManager\TestManager\TestManager\obj\Debug\TM1006.csproj.CoreCompileInputs.cache
+C:\TestManager\TestManager\TestManager\obj\Debug\TM1006.csproj.CopyComplete
+C:\TestManager\TestManager\TestManager\obj\Debug\TM1006.exe
+C:\TestManager\TestManager\TestManager\obj\Debug\TM1006.pdb
+C:\TestManager\TM1006.exe.config
+C:\TestManager\TM1006.exe
+C:\TestManager\TM1006.pdb

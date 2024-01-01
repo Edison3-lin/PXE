@@ -33,11 +33,11 @@ namespace Template {
             //     CaptainWin.CommonAPI.DoSleep.Sleep(3, 1);
             // }    
 
-            // DllIndex++; // 2
-            // if( DllIndex > index ) {
-            //     RecordDllIndex(DllIndex);
-            //     CaptainWin.CommonAPI.Smode.GetSmode();
-            // }    
+            DllIndex++; // 2
+            if( DllIndex > index ) {
+                RecordDllIndex(DllIndex);
+                CaptainWin.CommonAPI.GetDark.IsDark();
+            }    
 
             // DllIndex++; // 2
             // if( DllIndex > index ) {
@@ -116,13 +116,39 @@ namespace Template {
 
 
                 // CaptainWin.CommonAPI.GetSystemInfo.GetPhysicalMemory();
-                Console.ReadKey();
+                // Console.ReadKey();
         }
 
         public static void TearDown() {
-                CaptainWin.CommonAPI.GetSystemInfo.GetSystemType();
+            CaptainWin.CommonAPI.GetSystemInfo.GetSystemType();
+            TestStatusChange("Done");
+            TestResultChange("Pass");
         }
 
+        public static void TestStatusChange(string TestStatus) {
+            try {
+                string ftpJson = System.IO.File.ReadAllText(TR);
+                JObject fjson = JObject.Parse(ftpJson);
+                fjson["TestStatus"] = TestStatus;
+                string updatedJson = fjson.ToString();
+                System.IO.File.WriteAllText(TR, updatedJson);
+            }
+            catch (Exception ex) {
+                Console.WriteLine($"An error occurred: {ex.Message}");
+            }
+        }   //TestStatus    
+        public static void TestResultChange(string TestResult) {
+            try {
+                string ftpJson = System.IO.File.ReadAllText(TR);
+                JObject fjson = JObject.Parse(ftpJson);
+                fjson["TestResult"] = TestResult;
+                string updatedJson = fjson.ToString();
+                System.IO.File.WriteAllText(TR, updatedJson);
+            }
+            catch (Exception ex) {
+                Console.WriteLine($"An error occurred: {ex.Message}");
+            }
+        }   //TestResult    
         public static void RecordDllIndex(int DllIndex) {
             try {
                 string ftpJson = System.IO.File.ReadAllText(TR);

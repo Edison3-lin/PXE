@@ -1,1 +1,221 @@
-[2023/12/31 下午 05:21:49] Found a new TestManager version on FTP, trying to upgrade! 
+[2024/1/1 上午 11:39:52] <<Step 1>> Got Job then downloading
+[2024/1/1 上午 11:39:52]    Log => C:\TestManager\MyLog\FTPdownload_process.log
+[2024/1/1 上午 11:39:53] <<Step 2>> Executing C:\TestManager\ItemDownload\Template.dll
+[2024/1/1 上午 11:39:54] Loading..C:\TestManager\ItemDownload\Template.dll
+[2024/1/1 上午 11:39:56] Setup() - Success! 
+[2024/1/1 上午 11:39:57] Run() - Success! 
+[2024/1/1 上午 11:39:57] UpdateResults() - Success! 
+[2024/1/1 上午 11:39:57] TearDown() - Success! 
+[2024/1/1 上午 11:39:57] <<Step 3>>  update test status to DB 
+[2024/1/1 上午 11:39:58] <<Step 4>>  Keep listening job status
+[2024/1/1 上午 11:39:58] Spend 0 Minutes 5 Senconds
+[2024/1/1 上午 11:39:58] <<Step 5>>  upload log to FTP
+[2024/1/1 上午 11:39:58] =================Completed================
+[2024/1/1 上午 11:42:12] <<Step 1>> Got Job then downloading
+[2024/1/1 上午 11:42:12]    Log => C:\TestManager\MyLog\FTPdownload_process.log
+[2024/1/1 上午 11:42:12] <<Step 2>> Executing C:\TestManager\ItemDownload\Template.dll
+[2024/1/1 上午 11:42:14] Loading..C:\TestManager\ItemDownload\Template.dll
+[2024/1/1 上午 11:42:17] Setup() - Success! 
+[2024/1/1 上午 11:42:17] Run() - Success! 
+[2024/1/1 上午 11:42:17] UpdateResults() - Success! 
+[2024/1/1 上午 11:42:17] TearDown() - Success! 
+[2024/1/1 上午 11:42:17] <<Step 3>>  update test status to DB 
+[2024/1/1 上午 11:42:19] <<Step 4>>  Keep listening job status
+[2024/1/1 上午 11:42:19] Spend 0 Minutes 6 Senconds
+[2024/1/1 上午 11:42:19] <<Step 5>>  upload log to FTP
+[2024/1/1 上午 11:42:19] =================Completed================
+[2024/1/1 上午 11:45:16] <<Step 1>> Got Job then downloading
+[2024/1/1 上午 11:45:16]    Log => C:\TestManager\MyLog\FTPdownload_process.log
+[2024/1/1 上午 11:45:16] <<Step 2>> Executing C:\TestManager\ItemDownload\Template.dll
+[2024/1/1 上午 11:45:17] Loading..C:\TestManager\ItemDownload\Template.dll
+[2024/1/1 上午 11:45:21] Setup() - Success! 
+[2024/1/1 上午 11:45:21] Run() - Success! 
+[2024/1/1 上午 11:45:21] UpdateResults() - Success! 
+[2024/1/1 上午 11:45:21] TearDown() - Success! 
+[2024/1/1 上午 11:45:21] <<Step 3>>  update test status to DB 
+[2024/1/1 上午 11:45:22] <<Step 4>>  Keep listening job status
+[2024/1/1 上午 11:45:22] Spend 0 Minutes 5 Senconds
+[2024/1/1 上午 11:45:22] <<Step 5>>  upload log to FTP
+[2024/1/1 上午 11:45:22] =================Completed================
+[2024/1/1 上午 11:59:34] <<Step 1>> Got Job then downloading
+[2024/1/1 上午 11:59:34]    Log => C:\TestManager\MyLog\FTPdownload_process.log
+[2024/1/1 上午 11:59:35] <<Step 2>> Executing C:\TestManager\ItemDownload\Template.dll
+[2024/1/1 上午 11:59:36] Loading..C:\TestManager\ItemDownload\Template.dll
+[2024/1/1 上午 11:59:39] Setup() - Success! 
+[2024/1/1 上午 11:59:39] Run() - Success! 
+[2024/1/1 上午 11:59:40] UpdateResults() - Success! 
+[2024/1/1 上午 11:59:40] TearDown() - Success! 
+[2024/1/1 上午 11:59:40] <<Step 3>>  update test status to DB 
+[2024/1/1 上午 11:59:41] <<Step 4>>  Keep listening job status
+[2024/1/1 上午 11:59:41] Spend 0 Minutes 5 Senconds
+[2024/1/1 上午 11:59:41] <<Step 5>>  upload log to FTP
+[2024/1/1 上午 11:59:41] =================Completed================
+[2024/1/1 上午 11:59:44] <<Step 1>> Got Job then downloading
+[2024/1/1 上午 11:59:44]    Log => C:\TestManager\MyLog\FTPdownload_process.log
+[2024/1/1 上午 11:59:45] <<Step 2>> Executing C:\TestManager\ItemDownload\Template.dll
+[2024/1/1 上午 11:59:46] Loading..C:\TestManager\ItemDownload\Template.dll
+[2024/1/1 上午 11:59:49] Setup() - Success! 
+[2024/1/1 上午 11:59:49] Run() - Success! 
+[2024/1/1 上午 11:59:49] UpdateResults() - Success! 
+[2024/1/1 上午 11:59:49] TearDown() - Success! 
+[2024/1/1 上午 11:59:49] <<Step 3>>  update test status to DB 
+[2024/1/1 上午 11:59:51] <<Step 4>>  Keep listening job status
+[2024/1/1 上午 11:59:51] Spend 0 Minutes 5 Senconds
+[2024/1/1 上午 11:59:51] <<Step 5>>  upload log to FTP
+[2024/1/1 上午 11:59:51] =================Completed================
+[2024/1/1 上午 11:59:54] <<Step 1>> Got Job then downloading
+[2024/1/1 上午 11:59:54]    Log => C:\TestManager\MyLog\FTPdownload_process.log
+[2024/1/1 上午 11:59:54] <<Step 2>> Executing C:\TestManager\ItemDownload\Template.dll
+[2024/1/1 上午 11:59:56] Loading..C:\TestManager\ItemDownload\Template.dll
+[2024/1/1 上午 11:59:59] Setup() - Success! 
+[2024/1/1 上午 11:59:59] Run() - Success! 
+[2024/1/1 上午 11:59:59] UpdateResults() - Success! 
+[2024/1/1 上午 11:59:59] TearDown() - Success! 
+[2024/1/1 上午 11:59:59] <<Step 3>>  update test status to DB 
+[2024/1/1 下午 12:00:00] <<Step 4>>  Keep listening job status
+[2024/1/1 下午 12:00:00] Spend 0 Minutes 5 Senconds
+[2024/1/1 下午 12:00:00] <<Step 5>>  upload log to FTP
+[2024/1/1 下午 12:00:00] =================Completed================
+[2024/1/1 下午 12:00:04] <<Step 1>> Got Job then downloading
+[2024/1/1 下午 12:00:04]    Log => C:\TestManager\MyLog\FTPdownload_process.log
+[2024/1/1 下午 12:00:04] <<Step 2>> Executing C:\TestManager\ItemDownload\Template.dll
+[2024/1/1 下午 12:00:05] Loading..C:\TestManager\ItemDownload\Template.dll
+[2024/1/1 下午 12:00:08] Setup() - Success! 
+[2024/1/1 下午 12:00:08] Run() - Success! 
+[2024/1/1 下午 12:00:09] UpdateResults() - Success! 
+[2024/1/1 下午 12:00:09] TearDown() - Success! 
+[2024/1/1 下午 12:00:09] <<Step 3>>  update test status to DB 
+[2024/1/1 下午 12:00:10] <<Step 4>>  Keep listening job status
+[2024/1/1 下午 12:00:10] Spend 0 Minutes 5 Senconds
+[2024/1/1 下午 12:00:10] <<Step 5>>  upload log to FTP
+[2024/1/1 下午 12:00:10] =================Completed================
+[2024/1/1 下午 12:00:14] <<Step 1>> Got Job then downloading
+[2024/1/1 下午 12:00:14]    Log => C:\TestManager\MyLog\FTPdownload_process.log
+[2024/1/1 下午 12:00:14] <<Step 2>> Executing C:\TestManager\ItemDownload\Template.dll
+[2024/1/1 下午 12:00:15] Loading..C:\TestManager\ItemDownload\Template.dll
+[2024/1/1 下午 12:00:18] Setup() - Success! 
+[2024/1/1 下午 12:00:18] Run() - Success! 
+[2024/1/1 下午 12:00:18] UpdateResults() - Success! 
+[2024/1/1 下午 12:00:18] TearDown() - Success! 
+[2024/1/1 下午 12:00:18] <<Step 3>>  update test status to DB 
+[2024/1/1 下午 12:00:19] <<Step 4>>  Keep listening job status
+[2024/1/1 下午 12:00:19] Spend 0 Minutes 5 Senconds
+[2024/1/1 下午 12:00:19] <<Step 5>>  upload log to FTP
+[2024/1/1 下午 12:00:19] =================Completed================
+[2024/1/1 下午 12:00:23] <<Step 1>> Got Job then downloading
+[2024/1/1 下午 12:00:23]    Log => C:\TestManager\MyLog\FTPdownload_process.log
+[2024/1/1 下午 12:00:23] <<Step 2>> Executing C:\TestManager\ItemDownload\Template.dll
+[2024/1/1 下午 12:00:24] Loading..C:\TestManager\ItemDownload\Template.dll
+[2024/1/1 下午 12:00:27] Setup() - Success! 
+[2024/1/1 下午 12:00:28] Run() - Success! 
+[2024/1/1 下午 12:00:28] UpdateResults() - Success! 
+[2024/1/1 下午 12:00:28] TearDown() - Success! 
+[2024/1/1 下午 12:00:28] <<Step 3>>  update test status to DB 
+[2024/1/1 下午 12:00:29] <<Step 4>>  Keep listening job status
+[2024/1/1 下午 12:00:29] Spend 0 Minutes 5 Senconds
+[2024/1/1 下午 12:00:29] <<Step 5>>  upload log to FTP
+[2024/1/1 下午 12:00:29] =================Completed================
+[2024/1/1 下午 06:02:47] <<Step 1>> Got Job then downloading
+[2024/1/1 下午 06:02:47]    Log => C:\TestManager\MyLog\FTPdownload_process.log
+[2024/1/1 下午 06:02:48] <<Step 2>> Executing C:\TestManager\ItemDownload\Template.dll
+[2024/1/1 下午 06:02:49] Loading..C:\TestManager\ItemDownload\Template.dll
+[2024/1/1 下午 06:02:52] Setup() - Success! 
+[2024/1/1 下午 06:02:52] Run() - Success! 
+[2024/1/1 下午 06:02:52] UpdateResults() - Success! 
+[2024/1/1 下午 06:02:52] TearDown() - Success! 
+[2024/1/1 下午 06:02:52] <<Step 3>>  update test status to DB 
+[2024/1/1 下午 06:02:53] <<Step 4>>  Keep listening job status
+[2024/1/1 下午 06:02:53] Spend 0 Minutes 5 Senconds
+[2024/1/1 下午 06:02:53] <<Step 5>>  upload log to FTP
+[2024/1/1 下午 06:02:53] =================Completed================
+[2024/1/1 下午 06:02:57] <<Step 1>> Got Job then downloading
+[2024/1/1 下午 06:02:57]    Log => C:\TestManager\MyLog\FTPdownload_process.log
+[2024/1/1 下午 06:02:57] <<Step 2>> Executing C:\TestManager\ItemDownload\Template.dll
+[2024/1/1 下午 06:02:58] Loading..C:\TestManager\ItemDownload\Template.dll
+[2024/1/1 下午 06:03:00] Setup() - Success! 
+[2024/1/1 下午 06:03:00] Run() - Success! 
+[2024/1/1 下午 06:03:01] UpdateResults() - Success! 
+[2024/1/1 下午 06:03:01] TearDown() - Success! 
+[2024/1/1 下午 06:03:01] <<Step 3>>  update test status to DB 
+[2024/1/1 下午 06:03:02] <<Step 4>>  Keep listening job status
+[2024/1/1 下午 06:03:02] Spend 0 Minutes 5 Senconds
+[2024/1/1 下午 06:03:02] <<Step 5>>  upload log to FTP
+[2024/1/1 下午 06:03:02] =================Completed================
+[2024/1/1 下午 06:03:05] <<Step 1>> Got Job then downloading
+[2024/1/1 下午 06:03:05]    Log => C:\TestManager\MyLog\FTPdownload_process.log
+[2024/1/1 下午 06:03:06] <<Step 2>> Executing C:\TestManager\ItemDownload\Template.dll
+[2024/1/1 下午 06:03:07] Loading..C:\TestManager\ItemDownload\Template.dll
+[2024/1/1 下午 06:03:09] Setup() - Success! 
+[2024/1/1 下午 06:03:09] Run() - Success! 
+[2024/1/1 下午 06:03:10] UpdateResults() - Success! 
+[2024/1/1 下午 06:03:10] TearDown() - Success! 
+[2024/1/1 下午 06:03:10] <<Step 3>>  update test status to DB 
+[2024/1/1 下午 06:03:11] <<Step 4>>  Keep listening job status
+[2024/1/1 下午 06:03:11] Spend 0 Minutes 4 Senconds
+[2024/1/1 下午 06:03:11] <<Step 5>>  upload log to FTP
+[2024/1/1 下午 06:03:11] =================Completed================
+[2024/1/1 下午 06:03:14] <<Step 1>> Got Job then downloading
+[2024/1/1 下午 06:03:14]    Log => C:\TestManager\MyLog\FTPdownload_process.log
+[2024/1/1 下午 06:03:14] <<Step 2>> Executing C:\TestManager\ItemDownload\Template.dll
+[2024/1/1 下午 06:03:16] Loading..C:\TestManager\ItemDownload\Template.dll
+[2024/1/1 下午 06:03:18] Setup() - Success! 
+[2024/1/1 下午 06:03:18] Run() - Success! 
+[2024/1/1 下午 06:03:19] UpdateResults() - Success! 
+[2024/1/1 下午 06:03:19] TearDown() - Success! 
+[2024/1/1 下午 06:03:19] <<Step 3>>  update test status to DB 
+[2024/1/1 下午 06:03:20] <<Step 4>>  Keep listening job status
+[2024/1/1 下午 06:03:20] Spend 0 Minutes 5 Senconds
+[2024/1/1 下午 06:03:20] <<Step 5>>  upload log to FTP
+[2024/1/1 下午 06:03:20] =================Completed================
+[2024/1/1 下午 06:07:10] <<Step 1>> Got Job then downloading
+[2024/1/1 下午 06:07:10]    Log => C:\TestManager\MyLog\FTPdownload_process.log
+[2024/1/1 下午 06:07:10] <<Step 2>> Executing C:\TestManager\ItemDownload\Template.dll
+[2024/1/1 下午 06:07:11] Loading..C:\TestManager\ItemDownload\Template.dll
+[2024/1/1 下午 06:07:14] Setup() - Success! 
+[2024/1/1 下午 06:07:14] Run() - Success! 
+[2024/1/1 下午 06:07:14] UpdateResults() - Success! 
+[2024/1/1 下午 06:07:14] TearDown() - Success! 
+[2024/1/1 下午 06:07:14] <<Step 3>>  update test status to DB 
+[2024/1/1 下午 06:07:15] <<Step 4>>  Keep listening job status
+[2024/1/1 下午 06:07:15] Spend 0 Minutes 5 Senconds
+[2024/1/1 下午 06:07:15] <<Step 5>>  upload log to FTP
+[2024/1/1 下午 06:07:15] =================Completed================
+[2024/1/1 下午 06:07:19] <<Step 1>> Got Job then downloading
+[2024/1/1 下午 06:07:19]    Log => C:\TestManager\MyLog\FTPdownload_process.log
+[2024/1/1 下午 06:07:19] <<Step 2>> Executing C:\TestManager\ItemDownload\Template.dll
+[2024/1/1 下午 06:07:21] Loading..C:\TestManager\ItemDownload\Template.dll
+[2024/1/1 下午 06:07:24] Setup() - Success! 
+[2024/1/1 下午 06:07:24] Run() - Success! 
+[2024/1/1 下午 06:07:24] UpdateResults() - Success! 
+[2024/1/1 下午 06:07:24] TearDown() - Success! 
+[2024/1/1 下午 06:07:24] <<Step 3>>  update test status to DB 
+[2024/1/1 下午 06:07:26] <<Step 4>>  Keep listening job status
+[2024/1/1 下午 06:07:26] Spend 0 Minutes 7 Senconds
+[2024/1/1 下午 06:07:26] <<Step 5>>  upload log to FTP
+[2024/1/1 下午 06:07:26] =================Completed================
+[2024/1/1 下午 06:07:30] <<Step 1>> Got Job then downloading
+[2024/1/1 下午 06:07:30]    Log => C:\TestManager\MyLog\FTPdownload_process.log
+[2024/1/1 下午 06:07:30] <<Step 2>> Executing C:\TestManager\ItemDownload\Template.dll
+[2024/1/1 下午 06:07:31] Loading..C:\TestManager\ItemDownload\Template.dll
+[2024/1/1 下午 06:07:34] Setup() - Success! 
+[2024/1/1 下午 06:07:34] Run() - Success! 
+[2024/1/1 下午 06:07:34] UpdateResults() - Success! 
+[2024/1/1 下午 06:07:34] TearDown() - Success! 
+[2024/1/1 下午 06:07:34] <<Step 3>>  update test status to DB 
+[2024/1/1 下午 06:07:35] <<Step 4>>  Keep listening job status
+[2024/1/1 下午 06:07:35] Spend 0 Minutes 5 Senconds
+[2024/1/1 下午 06:07:35] <<Step 5>>  upload log to FTP
+[2024/1/1 下午 06:07:35] =================Completed================
+[2024/1/1 下午 06:07:39] <<Step 1>> Got Job then downloading
+[2024/1/1 下午 06:07:39]    Log => C:\TestManager\MyLog\FTPdownload_process.log
+[2024/1/1 下午 06:07:39] <<Step 2>> Executing C:\TestManager\ItemDownload\Template.dll
+[2024/1/1 下午 06:07:41] Loading..C:\TestManager\ItemDownload\Template.dll
+[2024/1/1 下午 06:07:44] Setup() - Success! 
+[2024/1/1 下午 06:07:44] Run() - Success! 
+[2024/1/1 下午 06:07:44] UpdateResults() - Success! 
+[2024/1/1 下午 06:07:44] TearDown() - Success! 
+[2024/1/1 下午 06:07:44] <<Step 3>>  update test status to DB 
+[2024/1/1 下午 06:07:46] <<Step 4>>  Keep listening job status
+[2024/1/1 下午 06:07:46] Spend 0 Minutes 7 Senconds
+[2024/1/1 下午 06:07:46] <<Step 5>>  upload log to FTP
+[2024/1/1 下午 06:07:46] =================Completed================
