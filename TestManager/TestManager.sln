@@ -3,9 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.7.34202.233
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LoadDll", "LoadDll\LoadDll.csproj", "{E5130002-79DC-4839-A48A-0205729C8172}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TM1005", "TestManager\TM1005.csproj", "{DB0A7A31-7F79-4C6F-810C-8D67171B59D8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TM1006b2", "TestManager\TM1006b2.csproj", "{DB0A7A31-7F79-4C6F-810C-8D67171B59D8}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jacky", "Jacky\Jacky.csproj", "{0B1E5674-76E2-4A49-9A6E-53CFA89473B2}"
 EndProject
@@ -17,18 +15,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "image_installation_driver_d
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SignKey", "SignKey\SignKey.csproj", "{9263C3F0-BFB7-4799-A400-E1EB0AA1DFB9}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CommonLibrary", "CommonLibrary\CommonLibrary\CommonLibrary.csproj", "{38587910-1475-409A-8302-B5F3DD369495}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{E5130002-79DC-4839-A48A-0205729C8172}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E5130002-79DC-4839-A48A-0205729C8172}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E5130002-79DC-4839-A48A-0205729C8172}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E5130002-79DC-4839-A48A-0205729C8172}.Release|Any CPU.Build.0 = Release|Any CPU
 		{DB0A7A31-7F79-4C6F-810C-8D67171B59D8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{DB0A7A31-7F79-4C6F-810C-8D67171B59D8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DB0A7A31-7F79-4C6F-810C-8D67171B59D8}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -53,10 +45,6 @@ Global
 		{9263C3F0-BFB7-4799-A400-E1EB0AA1DFB9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9263C3F0-BFB7-4799-A400-E1EB0AA1DFB9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9263C3F0-BFB7-4799-A400-E1EB0AA1DFB9}.Release|Any CPU.Build.0 = Release|Any CPU
-		{38587910-1475-409A-8302-B5F3DD369495}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{38587910-1475-409A-8302-B5F3DD369495}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{38587910-1475-409A-8302-B5F3DD369495}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{38587910-1475-409A-8302-B5F3DD369495}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

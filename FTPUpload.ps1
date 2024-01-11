@@ -17,7 +17,7 @@
         $file = $f.Name
         $destinationFilePath = $remoteFilePath+$file
         try {
-            process_log "$sourceFilePath to $ftpServer$destinationFilePath"
+            process_log "$log to $ftpServer$destinationFilePath"
             FTP "$ftpServer$destinationFilePath" up "$log"
         }
         catch {

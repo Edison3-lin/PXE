@@ -6,10 +6,31 @@
     $Directory += '\MyLog'
     $baseName = $file.BaseName
     $logfile = $Directory+'\'+$baseName+"_process.log"
-    $outputfile = $Directory+'\'+$baseName+'_result.log'
 
     $UUID = Get-WmiObject Win32_ComputerSystemProduct | Select-Object -ExpandProperty UUID 
     $ExecuteDll = $NULL
+
+    # Check TR_Result.json data
+    if( $NULL -eq $TRconfig.TCM_ID ) 
+    {
+        process_log "Not found 'TCM_ID' in TR.json"
+        return $NULL
+    }
+    if( $NULL -eq $TRconfig.TR_ID ) 
+    {
+        process_log "Not found 'TR_ID' in TR.json"
+        return $NULL
+    }
+    if( $NULL -eq $TRconfig.TestStatus ) 
+    {
+        process_log "Not found 'TestStatus' in TR.json"
+        return $NULL
+    }
+    if( $NULL -eq $TRconfig.TestResult ) 
+    {
+        process_log "Not found 'TestResult' in TR.json"
+        return $NULL
+    }
 
     $MySqlCmd = "
             select 
@@ -55,29 +76,35 @@
             $ExecuteDll = "common_bios_pxeboot_default.dll"
         }
         else {
-            $ExecuteDll = "common_image_pxeboot_default.dll.dll"
+            $ExecuteDll = "common_image_pxeboot_default.dll"
         }
+        process_log "Got DB job: $ExecuteDll"
 
         # First time PXE boot (NULL)
         if ( '' -eq $TCM_Status )
         {
             $TRconfig.TestStatus = "New"
+            $TRconfig.TestResult = ""
             $updatedJson = $TRconfig | ConvertTo-Json -Depth 10
             $updatedJson | Set-Content -Path $TRPath
 
             $MySqlCmd = "
                     update Test_Result 
-                    set    TR_Excute_Status = 'Running'
+                    set    TR_Excute_Status = 'Running',
+                           TR_TestStartTime   = SYSDATETIME()
                     where  TR_ID = '$TR_ID'
 
                     update Test_Control_Main 
-                    set    TCM_Status = 'Running'
+                    set    TCM_Status = 'Running',
+                           TCM_CreateDate = SYSDATETIME()
                     where  TCM_ID = '$TCM_ID'
                 "
+            process_log "TCM_Status/TR_Excute_Status: Running"
             DATABASE "update" $MySqlCmd    
         }
         # Not the first time PXE (Running)
-        elseif ( $TR_Excute_Status -eq "Running" ) 
+# (EdisonLin-20240110-1)         elseif ( $TR_Excute_Status -eq "Running" ) 
+        elseif ( ($TRconfig.TestStatus).ToUpper() -eq "DONE" ) 
         {
             $directoryPath = "c:\\TestManager\\ItemDownload"
             $items = Get-ChildItem -Path $directoryPath
@@ -88,48 +115,26 @@
                     $ExecuteDll = "common_bios_pxeboot_default.dll"
                 }
                 else {
-                    $ExecuteDll = "common_image_pxeboot_default.dll.dll"
+                    $ExecuteDll = "common_image_pxeboot_default.dll"
                 }
             } 
-            else 
-            {            
-                $MySqlCmd = "
-                        update Test_Control_Main 
-                        set    TCM_Status = 'DONE'
-                        where  TCM_ID = '$TCM_ID'
-                    "
-                DATABASE "update" $MySqlCmd    
 
-                # image patch write "Done" to TR_Resulte.json
-                if( $TRconfig.TestStatus -eq "DONE" )
-                {
-                    $MySqlCmd = "
-                            update Test_Result 
-                            set    TR_Excute_Status = 'DONE',
-                                TR_Test_Result = 'Pass'
-                            where  TR_ID = '$TR_ID'
-                        "
-                    DATABASE "update" $MySqlCmd    
-                    $TRconfig.TestResult = "Pass"
-                }
-                else 
-                {
-                    # 'Image Flash' not finish
-                    $MySqlCmd = "
-                            update Test_Result 
-                            set    TR_Excute_Status = 'DONE',
-                                TR_Test_Result = 'Fail'
-                            where  TR_ID = '$TR_ID'
-                        "
-                    DATABASE "update" $MySqlCmd    
-                    $TRconfig.TestResult = "Fail"
-                }  
-                $TRconfig.TestStatus = "DONE"
-                $updatedJson = $TRconfig | ConvertTo-Json -Depth 10
-                $updatedJson | Set-Content -Path $TRPath
-                $ExecuteDll = $NULL
+            $MySqlCmd = "
+                update Test_Control_Main 
+                set    TCM_Status = 'DONE',
+                       TCM_FinishDate = SYSDATETIME() 
+                where  TCM_ID = '$TCM_ID'
 
-            }     
+                update Test_Result 
+                set    TR_Excute_Status = '$($TRconfig.TestStatus)',
+                       TR_Test_Result = '$($TRconfig.TestResult)',
+                       TR_TestEndTime   = SYSDATETIME()
+                    where  TR_ID = '$TR_ID'
+            "
+            process_log "job finish, update all status by TR.json"
+            DATABASE "update" $MySqlCmd    
+            $ExecuteDll = $NULL
+
         }
     }
 

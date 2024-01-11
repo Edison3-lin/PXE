@@ -24,6 +24,7 @@ function TM_Version($version) {
             if ($permissions -like "d*") {
                 if([int]$name -gt [int]$version )
                 {
+                    process_log "FTP=$([int]$name) ,  Now=$([int]$version)"
                     return $true
                 }
             }    
@@ -36,6 +37,11 @@ function TM_Version($version) {
     $Directory = Split-Path -Path $PSCommandPath -Parent
     $baseName = $file.BaseName
     $logfile = $Directory+'\'+$baseName+"_process.log"
+
+    if ( Test-Path -Path "c:\\TestManager\\UT.ps1" -PathType Leaf ) {
+        Remove-Item "c:\\TestManager\\UT.ps1"
+        Remove-Item "c:\\TestManager\\UT_process.log"
+    }
 
     $version = Get_Version
 

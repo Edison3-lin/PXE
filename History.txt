@@ -1,3 +1,38 @@
+=========================================TM1007========================================================================
+## [Version] - Date
+[1007] - 20240104 
+
+### Modification
+1. Fix: Try catch for that the timeout key field of json file is missing
+<files> TestManager.cs
+
+2. Fix: Let "common_image_pxeboot_default.dll" and "common_image_pxeboot_default.dll" execute until it updates the TestStatus 
+        field of the json file to done
+<files> DBimage.ps1
+
+
+========================================================================================================================
+=========================================TM1006========================================================================
+## [Version] - Date
+[1006] - 20240104 
+
+### Modification
+1. Fix: Typo for "common_image_pxeboot_default.dll.dll"
+<files> DBimage.ps1
+
+2. Fix: All TCM_ID jobs were finished, then update TCM_status as "DONE"
+<files> DBjob.ps1, DBupdateStatus.ps1
+
+3. Log: Change log content 
+<Files> FTPdownload.ps1, FTPUpload.ps1
+
+4. Add file : for database connect checking
+<Files> DBtest.ps1
+
+5. Feature: Register TestManager as start-up function
+<Files> test.bat
+
+========================================================================================================================
 =========================================TM1005========================================================================
 ## [Version] - Date
 [1005] - 20231228 

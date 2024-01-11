@@ -7,12 +7,21 @@ Function FTP_Download_TM() {
         $ftpDirectory = "/Captain_Tool/TestManager/"
         $commonFilePath = ".\"
 
-        # # delete c:\TestManager all files
+        # delete c:\TestManager all files
         # $files = Get-ChildItem -Path $commonFilePath -File
         # foreach ($file in $files) {
-        #     if($file.Name -ne "UpdateT.ps1")
+        #     if ($file.Name -ne "UT.ps1")
         #     {
-        #         Remove-Item $file.FullName -Force
+        #         if ($file.Name -notlike "TMservice*") 
+        #         { 
+        #             if ($file.Name -notlike "Service*") 
+        #             {
+        #                 if ($file.Name -notlike "InstallUtil*") 
+        #                 {
+        #                     # Remove-Item $file.FullName -Force
+        #                 }
+        #             }    
+        #         }    
         #     }    
         # }
 

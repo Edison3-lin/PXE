@@ -1,12 +1,15 @@
 {
-  "TCM_ID": 0,
-  "TR_ID": 0,
-  "TestResult": "",
-  "TestStatus": "",
-  "Test_TimeOut": 0,
-  "Reboot": 0,
-  "Text_Log_File_Path": [
-    "c:\\TestManager\\MyLog\\TestManager.log",
-    "c:\\TestManager\\MyLog\\LoadDll.log"
-  ]
+    "TCM_ID":  12,
+    "TR_ID":  13,
+    "TestResult":  "Fail",
+    "TestStatus":  "done",
+    "TCM_Done":  true,
+    "Test_TimeOut":  10,
+    "Text_Log_File_Path":  [
+                               "c:\\TestManager\\MyLog\\TestManager.log",
+                               "C:\\TestManager\\MyLog\\DBjob_process.log",
+                               "C:\\TestManager\\MyLog\\DBupdateStatus_process.log",
+                               "C:\\TestManager\\MyLog\\FTPupload_process.log",
+                               "C:\\TestManager\\MyLog\\FTPdownload_process.log"
+                           ]
 }

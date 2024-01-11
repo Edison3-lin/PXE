@@ -24,9 +24,9 @@ Function DATABASE($do, $mySqlCmd) {
     $timer.Stop()
 
     if ($do -eq "test") {
-        Write-Host $SqlConn.State
+        $connect = $SqlConn.State
         $SqlConn.close()
-        return
+        return $connect
     }    
     # Check connection status
     if ($SqlConn.State -ne 'Open') {
@@ -166,6 +166,11 @@ function CreateDir($directoryName) {
         }
     }
 
+    $file = Get-Item $PSCommandPath
+    $Directory = Split-Path -Path $PSCommandPath -Parent
+    $Directory += '\MyLog'
+    $baseName = $file.BaseName
+    $logfile = $Directory+'\'+$baseName+"_process.log"
 
     # Server.json
     $configPath = "c:\TestManager\Server.json"
@@ -181,12 +186,12 @@ function CreateDir($directoryName) {
     # TR_Result.json
     $TRPath = "c:\TestManager\TR_Result.json"
     $TRconfig = Get-Content -Raw -Path $TRPath | ConvertFrom-Json
-    $TCM_ID     = $TRconfig.TCM_ID 
-    $TR_ID      = $TRconfig.TR_ID 
-    $TestResult = $TRconfig.TestResult
-    $TestStatus = $TRconfig.TestStatus
-    $Text_Log_File_Path = $TRconfig.Text_Log_File_Path
-    $Test_TimeOut       = $TRconfig.Test_TimeOut
+    # $TCM_ID     = $TRconfig.TCM_ID 
+    # $TR_ID      = $TRconfig.TR_ID 
+    # $TestResult = $TRconfig.TestResult
+    # $TestStatus = $TRconfig.TestStatus
+    # $Text_Log_File_Path = $TRconfig.Text_Log_File_Path
+    # $Test_TimeOut       = $TRconfig.Test_TimeOut
 
 
     # $dataSet = DATABASE "read" $MySqlCmd1
