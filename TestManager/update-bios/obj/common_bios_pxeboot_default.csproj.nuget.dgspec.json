@@ -1,0 +1,54 @@
+{
+  "format": 1,
+  "restore": {
+    "M:\\GtiLab\\update-bios\\common_bios_pxeboot_default.csproj": {}
+  },
+  "projects": {
+    "M:\\GtiLab\\update-bios\\common_bios_pxeboot_default.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "M:\\GtiLab\\update-bios\\common_bios_pxeboot_default.csproj",
+        "projectName": "common_bios_pxeboot_default",
+        "projectPath": "M:\\GtiLab\\update-bios\\common_bios_pxeboot_default.csproj",
+        "packagesPath": "C:\\Users\\edison\\.nuget\\packages\\",
+        "outputPath": "M:\\GtiLab\\update-bios\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\edison\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net472"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net472": {
+            "targetAlias": "net472",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "default"
+        }
+      },
+      "frameworks": {
+        "net472": {
+          "targetAlias": "net472",
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.101\\RuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}

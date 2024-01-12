@@ -1,0 +1,5 @@
+is_global = true
+build_property.RootNamespace = common_bios_pxeboot_default
+build_property.ProjectDir = M:\GtiLab\update-bios\
+build_property.EnableComHosting = 
+build_property.EnableGeneratedComInterfaceComImportInterop = 

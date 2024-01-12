@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>common_bios_pxeboot_default</name>
+    </assembly>
+    <members>
+        <member name="M:common_bios_pxeboot_default.common_bios_pxeboot_default.Setup">
+            <summary>
+            Setup, Empty
+            </summary>
+        </member>
+        <member name="M:common_bios_pxeboot_default.common_bios_pxeboot_default.Run">
+            <summary>
+            If the test status is "New", then set the test status to "pxe boot" and reboot the system.
+            If the test status is "pxe boot", then run the powershell script to check the bios version.
+            If the bios version is matched, then set the test result to "Pass".
+            If the bios version is not matched, then set the test result to "Fail".
+            </summary>
+        </member>
+        <member name="M:common_bios_pxeboot_default.common_bios_pxeboot_default.TearDown">
+            <summary>
+            TearDown, Disable network boot
+            </summary>
+        </member>
+    </members>
+</doc>

@@ -166,11 +166,6 @@ function CreateDir($directoryName) {
         }
     }
 
-    $file = Get-Item $PSCommandPath
-    $Directory = Split-Path -Path $PSCommandPath -Parent
-    $Directory += '\MyLog'
-    $baseName = $file.BaseName
-    $logfile = $Directory+'\'+$baseName+"_process.log"
 
     # Server.json
     $configPath = "c:\TestManager\Server.json"

@@ -1,0 +1,14 @@
+C:\Users\ZPF\Desktop\common_bios_pxeboot_default\obj\Debug\common_bios_pxeboot_default.csproj.AssemblyReference.cache
+C:\Users\ZPF\Desktop\common_bios_pxeboot_default\obj\Debug\common_bios_pxeboot_default.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\ZPF\Desktop\common_bios_pxeboot_default\obj\Debug\common_bios_pxeboot_default.AssemblyInfoInputs.cache
+C:\Users\ZPF\Desktop\common_bios_pxeboot_default\obj\Debug\common_bios_pxeboot_default.AssemblyInfo.cs
+C:\Users\ZPF\Desktop\common_bios_pxeboot_default\obj\Debug\common_bios_pxeboot_default.csproj.CoreCompileInputs.cache
+C:\Users\ZPF\Desktop\common_bios_pxeboot_default\Release\Common.xml
+C:\Users\ZPF\Desktop\common_bios_pxeboot_default\Release\common_bios_pxeboot_default.dll
+C:\Users\ZPF\Desktop\common_bios_pxeboot_default\Release\common_bios_pxeboot_default.pdb
+C:\Users\ZPF\Desktop\common_bios_pxeboot_default\Release\CommonLibrary.dll
+C:\Users\ZPF\Desktop\common_bios_pxeboot_default\Release\Newtonsoft.Json.dll
+C:\Users\ZPF\Desktop\common_bios_pxeboot_default\Release\Tesseract.dll
+C:\Users\ZPF\Desktop\common_bios_pxeboot_default\obj\Debug\common_bios_pxeboot_default.csproj.CopyComplete
+C:\Users\ZPF\Desktop\common_bios_pxeboot_default\obj\Debug\common_bios_pxeboot_default.dll
+C:\Users\ZPF\Desktop\common_bios_pxeboot_default\obj\Debug\common_bios_pxeboot_default.pdb

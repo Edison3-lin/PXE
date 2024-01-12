@@ -1,0 +1,23 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Library</OutputType>
+    <TargetFramework>net472</TargetFramework>
+    <DocumentationFile>.\Release\Common.xml</DocumentationFile>
+    <OutputPath>.\Release\</OutputPath>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Reference Include="CaptainWin.CommonAPI">
+      <HintPath>C:\TestManager\ItemDownload\CommonLibrary.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+    <ItemGroup>
+    <Reference Include="Newtonsoft">
+      <HintPath>C:\Users\ZPF\Desktop\common_bios_pxeboot_default\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>

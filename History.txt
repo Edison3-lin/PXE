@@ -1,15 +1,20 @@
 =========================================TM1007========================================================================
 ## [Version] - Date
-[1007] - 20240104 
+[1007] - 20240112 
 
 ### Modification
 1. Fix: Try catch for that the timeout key field of json file is missing
 <files> TestManager.cs
 
-2. Fix: Let "common_image_pxeboot_default.dll" and "common_image_pxeboot_default.dll" execute until it updates the TestStatus 
+2. Fix: Don't update status for "common_image_pxeboot_default.dll" and "common_image_pxeboot_default.dll" in TestManager.cs
+<files> TestManager.cs
+
+3. Fix: Let "common_image_pxeboot_default.dll" and "common_image_pxeboot_default.dll" execute until it updates the TestStatus 
         field of the json file to done
 <files> DBimage.ps1
 
+4. Add more log information and check whether the key of json file exists
+<files> DBimage.ps1 DBjob.ps1 DBupdateStatus.ps1
 
 ========================================================================================================================
 =========================================TM1006========================================================================

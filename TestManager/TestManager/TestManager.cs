@@ -14,7 +14,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Security.Cryptography;
 
-namespace TM1006b2 {
+namespace TM1007 {
 
     public class TestManager {
         private const string TMDIRECTORY = "C:\\TestManager\\";
@@ -304,7 +304,7 @@ namespace TM1006b2 {
             string callingDomainName = AppDomain.CurrentDomain.FriendlyName;
             string basePath = AppDomain.CurrentDomain.BaseDirectory;
             AppDomain ad = AppDomain.CreateDomain("TestManager DLL");
-            ProxyObject obj = (ProxyObject)ad.CreateInstanceFromAndUnwrap(basePath+callingDomainName, "TM1006b2.ProxyObject");
+            ProxyObject obj = (ProxyObject)ad.CreateInstanceFromAndUnwrap(basePath+callingDomainName, "TM1007.ProxyObject");
             try {
                 ProcessLog("Loading.."+dllPath);
                 obj.LoadAssembly(dllPath);
