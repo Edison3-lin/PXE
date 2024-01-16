@@ -14,7 +14,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Security.Cryptography;
 
-namespace TM1007 {
+namespace TM1007b1 {
 
     public class TestManager {
         private const string TMDIRECTORY = "C:\\TestManager\\";
@@ -27,6 +27,49 @@ namespace TM1007 {
 
         private static string arg0 = null;
         private static string arg1 = null;
+
+        // **** CheckTR ****
+/*
+    "TCM_ID":  0,
+    "TR_ID":  0,
+    "TestResult":  "",
+    "TestStatus":  "",
+    "Test_TimeOut":  0,
+    "TCM_Done":  false,
+    "Text_Log_File_Path":  [
+*/
+        static bool CheckTR() {
+            // Read Reboot status    
+            string ftpJson = System.IO.File.ReadAllText(TR);
+            JObject fjson = JObject.Parse(ftpJson);
+            if( (fjson["TCM_ID"] == null) || (fjson["TR_ID"] == null) ) {
+                Console.WriteLine("TR_Result.json lost \"TCM_ID\"");
+                return false;
+            }    
+
+            if( (fjson["TestResult"] == null) || (fjson["TestStatus"] == null) ) {
+                Console.WriteLine("TR_Result.json lost \"TestResult\"");
+                return false;
+            }    
+
+            if( fjson["Test_TimeOut"] == null ) {
+                Console.WriteLine("TR_Result.json lost \"Test_TimeOut\"");
+                return false;
+            }    
+
+            if( fjson["TCM_Done"] == null ) {
+                Console.WriteLine("TR_Result.json lost \"TCM_Done\"");
+                return false;
+            }    
+
+            if( fjson["Text_Log_File_Path"] == null ) {
+                Console.WriteLine("TR_Result.json lost \"Text_Log_File_Path\"");
+                return false;
+            }    
+
+            return true;
+        }
+
         // **** Check Need Update ****
         static bool UpgradeCheck() {
             Runspace runspace = RunspaceFactory.CreateRunspace();
@@ -304,7 +347,7 @@ namespace TM1007 {
             string callingDomainName = AppDomain.CurrentDomain.FriendlyName;
             string basePath = AppDomain.CurrentDomain.BaseDirectory;
             AppDomain ad = AppDomain.CreateDomain("TestManager DLL");
-            ProxyObject obj = (ProxyObject)ad.CreateInstanceFromAndUnwrap(basePath+callingDomainName, "TM1007.ProxyObject");
+            ProxyObject obj = (ProxyObject)ad.CreateInstanceFromAndUnwrap(basePath+callingDomainName, "TM1007b1.ProxyObject");
             try {
                 ProcessLog("Loading.."+dllPath);
                 obj.LoadAssembly(dllPath);
@@ -436,6 +479,14 @@ namespace TM1007 {
 
             if(args.Length == 0) {
                 do {
+
+                    if( !CheckTR() ) {
+                        Thread.Sleep(2000);
+                        continue;
+                    } else {
+                        Console.WriteLine("TR_Result.json verify OK..");
+                    };
+
                     CreateDirectoryAndFile();
                     while(!DBtest()) {
                         ProcessLog("Waiting 3 sec for database connection... ");
@@ -446,7 +497,6 @@ namespace TM1007 {
 //(EdisonLin-20240110-1)                     string ftpJson = System.IO.File.ReadAllText(TR);
 //(EdisonLin-20240110-1)                     JObject fjson = JObject.Parse(ftpJson);
 //(EdisonLin-20240110-1)                     bool Reboot = ( (int)fjson["Reboot"] > 0 ); //Reboot?
-
                     // if( UpgradeCheck() )
                     if( false )
                     {
@@ -533,10 +583,17 @@ namespace TM1007 {
                     ProcessLog("=================Completed================");
                     FTPupload();
 
-                } while (!(Console.KeyAvailable && Console.ReadKey(true).Key == ConsoleKey.Escape));
+//(EdisonLin-20240116-1)                 } while (!(Console.KeyAvailable && Console.ReadKey(true).Key == ConsoleKey.Escape));
+                } while (true);
             }  
             // Test DLL only          
             else {
+
+                if( !CheckTR() ) {
+                    ProcessLog("**** TR_Result.json error ****");            
+                    Environment.Exit(0);            
+                };
+
                 arg0 = args[0];
 //(EdisonLin-20240110-1)                 arg1 = args[1];
                 CreateDirectoryAndFile();

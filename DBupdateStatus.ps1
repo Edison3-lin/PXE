@@ -48,10 +48,10 @@
             $updatedJson | Set-Content -Path $TRPath
             $MySqlCmd = "
                     update  Test_Result 
-                    set     TR_Test_Result   = '$TestResult',
+                    set     TR_Test_Result   = '$($TRconfig.TestResult)',
                             TR_Excute_Status = 'Done',
                             TR_TestEndTime   = SYSDATETIME()
-                    where   TR_ID = '$TR_ID'
+                    where   TR_ID = '$($TRconfig.TR_ID)'
             "
             process_log "DLL didn't update TR.json"
             process_log "TR_Excute_Status: Done ,TR_Excute_Status: Error"                    
@@ -62,10 +62,10 @@
         {
             $MySqlCmd = "
                     update  Test_Result 
-                    set     TR_Test_Result   = '$TestResult',
-                            TR_Excute_Status = '$TestStatus' ,
+                    set     TR_Test_Result   = '$($TRconfig.TestResult)',
+                            TR_Excute_Status = '$($TRconfig.TestStatus)' ,
                             TR_TestEndTime   = SYSDATETIME()
-                    where   TR_ID = '$TR_ID'
+                    where   TR_ID = '$($TRconfig.TR_ID)'
                     "
             process_log "TR_Test_Result/TR_Excute_Status by TR.json"                    
             DATABASE "update" $MySqlCmd    
@@ -76,7 +76,7 @@
             update  Test_Control_Main 
             set     TCM_Status     = 'DONE',  
                     TCM_FinishDate = SYSDATETIME() 
-            where   TCM_ID = '$TCM_ID'
+            where   TCM_ID = '$($TRconfig.TCM_ID)'
             "
         process_log "TCM_Status: Done after Running"                    
         DATABASE "update" $MySqlCmd    
@@ -93,7 +93,7 @@
                 update  Test_Result 
                 set     TR_Excute_Status = '$($args[0])' ,
                         TR_TestStartTime   = SYSDATETIME()
-                where   TR_ID = '$TR_ID'
+                where   TR_ID = '$($TRconfig.TR_ID)'
                 "
         process_log "TR_Excute_Status: Running"                    
         DATABASE "update" $MySqlCmd    
