@@ -29,44 +29,43 @@ namespace TM1007b1 {
         private static string arg1 = null;
 
         // **** CheckTR ****
-/*
-    "TCM_ID":  0,
-    "TR_ID":  0,
-    "TestResult":  "",
-    "TestStatus":  "",
-    "Test_TimeOut":  0,
-    "TCM_Done":  false,
-    "Text_Log_File_Path":  [
-*/
         static bool CheckTR() {
             // Read Reboot status    
-            string ftpJson = System.IO.File.ReadAllText(TR);
-            JObject fjson = JObject.Parse(ftpJson);
-            if( (fjson["TCM_ID"] == null) || (fjson["TR_ID"] == null) ) {
-                Console.WriteLine("TR_Result.json lost \"TCM_ID\"");
-                return false;
+            string json = System.IO.File.ReadAllText(TR);
+            var jsonObj = JObject.Parse(json);
+            if ( jsonObj["TCM_ID"] == null ) {
+                jsonObj["TCM_ID"] = 0;
+            };
+            if ( jsonObj["TR_ID"] == null ) {
+                jsonObj["TR_ID"] = 0;
+            };
+            if ( jsonObj["TestResult"] == null ) {
+                jsonObj["TestResult"] = "";
+            };
+            if ( jsonObj["TestStatus"] == null ) {
+                jsonObj["TestStatus"] = "";
+            };
+            if ( jsonObj["Test_TimeOut"] == null ) {
+                jsonObj["Test_TimeOut"] = 0;
+            };
+            if ( jsonObj["TCM_Done"] == null ) {
+                jsonObj["TCM_Done"] = false;
+            };
+            if( jsonObj["Text_Log_File_Path"] == null ) {
+                JArray paths = new JArray
+                {
+                    "c:\\TestManager\\MyLog\\TestManager.log",
+                    "C:\\TestManager\\MyLog\\DBjob_process.log",
+                    "C:\\TestManager\\MyLog\\DBupdateStatus_process.log",
+                    "C:\\TestManager\\MyLog\\FTPupload_process.log",
+                    "C:\\TestManager\\MyLog\\FTPdownload_process.log",
+                    "C:\\TestManager\\TR_Result.json"
+                };
+                jsonObj["Text_Log_File_Path"] = paths;
             }    
 
-            if( (fjson["TestResult"] == null) || (fjson["TestStatus"] == null) ) {
-                Console.WriteLine("TR_Result.json lost \"TestResult\"");
-                return false;
-            }    
-
-            if( fjson["Test_TimeOut"] == null ) {
-                Console.WriteLine("TR_Result.json lost \"Test_TimeOut\"");
-                return false;
-            }    
-
-            if( fjson["TCM_Done"] == null ) {
-                Console.WriteLine("TR_Result.json lost \"TCM_Done\"");
-                return false;
-            }    
-
-            if( fjson["Text_Log_File_Path"] == null ) {
-                Console.WriteLine("TR_Result.json lost \"Text_Log_File_Path\"");
-                return false;
-            }    
-
+            string outputJson = JsonConvert.SerializeObject(jsonObj, Formatting.Indented);
+            File.WriteAllText(TR, outputJson);
             return true;
         }
 
@@ -483,9 +482,7 @@ namespace TM1007b1 {
                     if( !CheckTR() ) {
                         Thread.Sleep(2000);
                         continue;
-                    } else {
-                        Console.WriteLine("TR_Result.json verify OK..");
-                    };
+                    }; 
 
                     CreateDirectoryAndFile();
                     while(!DBtest()) {

@@ -15,33 +15,6 @@
     $TR_ID = $NULL
     $TA_Execute_Path = $NULL
 
-    # Check TR_Result.json data
-    if( $NULL -eq $TRconfig.TCM_ID ) 
-    {
-        process_log "Not found 'TCM_ID' in TR.json"
-        return $NULL
-    }
-    if( $NULL -eq $TRconfig.TR_ID ) 
-    {
-        process_log "Not found 'TR_ID' in TR.json"
-        return $NULL
-    }
-    if( $NULL -eq $TRconfig.TestStatus ) 
-    {
-        process_log "Not found 'TestStatus' in TR.json"
-        return $NULL
-    }
-    if( $NULL -eq $TRconfig.TCM_Done ) 
-    {
-        process_log "Not found 'TCM_Done' in TR.json"
-        return $NULL
-    }
-    if( $NULL -eq $TRconfig.Test_TimeOut ) 
-    {
-        process_log "Not found 'Test_TimeOut'"
-        return $NULL
-    }
-
     $MySqlCmd = "
         select 
             A.TCM_ID 'Control_ID'

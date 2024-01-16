@@ -10,28 +10,6 @@
     $UUID = Get-WmiObject Win32_ComputerSystemProduct | Select-Object -ExpandProperty UUID 
     $ExecuteDll = $NULL
 
-    # Check TR_Result.json data
-    if( $NULL -eq $TRconfig.TCM_ID ) 
-    {
-        process_log "Not found 'TCM_ID' in TR.json"
-        return $NULL
-    }
-    if( $NULL -eq $TRconfig.TR_ID ) 
-    {
-        process_log "Not found 'TR_ID' in TR.json"
-        return $NULL
-    }
-    if( $NULL -eq $TRconfig.TestStatus ) 
-    {
-        process_log "Not found 'TestStatus' in TR.json"
-        return $NULL
-    }
-    if( $NULL -eq $TRconfig.TestResult ) 
-    {
-        process_log "Not found 'TestResult' in TR.json"
-        return $NULL
-    }
-
     $MySqlCmd = "
             select 
                 TCM.TCM_ID,

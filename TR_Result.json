@@ -1,15 +1,16 @@
 {
-    "TCM_ID":  0,
-    "TR_ID":  0,
-    "TestResult":  "",
-    "TestStatus":  "",
-    "Test_TimeOut":  0,
-    "TCM_Done":  false,
-    "Text_Log_File_Path":  [
-                               "c:\\TestManager\\MyLog\\TestManager.log",
-                               "C:\\TestManager\\MyLog\\DBjob_process.log",
-                               "C:\\TestManager\\MyLog\\DBupdateStatus_process.log",
-                               "C:\\TestManager\\MyLog\\FTPupload_process.log",
-                               "C:\\TestManager\\MyLog\\FTPdownload_process.log"
-                           ]
+  "TCM_ID": 0,
+  "TR_ID": 0,
+  "Test_TimeOut": 0,
+  "TestResult": "",
+  "TestStatus": "",
+  "TCM_Done": false,
+  "Text_Log_File_Path": [
+    "c:\\TestManager\\MyLog\\TestManager.log",
+    "C:\\TestManager\\MyLog\\DBjob_process.log",
+    "C:\\TestManager\\MyLog\\DBupdateStatus_process.log",
+    "C:\\TestManager\\MyLog\\FTPupload_process.log",
+    "C:\\TestManager\\MyLog\\FTPdownload_process.log",
+    "C:\\TestManager\\TR_Result.json"
+  ]
 }

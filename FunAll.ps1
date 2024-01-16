@@ -181,13 +181,13 @@ function CreateDir($directoryName) {
     # TR_Result.json
     $TRPath = "c:\TestManager\TR_Result.json"
     $TRconfig = Get-Content -Raw -Path $TRPath | ConvertFrom-Json
-    # $TCM_ID     = $TRconfig.TCM_ID 
-    # $TR_ID      = $TRconfig.TR_ID 
-    # $TestResult = $TRconfig.TestResult
-    # $TestStatus = $TRconfig.TestStatus
-    # $Text_Log_File_Path = $TRconfig.Text_Log_File_Path
-    # $Test_TimeOut       = $TRconfig.Test_TimeOut
-
+    $TCM_ID             = $TRconfig.TCM_ID 
+    $TR_ID              = $TRconfig.TR_ID 
+    $TestResult         = $TRconfig.TestResult
+    $TestStatus         = $TRconfig.TestStatus
+    $Test_TimeOut       = $TRconfig.Test_TimeOut
+    $TCM_Done           = $TRconfig.TCM_Done
+    $Text_Log_File_Path = $TRconfig.Text_Log_File_Path
 
     # $dataSet = DATABASE "read" $MySqlCmd1
     # DATABASE "update" $MySqlCmd2

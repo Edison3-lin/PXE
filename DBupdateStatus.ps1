@@ -6,33 +6,6 @@
     $baseName = $file.BaseName
     $logfile = $Directory+'\'+$baseName+"_process.log"
 
-    # Check TR_Result.json data
-    if( $NULL -eq $TRconfig.TCM_ID ) 
-    {
-        process_log "Not found 'TCM_ID' in TR.json"
-        return $NULL
-    }
-    if( $NULL -eq $TRconfig.TR_ID ) 
-    {
-        process_log "Not found 'TR_ID' in TR.json"
-        return $NULL
-    }
-    if( $NULL -eq $TRconfig.TestStatus ) 
-    {
-        process_log "Not found 'TestStatus' in TR.json"
-        return $NULL
-    }
-    if( $NULL -eq $TRconfig.TestResult ) 
-    {
-        process_log "Not found 'TestResult' in TR.json"
-        return $NULL
-    }
-    if( $NULL -eq $TRconfig.TCM_Done ) 
-    {
-        process_log "Not found 'TCM_Done' in TR.json"
-        return $NULL
-    }
-
     if ($null -eq $args[0])
     {
         # job finished
@@ -71,15 +44,6 @@
             DATABASE "update" $MySqlCmd    
         }
         # job finished
-
-        $MySqlCmd = "
-            update  Test_Control_Main 
-            set     TCM_Status     = 'DONE',  
-                    TCM_FinishDate = SYSDATETIME() 
-            where   TCM_ID = '$($TRconfig.TCM_ID)'
-            "
-        process_log "TCM_Status: Done after Running"                    
-        DATABASE "update" $MySqlCmd    
     }
     else
     {            
