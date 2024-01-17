@@ -2,9 +2,10 @@
   "TCM_ID": 0,
   "TR_ID": 0,
   "Test_TimeOut": 0,
-  "TestResult": "",
-  "TestStatus": "",
+  "TestResult": "Pass",
+  "TestStatus": "Done",
   "TCM_Done": false,
+  "Test_Count": 1,
   "Text_Log_File_Path": [
     "c:\\TestManager\\MyLog\\TestManager.log",
     "C:\\TestManager\\MyLog\\DBjob_process.log",

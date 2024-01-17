@@ -30,7 +30,6 @@ namespace TM1007b1 {
 
         // **** CheckTR ****
         static bool CheckTR() {
-            // Read Reboot status    
             string json = System.IO.File.ReadAllText(TR);
             var jsonObj = JObject.Parse(json);
             if ( jsonObj["TCM_ID"] == null ) {
@@ -50,6 +49,9 @@ namespace TM1007b1 {
             };
             if ( jsonObj["TCM_Done"] == null ) {
                 jsonObj["TCM_Done"] = false;
+            };
+            if ( jsonObj["Test_Count"] == null ) {
+                jsonObj["Test_Count"] = 1;
             };
             if( jsonObj["Text_Log_File_Path"] == null ) {
                 JArray paths = new JArray
@@ -318,7 +320,7 @@ namespace TM1007b1 {
             Pipeline pipeline = runspace.CreatePipeline();
 
             try {
-                if( TestStatus == " ") {
+                if( TestStatus == "Done") {
                     pipeline.Commands.AddScript(TMDIRECTORY+"DBupdateStatus.ps1");
                 }
                 else {
@@ -552,7 +554,23 @@ namespace TM1007b1 {
                         if( (JobList != "common_bios_pxeboot_default.dll") && (JobList != "common_image_pxeboot_default.dll") ) {
                             DBupdateStatus("Running");
                         }
-                        ExecuteDll(ITEMDOWNLOAD+JobList);
+//(EdisonLin-20240117-)>>
+                        // Read Test_Count status    
+                        string fjson = System.IO.File.ReadAllText(TR);
+                        var jsonObj = JObject.Parse(fjson);
+                        int Test_Count = (int)jsonObj["Test_Count"];
+
+                        for(; Test_Count > 0 ; Test_Count-- ) {
+                            jsonObj["Test_Count"] = Test_Count;
+                            string outputJson = JsonConvert.SerializeObject(jsonObj, Formatting.Indented);
+                            File.WriteAllText(TR, outputJson);
+                            ExecuteDll(ITEMDOWNLOAD+JobList);
+                        }
+//(EdisonLin-20240117-)<<
+//(EdisonLin-20240117-1)                         ExecuteDll(ITEMDOWNLOAD+JobList);
+
+
+
                         if( (JobList == "common_bios_pxeboot_default.dll") || (JobList == "common_image_pxeboot_default.dll") ) {
                             ProcessLog("=================Completed================");
                             continue; //Don't update status for these DLL
@@ -567,7 +585,7 @@ namespace TM1007b1 {
                     }
                     // step 3. update test status to DB
                     ProcessLog("<<Step 3>>  update test status to DB ");
-                    DBupdateStatus(" ");   //Update test status as "Done"
+                    DBupdateStatus("Done");   //Update test status as "Done"
 
                     // step 4. Listening job status
                     ProcessLog("<<Step 4>>  Keep listening job status");
@@ -590,7 +608,6 @@ namespace TM1007b1 {
                     ProcessLog("**** TR_Result.json error ****");            
                     Environment.Exit(0);            
                 };
-
                 arg0 = args[0];
 //(EdisonLin-20240110-1)                 arg1 = args[1];
                 CreateDirectoryAndFile();
@@ -612,7 +629,19 @@ namespace TM1007b1 {
 
                 try {
                     ProcessLog("<<Step 1>> Executing "+args[0]+" TimeOut: "+timeout+" seconds");
-                    ExecuteDll(ITEMDOWNLOAD+args[0]);
+//(EdisonLin-20240117-)>>
+                    // Read Test_Count status    
+                    string fjson = System.IO.File.ReadAllText(TR);
+                    var jsonObj = JObject.Parse(fjson);
+                    int Test_Count = (int)jsonObj["Test_Count"];
+                    for(; Test_Count > 0 ; Test_Count-- ) {
+                        jsonObj["Test_Count"] = Test_Count;
+                        string outputJson = JsonConvert.SerializeObject(jsonObj, Formatting.Indented);
+                        File.WriteAllText(TR, outputJson);
+                        ExecuteDll(ITEMDOWNLOAD+args[0]);
+                    }
+//(EdisonLin-20240117-)<<
+//(EdisonLin-20240117-1)                     ExecuteDll(ITEMDOWNLOAD+args[0]);
                 }
 				catch (Exception ex)
 				{

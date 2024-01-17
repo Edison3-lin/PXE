@@ -6,7 +6,7 @@
     $baseName = $file.BaseName
     $logfile = $Directory+'\'+$baseName+"_process.log"
 
-    if ($null -eq $args[0])
+    if ("Done" -eq $args[0])
     {
         # job finished
         if ($TRconfig.TestStatus -eq "Running")
