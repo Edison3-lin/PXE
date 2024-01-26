@@ -10,7 +10,7 @@
     $UUID = Get-WmiObject Win32_ComputerSystemProduct | Select-Object -ExpandProperty UUID 
     $ExecuteDll = $NULL
 
-    $MySqlCmd = "
+    $MySqlCmd1 = "
             select 
                 TCM.TCM_ID,
                 TCM.TCM_Status,
@@ -28,7 +28,7 @@
                 where A.DP_UUID = '$UUID'
                     and A.DP_UUID = B.DP_UUID
                     and (B.TCM_Name = 'Image Flash' or B.TCM_Name = 'BIOS Update')
-                    and (B.TCM_Status is null or B.TCM_Status = 'Running')
+                    and (B.TCM_Status = 'Running')
                 order by B.TCM_CreateDate desc
                 ) TCM 
                 , Test_Result TR 
@@ -37,8 +37,40 @@
                 and TR.TAC_ID = TAC.TAC_ID 
                 and TAC.TAC_Table_Index is not null
         "
+    $dataSet = DATABASE "read" $MySqlCmd1
+        
+    if ( $dataSet.Tables[0].Rows.Count -eq 0 )
+    {
+        $MySqlCmd2 = "
+            select 
+                TCM.TCM_ID,
+                TCM.TCM_Status,
+                TR.TR_ID,
+                TAC.TAC_ID,
+                TAC.TAC_Table_Index,
+                TAC.TAC_Table_Name,
+                TAC.TAC_Table_Coulmn,
+                TR.TR_Excute_Status,
+                TCM.TCM_Name
+            from (
+                select TOP (1) 
+                    B.*
+                from DUT_Profile A, Test_Control_Main B
+                where A.DP_UUID = '$UUID'
+                    and A.DP_UUID = B.DP_UUID
+                    and (B.TCM_Name = 'Image Flash' or B.TCM_Name = 'BIOS Update')
+                    and (B.TCM_Status is null)
+                order by B.TCM_CreateDate desc
+                ) TCM 
+                , Test_Result TR 
+                , Test_Automation_Config TAC
+            where TCM.TCM_ID = TR.TCM_ID
+                and TR.TAC_ID = TAC.TAC_ID 
+                and TAC.TAC_Table_Index is not null
+        "
+        $dataSet = DATABASE "read" $MySqlCmd2
+    }
 
-    $dataSet = DATABASE "read" $MySqlCmd
     for ($i=0; $i -lt $dataSet.Tables[0].Rows.Count; $i++)
     {
         $TCM_ID = ($dataSet.Tables[0].Rows[$i][0])

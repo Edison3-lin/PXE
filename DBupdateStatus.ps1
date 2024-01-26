@@ -6,16 +6,16 @@
     $baseName = $file.BaseName
     $logfile = $Directory+'\'+$baseName+"_process.log"
 
-    if ("Done" -eq $args[0])
+    if ($null -eq $args[0])
     {
         # job finished
         if ($TRconfig.TestStatus -eq "Running")
         {
-            if ( $($TRconfig.TestResult).ToUpper() -notin @("PASS","FAIL","ERROR","ABORT","WAIT","CONTINUE") )
-            {
-                $TRconfig.TestResult = "Error"
-                $TestResult = "Error"
-            }    
+            # if ( $($TRconfig.TestResult).ToUpper() -notin @("PASS","FAIL","ERROR","ABORT","WAIT","CONTINUE") )
+            # {
+            #     $TRconfig.TestResult = "Error"
+            #     $TestResult = "Error"
+            # }    
             $TRconfig.TestStatus = "Done"
             $updatedJson = $TRconfig | ConvertTo-Json -Depth 10
             $updatedJson | Set-Content -Path $TRPath

@@ -14,7 +14,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Security.Cryptography;
 
-namespace TM1007b1 {
+namespace TestManager {
 
     public class TestManager {
         private const string TMDIRECTORY = "C:\\TestManager\\";
@@ -28,8 +28,30 @@ namespace TM1007b1 {
         private static string arg0 = null;
         private static string arg1 = null;
 
+        /// <summary>
+        /// Show version on screen
+        /// </summary>
+        static void Show_TM_version() {
+            string filePath = "C:\\TestManager\\TestManager.exe";
+             string fileName = Path.GetFileName(filePath);
+
+            if (System.IO.File.Exists(filePath))
+            {
+                FileVersionInfo fileVersionInfo = FileVersionInfo.GetVersionInfo(filePath);
+                Console.Clear();
+                Console.WriteLine($"\n_____________ Ver {fileVersionInfo.FileVersion} ______________\n\n");
+            }
+            else
+            {
+                Console.WriteLine("The specified file does not exist.");
+            }            
+        }
+
         // **** CheckTR ****
-        static bool CheckTR() {
+        /// <summary>
+        /// Check TR_Result.json
+        /// </summary>
+        static void CheckTR() {
             string json = System.IO.File.ReadAllText(TR);
             var jsonObj = JObject.Parse(json);
             if ( jsonObj["TCM_ID"] == null ) {
@@ -50,9 +72,6 @@ namespace TM1007b1 {
             if ( jsonObj["TCM_Done"] == null ) {
                 jsonObj["TCM_Done"] = false;
             };
-            if ( jsonObj["Test_Count"] == null ) {
-                jsonObj["Test_Count"] = 1;
-            };
             if( jsonObj["Text_Log_File_Path"] == null ) {
                 JArray paths = new JArray
                 {
@@ -68,7 +87,7 @@ namespace TM1007b1 {
 
             string outputJson = JsonConvert.SerializeObject(jsonObj, Formatting.Indented);
             File.WriteAllText(TR, outputJson);
-            return true;
+            return;
         }
 
         // **** Check Need Update ****
@@ -132,7 +151,10 @@ namespace TM1007b1 {
              Environment.Exit(0);   // Close TestManger
         }
 
-        // **** 創建log file ****
+        // **** log file ****
+        /// <summary>
+        /// Create necessary directories and TestManager.log 
+        /// </summary>
         static void CreateDirectoryAndFile() {
             try {
                 if (!Directory.Exists(ITEMDOWNLOAD))
@@ -171,6 +193,12 @@ namespace TM1007b1 {
         }
 
         // **** TestManager.log ****
+        /// <summary>
+        /// Add content to 
+        /// </summary>
+        /// <param content>Path to the folder</param>
+        /// <param name="itemName">items need to read back under the path</param>
+        /// <returns>Find or not, and the read value or string</returns>
         public static void ProcessLog(string content) {
             try {
                 // appand content
@@ -348,7 +376,7 @@ namespace TM1007b1 {
             string callingDomainName = AppDomain.CurrentDomain.FriendlyName;
             string basePath = AppDomain.CurrentDomain.BaseDirectory;
             AppDomain ad = AppDomain.CreateDomain("TestManager DLL");
-            ProxyObject obj = (ProxyObject)ad.CreateInstanceFromAndUnwrap(basePath+callingDomainName, "TM1007b1.ProxyObject");
+            ProxyObject obj = (ProxyObject)ad.CreateInstanceFromAndUnwrap(basePath+callingDomainName, "TestManager.ProxyObject");
             try {
                 ProcessLog("Loading.."+dllPath);
                 obj.LoadAssembly(dllPath);
@@ -379,7 +407,6 @@ namespace TM1007b1 {
                 ProcessLog("--- Setup() Exception caught ---");
                 ProcessLog("Exception type:  " + ex.GetType().Name);
                 ProcessLog("error message:  " + ex.Message);
-                ProcessLog("stack trace:  " + ex.StackTrace);
             }
 
             /* Run() */
@@ -392,7 +419,6 @@ namespace TM1007b1 {
                 ProcessLog("--- Run() Exception caught ---");
                 ProcessLog("Exception type:  " + ex.GetType().Name);
                 ProcessLog("error message:  " + ex.Message);
-                ProcessLog("stack trace:  " + ex.StackTrace);
             }
 
             /* UpdateResults() */
@@ -405,7 +431,6 @@ namespace TM1007b1 {
                 ProcessLog("--- UpdateResults() Exception caught ---");
                 ProcessLog("Exception type:  " + ex.GetType().Name);
                 ProcessLog("error message:  " + ex.Message);
-                ProcessLog("stack trace:  " + ex.StackTrace);
             }
 
             /* TearDown() */
@@ -418,7 +443,6 @@ namespace TM1007b1 {
                 ProcessLog("--- TearDown() Exception caught ---");
                 ProcessLog("Exception type:  " + ex.GetType().Name);
                 ProcessLog("error message:  " + ex.Message);
-                ProcessLog("stack trace:  " + ex.StackTrace);
             }
 
             // Stop Stopwatch
@@ -481,10 +505,10 @@ namespace TM1007b1 {
             if(args.Length == 0) {
                 do {
 
-                    if( !CheckTR() ) {
-                        Thread.Sleep(2000);
-                        continue;
-                    }; 
+                    Show_TM_version();
+                    Thread.Sleep(2000);
+
+                    CheckTR();
 
                     CreateDirectoryAndFile();
                     while(!DBtest()) {
@@ -554,23 +578,7 @@ namespace TM1007b1 {
                         if( (JobList != "common_bios_pxeboot_default.dll") && (JobList != "common_image_pxeboot_default.dll") ) {
                             DBupdateStatus("Running");
                         }
-//(EdisonLin-20240117-)>>
-                        // Read Test_Count status    
-                        string fjson = System.IO.File.ReadAllText(TR);
-                        var jsonObj = JObject.Parse(fjson);
-                        int Test_Count = (int)jsonObj["Test_Count"];
-
-                        for(; Test_Count > 0 ; Test_Count-- ) {
-                            jsonObj["Test_Count"] = Test_Count;
-                            string outputJson = JsonConvert.SerializeObject(jsonObj, Formatting.Indented);
-                            File.WriteAllText(TR, outputJson);
-                            ExecuteDll(ITEMDOWNLOAD+JobList);
-                        }
-//(EdisonLin-20240117-)<<
-//(EdisonLin-20240117-1)                         ExecuteDll(ITEMDOWNLOAD+JobList);
-
-
-
+                        ExecuteDll(ITEMDOWNLOAD+JobList);
                         if( (JobList == "common_bios_pxeboot_default.dll") || (JobList == "common_image_pxeboot_default.dll") ) {
                             ProcessLog("=================Completed================");
                             continue; //Don't update status for these DLL
@@ -604,10 +612,8 @@ namespace TM1007b1 {
             // Test DLL only          
             else {
 
-                if( !CheckTR() ) {
-                    ProcessLog("**** TR_Result.json error ****");            
-                    Environment.Exit(0);            
-                };
+                CheckTR();
+
                 arg0 = args[0];
 //(EdisonLin-20240110-1)                 arg1 = args[1];
                 CreateDirectoryAndFile();
@@ -629,19 +635,7 @@ namespace TM1007b1 {
 
                 try {
                     ProcessLog("<<Step 1>> Executing "+args[0]+" TimeOut: "+timeout+" seconds");
-//(EdisonLin-20240117-)>>
-                    // Read Test_Count status    
-                    string fjson = System.IO.File.ReadAllText(TR);
-                    var jsonObj = JObject.Parse(fjson);
-                    int Test_Count = (int)jsonObj["Test_Count"];
-                    for(; Test_Count > 0 ; Test_Count-- ) {
-                        jsonObj["Test_Count"] = Test_Count;
-                        string outputJson = JsonConvert.SerializeObject(jsonObj, Formatting.Indented);
-                        File.WriteAllText(TR, outputJson);
-                        ExecuteDll(ITEMDOWNLOAD+args[0]);
-                    }
-//(EdisonLin-20240117-)<<
-//(EdisonLin-20240117-1)                     ExecuteDll(ITEMDOWNLOAD+args[0]);
+                    ExecuteDll(ITEMDOWNLOAD+args[0]);
                 }
 				catch (Exception ex)
 				{

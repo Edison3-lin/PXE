@@ -1,3 +1,30 @@
+=========================================TestManager 1009========================================================================
+## [Version] - Date
+[1009] - 20240126 
+
+### Modification
+1. Fix: For "BIOS Update" or "Image Flash". If there are both running and null jobs on a machine. Handle "running" and "NULL" job separately
+<files> DBimage.ps1
+
+2. After starting testmanager, the version number is displayed
+<files> TestManager.cs
+
+3. Remove Service function
+<files> InstallUtil.exe Service_Start.bat Service_Stop.bat tests.bat testStop.bat TMservice.exe TMservice.exe.config TMstart.bat
+
+========================================================================================================================
+=========================================TM1008========================================================================
+## [Version] - Date
+[1008] - 20240118 
+
+### Modification
+1. Fix: Add CheckTR() to check whether the TR_Result.json information is complete
+<files> TestManager.cs DBimage.ps1 DBjob.ps1 DBupdateStatus.ps1 FunAll.ps1
+
+2. Fix: Don't update TCM status as "Done" when the job is not completely over
+<files> DBupdateStatus.ps1
+
+========================================================================================================================
 =========================================TM1007========================================================================
 ## [Version] - Date
 [1007] - 20240112 
