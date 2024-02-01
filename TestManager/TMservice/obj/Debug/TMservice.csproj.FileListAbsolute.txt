@@ -8,6 +8,13 @@ C:\Users\edison\Downloads\TT\TMservice\obj\Debug\TMservice.pdb
 C:\Users\edison\Downloads\TT\TMservice\obj\Debug\TMservice.ProjectInstaller.resources
 C:\Users\edison\Downloads\TT\TMservice\obj\Debug\TMservice.Service1.resources
 C:\Users\edison\Downloads\TT\TMservice\obj\Debug\TMservice.csproj.GenerateResource.cache
+C:\TestManager\TestManager\TMservice\bin\Debug\TMservice.exe.config
+C:\TestManager\TestManager\TMservice\bin\Debug\TMservice.exe
+C:\TestManager\TestManager\TMservice\bin\Debug\TMservice.pdb
 C:\TestManager\TestManager\TMservice\obj\Debug\TMservice.csproj.AssemblyReference.cache
+C:\TestManager\TestManager\TMservice\obj\Debug\TMservice.ProjectInstaller.resources
+C:\TestManager\TestManager\TMservice\obj\Debug\TMservice.Service1.resources
+C:\TestManager\TestManager\TMservice\obj\Debug\TMservice.csproj.GenerateResource.cache
+C:\TestManager\TestManager\TMservice\obj\Debug\TMservice.csproj.CoreCompileInputs.cache
 C:\TestManager\TestManager\TMservice\obj\Debug\TMservice.exe
 C:\TestManager\TestManager\TMservice\obj\Debug\TMservice.pdb

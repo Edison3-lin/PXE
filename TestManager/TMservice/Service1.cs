@@ -21,7 +21,7 @@ namespace TMservice
         protected override void OnStart(string[] args)
         {
             // bat file
-            string batFilePath = @"C:\TestManager\test.bat";
+            string batFilePath = @"C:\TestManager\tests.bat";
 
             ProcessStartInfo psi = new ProcessStartInfo
             {

@@ -1,31 +1,158 @@
-﻿using Microsoft.Office.Interop.Excel;
-using Microsoft.SqlServer.Server;
-using Microsoft.Win32;
+﻿using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Globalization;
 using System.IO;
-using System.Text;
-using System.Linq;
 using System.Reflection;
 using Excel = Microsoft.Office.Interop.Excel;
+using System.Net;
+using Newtonsoft.Json.Linq;
 
 namespace image_installation_application_default
 {
+
     public class image_installation_application_default
     {
-        public int Setup()
+        public static string currentDirectory = Directory.GetCurrentDirectory() + '\\';
+
+
+//(EdisonLin-20240125-)>>
+        // **** TestManager.log ****
+        public static void ProcessLog(string content) {
+            try {
+                // appand content
+                using (StreamWriter writer = new StreamWriter("C:\\TestManager\\ItemDownload\\aaa.log", true))
+                {
+                    writer.Write("["+DateTime.Now.ToString()+"] "+content+'\n');
+                }
+
+            }
+            catch (Exception ex) {
+                Console.WriteLine("Error!!! " + ex.Message);
+            }
+        }      
+//(EdisonLin-20240125-)<<
+        
+
+
+        public static void WriteTestLogStatus(string writeTag, string p2)
         {
-            // LoadDll.Setup
-            
-            return 11;
+            Assembly asmA = Assembly.LoadFrom(currentDirectory + '\\' + "CommonLibrary.dll");
+
+            if (null != asmA)
+            {
+
+                object[] p = new object[] { writeTag, p2 };
+                try
+                {
+                    Type typeReadTestLogStatus = asmA.GetType("CaptainWin.CommonAPI.CommonUpdateLogs");//typeTest = asmA.GetType(dll_namespace.dll_class)
+                    object obj = Activator.CreateInstance(typeReadTestLogStatus);//create a instance
+                    var miMethod = typeReadTestLogStatus.GetMethod("WriteTestLogStatus");//miMethod = typeTest.GetMethod(dll_method)
+                    miMethod.Invoke(obj, p);
+                }
+                catch (Exception e)
+                {
+                    throw e;
+
+                }
+
+            }
+        }
+        public void ReadJsonFile(string writeTag, string p2)
+        {
+            Assembly asmA = Assembly.LoadFrom(currentDirectory + '\\' + "CommonLibrary.dll");
+
+            if (null != asmA)
+            {
+
+                object[] p = new object[] { writeTag, p2 };
+                try
+                {
+                    Type typeReadTestLogStatus = asmA.GetType("CaptainWin.CommonAPI.CommonUpdateLogs");//typeTest = asmA.GetType(dll_namespace.dll_class)
+                    object obj = Activator.CreateInstance(typeReadTestLogStatus);//create a instance
+                    var miMethod = typeReadTestLogStatus.GetMethod("WriteTestLogStatus");//miMethod = typeTest.GetMethod(dll_method)
+                    miMethod.Invoke(obj, p);
+                }
+                catch (Exception e)
+                {
+                    throw e;
+
+                }
+
+            }
         }
 
+        static string ListXlsFilesFromFTP(string ftpServer, string ftpDirectory, string username, string password)
+        {
+            string line;
+            try
+            {
+                FtpWebRequest request = (FtpWebRequest)WebRequest.Create(new Uri($"{ftpServer}{ftpDirectory}"));
+                request.Method = WebRequestMethods.Ftp.ListDirectory;
+                request.Credentials = new NetworkCredential(username, password);
+
+                using (FtpWebResponse response = (FtpWebResponse)request.GetResponse())
+                using (Stream responseStream = response.GetResponseStream())
+                using (StreamReader reader = new StreamReader(responseStream))
+                {
+                    
+                    while ((line = reader.ReadLine()) != null)
+                    {
+                        // Filter for .xls files
+                        if (line.EndsWith(".xls", StringComparison.OrdinalIgnoreCase))
+                        {
+                            Console.WriteLine($"Found .xls file: {line}");
+                            // You can add the file name to a list or process it as needed
+                            
+                        }
+                    }
+                }
+                return line;
+            }
+            catch (WebException ex)
+            {
+                Console.WriteLine($"Error: {ex.Status} - {ex.Message}");
+                return null;
+            }
+            
+        }
+
+        static void DownloadXlsFileFromFTP (string FileName)
+        {
+            string ftpURL = "ftp://172.0.0.9";
+            string ftpUserID = "sit001";
+            string ftpUserPWD = "test1234";
+            string ftpFilePath = ftpURL + FileName;
+            string tempStoragePath = AppDomain.CurrentDomain.BaseDirectory + "FtpFileStorage\\" + FileName;
+
+            //FtpWebRequest
+            FtpWebRequest ftpRequest = (FtpWebRequest)FtpWebRequest.Create(ftpFilePath);
+            NetworkCredential ftpCredential = new NetworkCredential(ftpUserID, ftpUserPWD);
+            ftpRequest.Credentials = ftpCredential;
+            ftpRequest.Method = WebRequestMethods.Ftp.DownloadFile;
+
+            //FtpWebResponse
+            FtpWebResponse ftpResponse = (FtpWebResponse)ftpRequest.GetResponse();
+            //Get Stream From FtpWebResponse
+            Stream ftpStream = ftpResponse.GetResponseStream();
+            using (FileStream fileStream = new FileStream(tempStoragePath, FileMode.Create))
+            {
+                int bufferSize = 2048;
+                int readCount;
+                byte[] buffer = new byte[bufferSize];
+
+                readCount = ftpStream.Read(buffer, 0, bufferSize);
+                while (readCount > 0)
+                {
+                    fileStream.Write(buffer, 0, readCount);
+                    readCount = ftpStream.Read(buffer, 0, bufferSize);
+                }
+            }
+            ftpStream.Close();
+            ftpResponse.Close();
+        }
         public static bool Run()
         {
-            //For Get all Installed applications
-            
             List<string> gInstalledSoftware = new List<string>();
             List<string> checktable = new List<string>();
             List<string> result_applications_list = new List<string>();//List for check test result
@@ -64,6 +191,7 @@ namespace image_installation_application_default
             string UserBehaviorTrackingFramework = "not check";
             string Yandex = "not check";//25
             int fail = 0;
+            string jsonfilePath = @"c:\\TestManager\\TR_Result.json"; // 將路徑替換為你的JSON文件的實際路徑
             //Build all apps check list table
             string[,] appschecklist = new string[40, 3];
             appschecklist[0,0] = "Acer Care Center V4"; appschecklist[0,1] = "not check"; appschecklist[0, 2] = "en-US";
@@ -126,8 +254,8 @@ namespace image_installation_application_default
 
             string userName = Environment.UserName;
             // 設定Excel檔案的路徑
-            string root_path = "C:\\Users\\" + userName + "\\Downloads\\";
-            string root_patth = @"C:\TestManager\ItemDownload\";
+            //string root_path = "C:\\Users\\" + userName + "\\Downloads\\";
+            string root_path = @"C:\TestManager\ItemDownload\";
             string excelFileName = "SCD_RV07RC.xls";
             string excelFilePath = root_path + excelFileName;
             //string excelFilePath = @"C:\\Users\\k\\Downloads\\SCL_Aspire_Twix_ADN_WNNOP64W11_SV2_MAYN_Generic_RV03RC_Office (Trial)_BNM000035446_-.xls"; // Replace with the path to your Excel file
@@ -258,7 +386,9 @@ namespace image_installation_application_default
                 Console.WriteLine($"{elements}");
             }
 
+ProcessLog("Before ******* GetinstalledinformationFromPC ..........");
             GetinstalledinformationFromPC(gInstalledSoftware);
+ProcessLog("After _________ GetinstalledinformationFromPC ..........");
 
             if (sub_brand_name_cellValue == PCInformation[0])
             {
@@ -859,25 +989,78 @@ namespace image_installation_application_default
             if (fail > 0)
             {
                 Console.WriteLine("Not all apps checked OK Fail!");
+ProcessLog("Befoer ***** WriteTestLogStatus PASS");                
+                try {
+                    WriteTestLogStatus("TestResult", "Fail");
+                }
+                catch{
+                    ProcessLog("json fail........");
+                    Console.WriteLine("json fail........");
+                    Console.ReadKey();
+                }
+ProcessLog("After ________ WriteTestLogStatus Fail");                
+
+                Console.WriteLine("修改 \"TestStatus\" 內容");
+                // 讀取JSON文件內容
+                string jsonContentFail = File.ReadAllText(jsonfilePath);
+                // 將JSON字串解析為JObject
+                JObject jsonObjectFail = JObject.Parse(jsonContentFail);
+                // 修改 "site" 內容
+                jsonObjectFail["TestResult"] = "Fail"; // 在這裡將新的值賦給 "site" 屬性
+                                                       // 將修改後的JObject轉換回JSON字符串
+                string modifiedJsonFail = jsonObjectFail.ToString();
+                // 將修改後的JSON字串保存回文件
+                File.WriteAllText(jsonfilePath, modifiedJsonFail);
+                //Console.WriteLine("TestStatus is: " + test_status);
+                Console.WriteLine("Not all driver device found in PC, Fail");
+ProcessLog("Befoer ***** WriteTestLogStatus Done");                
+                try {
+                    WriteTestLogStatus("TestStatus", "Done");
+                }
+                catch{
+                    ProcessLog("json fail........");
+                    Console.WriteLine("json fail........");
+                    Console.ReadKey();
+                }
+ProcessLog("After ________ WriteTestLogStatus Done");                
+
                 return false;
             }
             else 
             {
                 //Console.WriteLine($"fail:{fail}");
                 Console.WriteLine("All apps checked OK Success !!");
+ProcessLog("Befoer ***** WriteTestLogStatus PASS");                
+                try {
+                    WriteTestLogStatus("TestResult", "PASS");
+                }
+                catch{
+                    ProcessLog("json fail........");
+                    Console.WriteLine("json fail........");
+                    Console.ReadKey();
+                }
+ProcessLog("After ________ WriteTestLogStatus PASS");                
+
+                
+                Console.WriteLine("修改 \"TestStatus\" 內容");
+                // 讀取JSON文件內容
+                string jsonContentPass = File.ReadAllText(jsonfilePath);
+                // 將JSON字串解析為JObject
+                JObject jsonObjectPass = JObject.Parse(jsonContentPass);
+                // 修改 "site" 內容
+                jsonObjectPass["TestResult"] = "PASS"; // 在這裡將新的值賦給 "site" 屬性
+                                                       // 將修改後的JObject轉換回JSON字符串
+                string modifiedJsonPass = jsonObjectPass.ToString();
+                // 將修改後的JSON字串保存回文件
+                File.WriteAllText(jsonfilePath, modifiedJsonPass);
+                //Console.WriteLine("TestStatus is: " + test_status);
+                Console.WriteLine("All driver device found in PC, Success");
+                WriteTestLogStatus("TestStatus", "Done");
                 return true;
             }
+            
         }
         
-
-        public static void UpdateResults() 
-        {
-            Console.WriteLine("UpdateResults");
-        }
-        public static void TearDown() 
-        {
-            Console.WriteLine("TearDown");
-        }
 
         static string[] setup1()
         {
@@ -1157,58 +1340,79 @@ namespace image_installation_application_default
 
             using (RegistryKey key = Registry.CurrentUser.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall", false))
             {
-                foreach (String keyName in key.GetSubKeyNames())
-                {
-                    RegistryKey subkey = key.OpenSubKey(keyName);
-                    displayName = subkey.GetValue("DisplayName") as string;
-                    app_version = subkey.GetValue("DisplayVersion") as string;
-                    app_vendor = subkey.GetValue("Publisher") as string;
-                    strSystemComponent = subkey.GetValue("SystemComponent") as string;
+                try {
+                    foreach (String keyName in key.GetSubKeyNames())
+                    {
+                        RegistryKey subkey = key.OpenSubKey(keyName);
+                        displayName = subkey.GetValue("DisplayName") as string;
+                        app_version = subkey.GetValue("DisplayVersion") as string;
+                        app_vendor = subkey.GetValue("Publisher") as string;
+                        strSystemComponent = subkey.GetValue("SystemComponent") as string;
 
-                    if (string.IsNullOrEmpty(displayName))
-                        continue;
+                        if (string.IsNullOrEmpty(displayName))
+                            continue;
 
-                    gInstalledSoftware.Add(app_vendor + "," + displayName + "," + app_version + "," + strSystemComponent);
+                        gInstalledSoftware.Add(app_vendor + "," + displayName + "," + app_version + "," + strSystemComponent);
+                    }
+                }    
+                catch{
+                    ProcessLog("66666666666666666666666");
+                    Console.WriteLine("66666666666666666666666");
+                    Console.ReadKey();
+                }    
 
-                }
             }
 
             using (var localMachine = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry64))
             {
                 var key = localMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall", false);
-                foreach (String keyName in key.GetSubKeyNames())
-                {
-                    RegistryKey subkey = key.OpenSubKey(keyName);
-                    displayName = subkey.GetValue("DisplayName") as string;
-                    app_version = subkey.GetValue("DisplayVersion") as string;
-                    app_vendor = subkey.GetValue("Publisher") as string;
-                    strSystemComponent = subkey.GetValue("SystemComponent") as string;
+                try {
+                    foreach (String keyName in key.GetSubKeyNames())
+                    {
+                        RegistryKey subkey = key.OpenSubKey(keyName);
+                        displayName = subkey.GetValue("DisplayName") as string;
+                        app_version = subkey.GetValue("DisplayVersion") as string;
+                        app_vendor = subkey.GetValue("Publisher") as string;
+                        strSystemComponent = subkey.GetValue("SystemComponent") as string;
 
-                    if (string.IsNullOrEmpty(displayName))
-                        continue;
+                        if (string.IsNullOrEmpty(displayName))
+                            continue;
 
-                    gInstalledSoftware.Add(app_vendor + "," + displayName + "," + app_version + "," + strSystemComponent);
+                        gInstalledSoftware.Add(app_vendor + "," + displayName + "," + app_version + "," + strSystemComponent);
+                    }
+                }    
+                catch{
+                    ProcessLog("77777777777777777777");
+                    Console.WriteLine("77777777777777777777");
+                    Console.ReadKey();
+                }    
 
-
-                }
             }
 
             using (RegistryKey key = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall", false))
             {
-                foreach (String keyName in key.GetSubKeyNames())
-                {
-                    RegistryKey subkey = key.OpenSubKey(keyName);
-                    displayName = subkey.GetValue("DisplayName") as string;
-                    app_version = subkey.GetValue("DisplayVersion") as string;
-                    app_vendor = subkey.GetValue("Publisher") as string;
-                    strSystemComponent = subkey.GetValue("SystemComponent") as string;
-                    //Console.WriteLine("strSystemComponent: {0}", strSystemComponent);
-                    if (string.IsNullOrEmpty(displayName))
-                        continue;
+                try {
+                    foreach (String keyName in key.GetSubKeyNames())
+                    {
+                        RegistryKey subkey = key.OpenSubKey(keyName);
+                        displayName = subkey.GetValue("DisplayName") as string;
+                        app_version = subkey.GetValue("DisplayVersion") as string;
+                        app_vendor = subkey.GetValue("Publisher") as string;
+                        strSystemComponent = subkey.GetValue("SystemComponent") as string;
+                        //Console.WriteLine("strSystemComponent: {0}", strSystemComponent);
+                        if (string.IsNullOrEmpty(displayName))
+                            continue;
 
-                    gInstalledSoftware.Add(app_vendor + "," + displayName + "," + app_version + "," + strSystemComponent);
+                        gInstalledSoftware.Add(app_vendor + "," + displayName + "," + app_version + "," + strSystemComponent);
 
+                    }
                 }
+                catch{
+                    ProcessLog("77777777777777777777");
+                    Console.WriteLine("77777777777777777777");
+                    Console.ReadKey();
+                }    
+
             }
 
             using (RegistryKey registryKey = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\PackageRepository\Packages"))
@@ -1218,10 +1422,18 @@ namespace image_installation_application_default
                     // Get the names of the subkeys
                     string[] subKeyNames = registryKey.GetSubKeyNames();
                     // Display the subkey names
-                    foreach (string subKeyName in subKeyNames)
-                    {
-                        gInstalledSoftware.Add(subKeyName);
+                    try {
+                        foreach (string subKeyName in subKeyNames)
+                        {
+                            gInstalledSoftware.Add(subKeyName);
+                        }
                     }
+                    catch{
+                        ProcessLog("8888888888888888888");
+                        Console.WriteLine("8888888888888888888");
+                        Console.ReadKey();
+                    }    
+
                 }
                 else
                 {
@@ -1236,6 +1448,8 @@ namespace image_installation_application_default
                     // Get the names of the subkeys
                     string[] subKeyNames = registryKey.GetSubKeyNames();
                     // Display the subkey names
+
+                try {
                     foreach (string subKeyName in subKeyNames)
                     {
 
@@ -1248,26 +1462,40 @@ namespace image_installation_application_default
                         }
                     }
                 }
+                catch{
+                    ProcessLog("999999999999999999999999999");
+                    Console.WriteLine("999999999999999999999999999");
+                    Console.ReadKey();
+                }    
+
+                }
             }
 
             using (var localMachine = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry64))
             {
                 var key = localMachine.OpenSubKey(@"SOFTWARE\Microsoft\MicrosoftEdge\Main\FavoriteBarItems", false);
-                foreach (String keyName in key.GetSubKeyNames())
-                {
-                    RegistryKey subkey = key.OpenSubKey(keyName);
-                    ItemName = subkey.GetValue("ItemName") as string;
-                    ItemFavIconFile = subkey.GetValue("ItemFavIconFile") as string;
+                try {
+                    foreach (String keyName in key.GetSubKeyNames())
+                    {
+                        RegistryKey subkey = key.OpenSubKey(keyName);
+                        ItemName = subkey.GetValue("ItemName") as string;
+                        ItemFavIconFile = subkey.GetValue("ItemFavIconFile") as string;
 
 
-                    //Console.WriteLine("strSystemComponent: {0}", strSystemComponent);
-                    if (string.IsNullOrEmpty(ItemName))
-                        continue;
+                        //Console.WriteLine("strSystemComponent: {0}", strSystemComponent);
+                        if (string.IsNullOrEmpty(ItemName))
+                            continue;
 
-                    gInstalledSoftware.Add(ItemName + "," + ItemFavIconFile);
+                        gInstalledSoftware.Add(ItemName + "," + ItemFavIconFile);
 
 
+                    }
                 }
+                catch{
+                    ProcessLog("aaaaaaaaaaaaaaaaaaaaaa");
+                    Console.WriteLine("aaaaaaaaaaaaaaaaaaaaaa");
+                    Console.ReadKey();
+                }    
             }
 
             string startMenuPath = Environment.GetFolderPath(Environment.SpecialFolder.StartMenu);
@@ -1309,6 +1537,13 @@ namespace image_installation_application_default
                 Console.WriteLine("An error occurred: " + ex.Message);
             }
 
+// Console.WriteLine("##################################################################################\n\n\n\n\n");
+
+//             foreach (string item in gInstalledSoftware)
+//             {
+// Console.WriteLine(item);
+// Console.ReadKey();                
+//             }
             return gInstalledSoftware;
         }
 

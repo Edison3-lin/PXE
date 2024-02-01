@@ -1,31 +1,65 @@
-﻿using Microsoft.Office.Interop.Excel;
-using Microsoft.Win32;
+﻿using Microsoft.Win32;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Globalization;
 using System.IO;
-using System.Linq;
-using System.Net.NetworkInformation;
-using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
-using System.Runtime.Remoting.Metadata.W3cXsd2001;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Linq;
-using Excel = Microsoft.Office.Interop.Excel;
-using LoadDll;
+using Excel=Microsoft.Office.Interop.Excel;
+//using NPOI.HSSF.UserModel;
+//using LinqForEEPlus;
+using System.Reflection;
 
 namespace image_installation_driver_default
 {
     public class image_installation_driver_default
     {
-        static string[] setup1()
+        public static string currentDirectory = Directory.GetCurrentDirectory() + '\\';
+//(EdisonLin-20240125-)>>
+        // **** TestManager.log ****
+        public static void ProcessLog(string content) {
+            try {
+                // appand content
+                using (StreamWriter writer = new StreamWriter("C:\\TestManager\\ItemDownload\\ddd.log", true))
+                {
+                    writer.Write("["+DateTime.Now.ToString()+"] "+content+'\n');
+                }
+
+            }
+            catch (Exception ex) {
+                Console.WriteLine("Error!!! " + ex.Message);
+            }
+        }      
+//(EdisonLin-20240125-)<<
+
+        public static void WriteTestLogStatus(string writeTag, string p2)
+        {
+            Assembly asmA = Assembly.LoadFrom(currentDirectory + '\\' + "CommonLibrary.dll");
+
+            if (null != asmA)
+            {
+
+                object[] p = new object[] { writeTag, p2 };
+                try
+                {
+                    Type typeReadTestLogStatus = asmA.GetType("CaptainWin.CommonAPI.CommonUpdateLogs");//typeTest = asmA.GetType(dll_namespace.dll_class)
+                    object obj = Activator.CreateInstance(typeReadTestLogStatus);//create a instance
+                    var miMethod = typeReadTestLogStatus.GetMethod("WriteTestLogStatus");//miMethod = typeTest.GetMethod(dll_method)
+                    miMethod.Invoke(obj, p);
+                }
+                catch (Exception e)
+                {
+                    throw e;
+
+                }
+
+            }
+        }
+        static string[] SetupEnvironment()
         {
             string project_name = null;
             string computerName = Environment.MachineName;
-            //Runnner.WriteLog("Computer Name: " + computerName);
+            //Console.WriteLine("Computer Name: " + computerName);
             string registryKeyPath = @"HKEY_LOCAL_MACHINE\HARDWARE\DESCRIPTION\System\BIOS"; // Replace with the actual registry key path
             string valueName = "SystemProductName"; // Replace with the name of the specific value you want to retrieve
             String[] setupvalues = new string[2];
@@ -43,29 +77,82 @@ namespace image_installation_driver_default
                         project_name = project_name.Substring(0, index);
                     }
 
-                    //Runnner.WriteLog($"Registry Value ({valueName}): {value} : {project_name}");
+                    //Console.WriteLine($"Registry Value ({valueName}): {value} : {project_name}");
                     setupvalues[0] = project_name;
                     setupvalues[1] = computerName;
                 }
                 else
                 {
-                    Runnner.WriteLog($"Value '{valueName}' not found in the registry key.");
+                    Console.WriteLine($"Value '{valueName}' not found in the registry key.");
                 }
             }
             catch (Exception ex)
             {
-                Runnner.WriteLog("An error occurred: " + ex.Message);
+                Console.WriteLine("An error occurred: " + ex.Message);
             }
             return setupvalues;
         }
-
-       public int Setup()
+        /*
+        static int GetUsefulDataAreaRange(HSSFSheet sheet)
         {
-            // LoadDll.Setup
-            return 0;
+            // Iterate over rows and columns to find the non-empty data area
+            int firstRow = sheet.FirstRowNum;
+            int lastRow = sheet.LastRowNum;
+            int firstCol = int.MaxValue;
+            int lastCol = int.MinValue;
+
+            for (int rowNum = firstRow; rowNum <= lastRow; rowNum++)
+            {
+                var row = sheet.GetRow(rowNum);
+
+                if (row != null)
+                {
+                    // Iterate over cells in the row
+                    for (int colNum = row.FirstCellNum; colNum < row.LastCellNum; colNum++)
+                    {
+                        var cell = row.GetCell(colNum);
+
+                        if (cell != null && cell.CellType != NPOI.SS.UserModel.CellType.Blank)
+                        {
+                            // Update the first and last column indices
+                            firstCol = Math.Min(firstCol, colNum);
+                            lastCol = Math.Max(lastCol, colNum);
+                        }
+                    }
+                }
+            }
+
+            if (firstCol <= lastCol)
+            {
+                // Convert column indices to Excel column letters
+                //string firstColLetter = ConvertColumnIndexToLetter(firstCol);
+                //string lastColLetter = ConvertColumnIndexToLetter(lastCol);
+                return lastCol;
+                // Return the range in Excel A1-style notation
+                //return $"{firstColLetter}{firstRow + 1}:{lastColLetter}{lastRow + 1}";
+            }
+
+            return -1;
         }
+        */
+        static string ConvertColumnIndexToLetter(int columnIndex)
+        {
+            int dividend = columnIndex + 1;
+            string columnLetter = string.Empty;
+
+            while (dividend > 0)
+            {
+                int modulo = (dividend - 1) % 26;
+                columnLetter = Convert.ToChar('A' + modulo) + columnLetter;
+                dividend = (dividend - modulo) / 26;
+            }
+
+            return columnLetter;
+        }
+        
         public static bool Run()
         {
+            Console.WriteLine("start Run()....");
             //Get all Device info
             string displayName;
             string app_version;
@@ -135,21 +222,25 @@ namespace image_installation_driver_default
             checkflaglist.Add("KillerWiFi6EAX1675i" + "," + "not check");
             checkflaglist.Add("WirelessLAN_MWinREDrivers" + "," + "not check");
             checkflaglist.Add("KillerControlCenter" + "," + "not check");
+            Console.WriteLine("checkflaglist done");
             List<string> AlldevicesInfoInDM = new List<string>();//List for store all device info read from OS
             CultureInfo ci = CultureInfo.InstalledUICulture;
-            Runnner.WriteLog("Default Language Info:");
-            // Runnner.WriteLog("* Name: {0}", ci.Name);
-            Runnner.WriteLog(GetCpuManufacturer());
+            Console.WriteLine("Default Language Info:");
+            Console.WriteLine("* Name: {0}", ci.Name);
+            Console.WriteLine(GetCpuManufacturer());
 
             //Get project name and PC name
             string[] PCInformation = new string[2];
-            PCInformation = setup1();
-            Runnner.WriteLog(PCInformation[0] + " " + PCInformation[1]);
+            PCInformation = SetupEnvironment();
+            Console.WriteLine(PCInformation[0] + " " + PCInformation[1]);
 
             string computerName = Environment.MachineName;
-            Runnner.WriteLog("Computer Name: " + computerName);
+            Console.WriteLine("Computer Name: " + computerName);
             string registryKeyPath = @"HKEY_LOCAL_MACHINE\HARDWARE\DESCRIPTION\System\BIOS"; // Replace with the actual registry key path
             string valueName = "SystemProductName"; // Replace with the name of the specific value you want to retrieve
+
+            string jsonfilePath = @"c:\\TestManager\\TR_Result.json"; // 將路徑替換為你的JSON文件的實際路徑
+
 
             try
             {
@@ -165,1293 +256,1329 @@ namespace image_installation_driver_default
                         project_name = project_name.Substring(0, index);
                     }
 
-                    Runnner.WriteLog($"Registry Value ({valueName}): {value} : {project_name}");
+                    Console.WriteLine($"Registry Value ({valueName}): {value} : {project_name}");
                 }
                 else
                 {
-                    Runnner.WriteLog($"Value '{valueName}' not found in the registry key.");
+                    Console.WriteLine($"Value '{valueName}' not found in the registry key.");
                 }
             }
             catch (Exception ex)
             {
-                Runnner.WriteLog("An error occurred: " + ex.Message);
+                Console.WriteLine("An error occurred: " + ex.Message);
             }
             string userName = Environment.UserName;
             // 設定Excel檔案的路徑
             string root_path = @"C:\TestManager\ItemDownload\";
             string excelFileName = "SCD_RV07RC.xls";
             string excelFilePath = root_path + excelFileName;
-
-            Runnner.WriteLog(excelFilePath);
+            var fs = new FileStream(excelFilePath, FileMode.Open, FileAccess.Read);
+            //var workbookNPOI = new HSSFWorkbook(fs);
+            Console.WriteLine(excelFilePath);
 
             int area_row_item_type = 0;
             int area_col_item_type = 0;
 
-try {
+            //Application excelApp = new Application();
+            // 建立一個新的Excel Application物件
+            Excel.Application excelApp = new Excel.Application();
 
-// 創建Excel應用程序對象
-        Excel.Application excelApp = new Excel.Application();
-        
-        // 創建一個新的工作簿
-        Excel.Workbook workbook = excelApp.Workbooks.Add();
-        Excel.Worksheet worksheet = (Excel.Worksheet)workbook.Worksheets[1];
-        
-        // 在單元格A1中寫入內容
-        worksheet.Cells[1, 1] = "Hello, Excel from .NET!";
-        
-        // 保存工作簿
-        workbook.SaveAs(@"C:\TestManager\MyLog\file.xlsx");
-        
-        // 關閉Excel應用程序
-        excelApp.Quit();
-        
-        // 釋放COM對象
-        System.Runtime.InteropServices.Marshal.ReleaseComObject(workbook);
-        System.Runtime.InteropServices.Marshal.ReleaseComObject(excelApp);
-        
-        Runnner.WriteLog("Excel操作完成。");
+            // 打開Excel檔案
+            Excel.Workbook workbook = excelApp.Workbooks.Open(excelFilePath);
 
-}
-catch (Exception ex)
-{
-    Runnner.WriteLog("捕獲到異常:");
-    Runnner.WriteLog("異常類型:  " + ex.GetType().Name);
-    Runnner.WriteLog("錯誤訊息:  " + ex.Message);
-    Runnner.WriteLog("堆疊追蹤:  " + ex.StackTrace);
-}
+            // 假設Excel檔案只有一個工作表，直接使用索引1來取得該工作表
+            Excel.Worksheet worksheet = (Microsoft.Office.Interop.Excel.Worksheet)workbook.Worksheets["SCL Content"];
 
-            // // 建立一個新的Excel Application物件
-            // Excel.Application excelApp = new Excel.Application();
+            //HSSFSheet worksheetNPOI = (HSSFSheet)workbookNPOI.GetSheet("SCL Content");
+            
+            
+            // 讀取資料
+            //int rowCount = worksheetNPOI.LastRowNum;
+            //int colCount = GetUsefulDataAreaRange(worksheetNPOI);
+            int rowCount = worksheet.UsedRange.Rows.Count;
+            int colCount = worksheet.UsedRange.Columns.Count;
+            string drivername_cellValue = null;
+            string Category_cellValue = null;
+            string Provider_cellValue = null;
+            string version_cellValue = null;
+            string sub_brand_name_cellValue = null;
+            string checkflag = "not check";
+            List<string> drivers_list_SCL = new List<string>();
+            //List<String> HadcheckTable = new List<String>();
+            //string[] mapping_name = null;
+            for (int row = 1; row <= rowCount; row++)
+            {
+                for (int col = 1; col <= colCount; col++)
+                {
+                    // 使用Cells物件來取得單元格的值
+                    //var cell1 = worksheetNPOI.GetRow(row).GetCell(col);
+                    //Console.WriteLine(cell1);
+                    Excel.Range cell = (Microsoft.Office.Interop.Excel.Range)worksheet.Cells[row, col];
+                    string cellValue = cell.Value != null ? cell.Value.ToString() : "";
 
-            // // 打開Excel檔案
-            // Excel.Workbook workbook = excelApp.Workbooks.Open(excelFilePath);
+                    //string cellValue = cell1.StringCellValue;
+                    if (cellValue == "Sub Brand")
+                    {
+                        int brand_base_row = row;
+                        int brand_base_col = col;
+                        //var Item_Desc_cell = worksheetNPOI.GetRow(brand_base_row).GetCell(brand_base_col + 1);
+                        Excel.Range Item_Desc_cell = (Microsoft.Office.Interop.Excel.Range)worksheet.Cells[brand_base_row, brand_base_col + 1];
+                        sub_brand_name_cellValue = Item_Desc_cell.Value != null ? Item_Desc_cell.Value.ToString() : "";
+                        //sub_brand_name_cellValue = Item_Desc_cell.StringCellValue;
+                        Console.WriteLine("sub brand: " + sub_brand_name_cellValue);
+                    }
 
-            // // 假設Excel檔案只有一個工作表，直接使用索引1來取得該工作表
-            // Excel.Worksheet worksheet = (Microsoft.Office.Interop.Excel.Worksheet)workbook.Worksheets["SCL Content"];
+                    if (cellValue == "Driver")
+                    {
+                        Console.Write(cellValue + "\t");
+                        //Excel.Range cColumn = sheet.get_Range("B", null);
+                        int driver_base_row = row;//get row index offset of "Driver"
+                        int driver_base_col = col;//get col index offset of "Driver"
 
-            // // 讀取資料
-            // int rowCount = worksheet.UsedRange.Rows.Count;
-            // int colCount = worksheet.UsedRange.Columns.Count;
-            // string drivername_cellValue = null;
-            // string Category_cellValue = null;
-            // string Provider_cellValue = null;
-            // string version_cellValue = null;
-            // string sub_brand_name_cellValue = null;
-            // string checkflag = "not check";
-            // List<string> drivers_list_SCL = new List<string>();
-            // //List<String> HadcheckTable = new List<String>();
-            // //string[] mapping_name = null;
-            // for (int row = 1; row <= rowCount; row++)
-            // {
-            //     for (int col = 1; col <= colCount; col++)
-            //     {
-            //         // 使用Cells物件來取得單元格的值
-            //         Excel.Range cell = (Microsoft.Office.Interop.Excel.Range)worksheet.Cells[row, col];
-            //         string cellValue = cell.Value != null ? cell.Value.ToString() : "";
+                        area_row_item_type = driver_base_row + 2;
+                        area_col_item_type = driver_base_col + 2;
 
-            //         if (cellValue == "Sub Brand")
-            //         {
-            //             int brand_base_row = row;
-            //             int brand_base_col = col;
-            //             Excel.Range Item_Desc_cell = (Microsoft.Office.Interop.Excel.Range)worksheet.Cells[brand_base_row, brand_base_col + 1];
-            //             sub_brand_name_cellValue = Item_Desc_cell.Value != null ? Item_Desc_cell.Value.ToString() : "";
-            //             Runnner.WriteLog("sub brand: " + sub_brand_name_cellValue);
-            //         }
+                        if (sub_brand_name_cellValue == PCInformation[0])
+                        {
+                            do
+                            {
+                                //Read Category cell
+                                Excel.Range Category_cell = (Microsoft.Office.Interop.Excel.Range)worksheet.Cells[area_row_item_type, driver_base_col];
+                                //Category_cellValue = Category_cell.Value != null ? Category_cell.Value.ToString() : "";
+                                //var Category_cell = worksheetNPOI.GetRow(area_row_item_type).GetCell(driver_base_col);
+                                //Category_cellValue = Category_cell.StringCellValue;
+                                //Read Provider cell
+                                Excel.Range Provider_cell = (Microsoft.Office.Interop.Excel.Range)worksheet.Cells[area_row_item_type, driver_base_col + 1];
+                                Provider_cellValue = Provider_cell.Value != null ? Provider_cell.Value.ToString() : "";
+                                //var Provider_cell = worksheetNPOI.GetRow(area_row_item_type).GetCell(driver_base_col + 1);
+                                //Provider_cellValue = Provider_cell.StringCellValue;
+                                //Read Item Type cell
+                                Excel.Range Item_Type_cell = (Microsoft.Office.Interop.Excel.Range)worksheet.Cells[area_row_item_type, area_col_item_type];
+                                drivername_cellValue = Item_Type_cell.Value != null ? Item_Type_cell.Value.ToString() : "";
+                                //var Item_Type_cell = worksheetNPOI.GetRow(area_row_item_type).GetCell(area_col_item_type);
+                                //drivername_cellValue = Item_Type_cell.StringCellValue;
+                                //Read Driver version
+                                Excel.Range Driver_Version_cell = (Microsoft.Office.Interop.Excel.Range)worksheet.Cells[area_row_item_type, area_col_item_type + 2];
+                                version_cellValue = Driver_Version_cell.Value != null ? Driver_Version_cell.Value.ToString() : "";
+                                version_cellValue = version_cellValue.Substring(1);
+                                //var Driver_Version_cell = worksheetNPOI.GetRow(area_row_item_type).GetCell(area_col_item_type +2);
+                                //version_cellValue = Driver_Version_cell.StringCellValue;
 
-            //         if (cellValue == "Driver")
-            //         {
-            //             Runnner.WriteLog(cellValue + "\t");
-            //             //Excel.Range cColumn = sheet.get_Range("B", null);
-            //             int driver_base_row = row;//get row index offset of "Driver"
-            //             int driver_base_col = col;//get col index offset of "Driver"
+                                Console.WriteLine(Category_cellValue + " " + Provider_cellValue + " " + drivername_cellValue + " " + version_cellValue + "\t");
 
-            //             area_row_item_type = driver_base_row + 2;
-            //             area_col_item_type = driver_base_col + 2;
+                                if (Category_cellValue == "Audio Codec_M" && Provider_cellValue == "REALTEK")
+                                {
 
-            //             if (sub_brand_name_cellValue == PCInformation[0])
-            //             {
-            //                 do
-            //                 {
-            //                     //Read Category cell
-            //                     Excel.Range Category_cell = (Microsoft.Office.Interop.Excel.Range)worksheet.Cells[area_row_item_type, driver_base_col];
-            //                     Category_cellValue = Category_cell.Value != null ? Category_cell.Value.ToString() : "";
-            //                     //Read Provider cell
-            //                     Excel.Range Provider_cell = (Microsoft.Office.Interop.Excel.Range)worksheet.Cells[area_row_item_type, driver_base_col + 1];
-            //                     Provider_cellValue = Provider_cell.Value != null ? Provider_cell.Value.ToString() : "";
-            //                     //Read Item Type cell
-            //                     Excel.Range Item_Type_cell = (Microsoft.Office.Interop.Excel.Range)worksheet.Cells[area_row_item_type, area_col_item_type];
-            //                     drivername_cellValue = Item_Type_cell.Value != null ? Item_Type_cell.Value.ToString() : "";
-            //                     //Read Driver version
-            //                     Excel.Range Driver_Version_cell = (Microsoft.Office.Interop.Excel.Range)worksheet.Cells[area_row_item_type, area_col_item_type + 2];
-            //                     version_cellValue = Driver_Version_cell.Value != null ? Driver_Version_cell.Value.ToString() : "";
-            //                     version_cellValue = version_cellValue.Substring(1);
+                                    string mapping_name = "";
+                                    mapping_name = "Realtek Audio";
+                                    drivers_list_SCL.Add(mapping_name + "," + version_cellValue + "," + Category_cellValue + "," + Provider_cellValue + "," + checkflag);
 
-            //                     Runnner.WriteLog(Category_cellValue + " " + Provider_cellValue + " " + drivername_cellValue + " " + version_cellValue + "\t");
+                                    Console.WriteLine($"SCL  name: {drivername_cellValue}  ---> mapping name: {mapping_name} ");
+                                }
+                                else if (Category_cellValue == "Audio Driver Utility" && Provider_cellValue == "Acer")
+                                {
+                                    string mapping_name = "";
+                                    mapping_name = "AcerPurifiedVoiceConsole";
+                                    drivers_list_SCL.Add(mapping_name + "," + version_cellValue + "," + Category_cellValue + "," + Provider_cellValue + "," + checkflag);
 
-            //                     if (Category_cellValue == "Audio Codec_M" && Provider_cellValue == "REALTEK")
-            //                     {
+                                    Console.WriteLine($"SCL  name: {drivername_cellValue}  ---> mapping name: {mapping_name} ");
+                                }
+                                else if (Category_cellValue == "Bluetooth_M" && Provider_cellValue == "Killer")
+                                {
+                                    string mapping_name = "";
+                                    mapping_name = "Intel(R) Wireless Bluetooth";
+                                    drivers_list_SCL.Add(mapping_name + "," + version_cellValue + "," + Category_cellValue + "," + Provider_cellValue + "," + checkflag);
 
-            //                         string mapping_name = "";
-            //                         mapping_name = "Realtek Audio";
-            //                         drivers_list_SCL.Add(mapping_name + "," + version_cellValue + "," + Category_cellValue + "," + Provider_cellValue + "," + checkflag);
+                                    Console.WriteLine($"SCL  name: {drivername_cellValue}  ---> mapping name: {mapping_name} ");
+                                }
+                                else if (Category_cellValue == "Wireless LAN_M" && Provider_cellValue == "Killer" && drivername_cellValue == "1675i")
+                                {
+                                    string mapping_name = "Killer(R) Wi-Fi 6E AX1675i 160MHz Wireless Network Adapter";
+                                    drivers_list_SCL.Add(mapping_name + "," + version_cellValue + "," + Category_cellValue + "," + Provider_cellValue + "," + checkflag);
 
-            //                         Runnner.WriteLog($"SCL  name: {drivername_cellValue}  ---> mapping name: {mapping_name} ");
-            //                     }
-            //                     else if (Category_cellValue == "Audio Driver Utility" && Provider_cellValue == "Acer")
-            //                     {
-            //                         string mapping_name = "";
-            //                         mapping_name = "AcerPurifiedVoiceConsole";
-            //                         drivers_list_SCL.Add(mapping_name + "," + version_cellValue + "," + Category_cellValue + "," + Provider_cellValue + "," + checkflag);
+                                    Console.WriteLine($"SCL  name: {drivername_cellValue}  ---> mapping name: {mapping_name} ");
+                                }
+                                else if (Category_cellValue == "Audio Driver Utility" && Provider_cellValue == "Realtek")
+                                {
+                                    string mapping_name = "";
+                                    mapping_name = "RealtekAudioControl";
+                                    drivers_list_SCL.Add(mapping_name + "," + version_cellValue + "," + Category_cellValue + "," + Provider_cellValue + "," + checkflag);
+                                    //HadcheckTable.Add(mapping_name);
+                                    Console.WriteLine($"SCL  name: {drivername_cellValue}  ---> mapping name: {mapping_name} ");
+                                }
+                                else if (Category_cellValue == "Intel DPTF" && Provider_cellValue == "Intel")
+                                {
+                                    string mapping_name = "";
+                                    mapping_name = "Intel(R) Innovation Platform Framework Generic Participant";
+                                    drivers_list_SCL.Add(mapping_name + "," + version_cellValue + "," + Category_cellValue + "," + Provider_cellValue + "," + checkflag);
+                                    Console.WriteLine($"SCL  name: {drivername_cellValue}  ---> mapping name: {mapping_name} ");
+                                    mapping_name = "Intel(R) Innovation Platform Framework Manager";
+                                    drivers_list_SCL.Add(mapping_name + "," + version_cellValue + "," + Category_cellValue + "," + Provider_cellValue + "," + checkflag);
+                                    Console.WriteLine($"SCL  name: {drivername_cellValue}  ---> mapping name: {mapping_name} ");
+                                    mapping_name = "Intel(R) Innovation Platform Framework Processor Participant";
+                                    drivers_list_SCL.Add(mapping_name + "," + version_cellValue + "," + Category_cellValue + "," + Provider_cellValue + "," + checkflag);
+                                    Console.WriteLine($"SCL  name: {drivername_cellValue}  ---> mapping name: {mapping_name} ");
+                                }
+                                else if (Category_cellValue == "Application Base driver" && Provider_cellValue == "Acer")
+                                {
+                                    string mapping_name = "";
+                                    mapping_name = "Acer Application Base Driver";
+                                    drivers_list_SCL.Add(mapping_name + "," + version_cellValue + "," + Category_cellValue + "," + Provider_cellValue + "," + checkflag);
+                                    Console.WriteLine($"SCL  name: {drivername_cellValue}  ---> mapping name: {mapping_name} ");
+                                }
+                                else if (Category_cellValue == "FUB" && Provider_cellValue == "Acer")
+                                {
+                                    string mapping_name = "";
+                                    mapping_name = "Acer Device Enabling Sevice";
+                                    drivers_list_SCL.Add(mapping_name + "," + version_cellValue + "," + Category_cellValue + "," + Provider_cellValue + "," + checkflag);
+                                    Console.WriteLine($"SCL  name: {drivername_cellValue}  ---> mapping name: {mapping_name} ");
+                                }
+                                else if (Category_cellValue == "TouchPad" && Provider_cellValue == "Synaptics")
+                                {
+                                    string mapping_name = "";
+                                    mapping_name = "Synaptics";
+                                    drivers_list_SCL.Add(mapping_name + "," + version_cellValue + "," + Category_cellValue + "," + Provider_cellValue + "," + checkflag);
+                                    Console.WriteLine($"SCL  name: {drivername_cellValue}  ---> mapping name: {mapping_name} ");
+                                }
+                                else if (Category_cellValue == "TouchPad" && Provider_cellValue == "Elantech")
+                                {
+                                    string mapping_name = "";
+                                    mapping_name = "ELAN";
+                                    drivers_list_SCL.Add(mapping_name + "," + version_cellValue + "," + Category_cellValue + "," + Provider_cellValue + "," + checkflag);
+                                    Console.WriteLine($"SCL  name: {drivername_cellValue}  ---> mapping name: {mapping_name} ");
+                                }
+                                else if (Category_cellValue == "Card Reader Chip" && Provider_cellValue == "Realtek")
+                                {
+                                    string mapping_name = "";
+                                    mapping_name = "Realtek PCIE CardReader";
+                                    drivers_list_SCL.Add(mapping_name + "," + version_cellValue + "," + Category_cellValue + "," + Provider_cellValue + "," + checkflag);
+                                    Console.WriteLine($"SCL  name: {drivername_cellValue}  ---> mapping name: {mapping_name} ");
+                                }
+                                else if (drivername_cellValue == "DTSX/Ultra" && Category_cellValue == "DTS")
+                                {
+                                    string mapping_name = "";
+                                    mapping_name = "DTS APO4x Service";
+                                    drivers_list_SCL.Add(mapping_name + "," + version_cellValue + "," + Category_cellValue + "," + Provider_cellValue + "," + checkflag);
+                                    Console.WriteLine($"SCL  name: {drivername_cellValue}  ---> mapping name: {mapping_name} ");
+                                }
+                                else if (drivername_cellValue == "DTS Console UWP" && Category_cellValue == "DTS Utility")
+                                {
+                                    string mapping_name = "";
+                                    mapping_name = "DTSXUltra";
+                                    drivers_list_SCL.Add(mapping_name + "," + version_cellValue + "," + Category_cellValue + "," + Provider_cellValue + "," + checkflag);
+                                    Console.WriteLine($"SCL  name: {drivername_cellValue}  ---> mapping name: {mapping_name} ");
+                                }
+                                else if (drivername_cellValue == "DTS sound UWP" && Category_cellValue == "DTS Utility")
+                                {
+                                    string mapping_name = "";
+                                    mapping_name = "DTSSoundUnbound";
+                                    drivers_list_SCL.Add(mapping_name + "," + version_cellValue + "," + Category_cellValue + "," + Provider_cellValue + "," + checkflag);
+                                    Console.WriteLine($"SCL  name: {drivername_cellValue}  ---> mapping name: {mapping_name} ");
+                                }
+                                else if (Category_cellValue == "Finger Print_M" && Provider_cellValue == "Carewe")
+                                {
+                                    string mapping_name = "";
+                                    mapping_name = "Fingerprint";
+                                    drivers_list_SCL.Add(mapping_name + "," + version_cellValue + "," + Category_cellValue + "," + Provider_cellValue + "," + checkflag);
+                                    Console.WriteLine($"SCL  name: {drivername_cellValue}  ---> mapping name: {mapping_name} ");
+                                }
+                                else if (Category_cellValue == "Intel Gaussian and Neural Accelerator" && Provider_cellValue == "Intel")
+                                {
+                                    string mapping_name = "";
+                                    mapping_name = "Intel(R) GNA";
+                                    drivers_list_SCL.Add(mapping_name + "," + version_cellValue + "," + Category_cellValue + "," + Provider_cellValue + "," + checkflag);
+                                    Console.WriteLine($"SCL  name: {drivername_cellValue}  ---> mapping name: {mapping_name} ");
+                                }
+                                else if (Category_cellValue == "Intel Rapid Storage Technology" && Provider_cellValue == "Intel")
+                                {
+                                    string mapping_name = "";
+                                    mapping_name = "Intel RST VMD";
+                                    drivers_list_SCL.Add(mapping_name + "," + version_cellValue + "," + Category_cellValue + "," + Provider_cellValue + "," + checkflag);
+                                    Console.WriteLine($"SCL  name: {drivername_cellValue}  ---> mapping name: {mapping_name} ");
+                                }
+                                else if (Category_cellValue == "Intel SST" && Provider_cellValue == "Intel")
+                                {
+                                    if (version_cellValue.Contains(".00"))
+                                    {
+                                        version_cellValue = version_cellValue.Replace(".00", ".0");
+                                    }
+                                    string mapping_name = "";
+                                    mapping_name = "Smart Sound Technology BUS";
+                                    drivers_list_SCL.Add(mapping_name + "," + version_cellValue + "," + Category_cellValue + "," + Provider_cellValue + "," + checkflag);
+                                    Console.WriteLine($"SCL  name: {drivername_cellValue}  ---> mapping name: {mapping_name} ");
+                                    mapping_name = "Smart Sound Technology OED";
+                                    drivers_list_SCL.Add(mapping_name + "," + version_cellValue + "," + Category_cellValue + "," + Provider_cellValue + "," + checkflag);
+                                    Console.WriteLine($"SCL  name: {drivername_cellValue}  ---> mapping name: {mapping_name} ");
+                                }
+                                else if (drivername_cellValue == "Serial I/O" && Provider_cellValue == "Intel")
+                                {
+                                    string mapping_name = "";
+                                    mapping_name = "Intel(R) Serial IO";
+                                    drivers_list_SCL.Add(mapping_name + "," + version_cellValue + "," + Category_cellValue + "," + Provider_cellValue + "," + checkflag);
+                                    Console.WriteLine($"SCL  name: {drivername_cellValue}  ---> mapping name: {mapping_name} ");
+                                }
+                                else if (Category_cellValue == "Intel VGA" && Provider_cellValue == "Intel")
+                                {
+                                    string mapping_name = "";
+                                    mapping_name = "Graphics";
+                                    drivers_list_SCL.Add(mapping_name + "," + version_cellValue + "," + Category_cellValue + "," + Provider_cellValue + "," + checkflag);
+                                    Console.WriteLine($"SCL  name: {drivername_cellValue}  ---> mapping name: {mapping_name} ");
+                                }
+                                else if (Category_cellValue == "NB_Chipset_M" && Provider_cellValue == "Intel")
+                                {
+                                    string mapping_name = "";
+                                    mapping_name = "Intel(R) SMBus";
+                                    drivers_list_SCL.Add(mapping_name + "," + version_cellValue + "," + Category_cellValue + "," + Provider_cellValue + "," + checkflag);
+                                    Console.WriteLine($"SCL  name: {drivername_cellValue}  ---> mapping name: {mapping_name} ");
+                                }
+                                else if (drivername_cellValue == "GN20-P0" && Provider_cellValue == "NVIDIA")
+                                {
+                                    string mapping_name = "";
+                                    mapping_name = "NVIDIA GeForce RTX 3050";
+                                    drivers_list_SCL.Add(mapping_name + "," + version_cellValue + "," + Category_cellValue + "," + Provider_cellValue + "," + checkflag);
+                                    Console.WriteLine($"SCL  name: {drivername_cellValue}  ---> mapping name: {mapping_name} ");
+                                }
+                                else if (drivername_cellValue == "GN21-X2" && Provider_cellValue == "NVIDIA")
+                                {
+                                    string mapping_name = "";
+                                    mapping_name = "NVIDIA GeForce RTX 4050";
+                                    drivers_list_SCL.Add(mapping_name + "," + version_cellValue + "," + Category_cellValue + "," + Provider_cellValue + "," + checkflag);
+                                    Console.WriteLine($"SCL  name: {drivername_cellValue}  ---> mapping name: {mapping_name} ");
+                                }
+                                //looking for all NVIDIA apps in control panel
+                                else if (Category_cellValue == "NVIDIA VGA Utility" && Provider_cellValue == "NVIDIA")
+                                {
+                                    string mapping_name = "";
+                                    if (project_name == "Swift")
+                                    {
+                                        mapping_name = "NVIDIA Canvas";
+                                        drivers_list_SCL.Add(mapping_name + "," + version_cellValue + "," + Category_cellValue + "," + Provider_cellValue + "," + checkflag);
+                                        Console.WriteLine($"SCL  name: {drivername_cellValue}  ---> mapping name: {mapping_name} ");
+                                    }
+                                    mapping_name = "NVIDIA FrameView SDK";
+                                    drivers_list_SCL.Add(mapping_name + "," + version_cellValue + "," + Category_cellValue + "," + Provider_cellValue + "," + checkflag);
+                                    Console.WriteLine($"SCL name: {drivername_cellValue}  ---> mapping name: {mapping_name} ");
+                                    mapping_name = "NVIDIA GeForce Experience";
+                                    drivers_list_SCL.Add(mapping_name + "," + version_cellValue + "," + Category_cellValue + "," + Provider_cellValue + "," + checkflag);
+                                    Console.WriteLine($"SCL  name: {drivername_cellValue}  ---> mapping name: {mapping_name} ");
+                                    mapping_name = "NVIDIA Graphics Driver";
+                                    drivers_list_SCL.Add(mapping_name + "," + version_cellValue + "," + Category_cellValue + "," + Provider_cellValue + "," + checkflag);
+                                    Console.WriteLine($"SCL name: {drivername_cellValue}  ---> mapping name: {mapping_name} ");
+                                    mapping_name = "NVIDIA HD Audio Driver";
+                                    drivers_list_SCL.Add(mapping_name + "," + version_cellValue + "," + Category_cellValue + "," + Provider_cellValue + "," + checkflag);
+                                    Console.WriteLine($"SCL  name: {drivername_cellValue}  ---> mapping name: {mapping_name} ");
+                                    mapping_name = "NVIDIA PhysX System Software";
+                                    drivers_list_SCL.Add(mapping_name + "," + version_cellValue + "," + Category_cellValue + "," + Provider_cellValue + "," + checkflag);
+                                    Console.WriteLine($"SCL  name: {drivername_cellValue}  ---> mapping name: {mapping_name} ");
+                                    mapping_name = "NVIDIAControlPanel";
+                                    drivers_list_SCL.Add(mapping_name + "," + version_cellValue + "," + Category_cellValue + "," + Provider_cellValue + "," + checkflag);
+                                    Console.WriteLine($"SCL  name: {drivername_cellValue}  ---> mapping name: {mapping_name} ");
+                                }
+                                else if (drivername_cellValue == "Manageability Engine Code" && Provider_cellValue == "Intel")
+                                {
+                                    string mapping_name = "";
+                                    mapping_name = "Intel(R) Management Engine Interface";
+                                    drivers_list_SCL.Add(mapping_name + "," + version_cellValue + "," + Category_cellValue + "," + Provider_cellValue + "," + checkflag);
+                                    Console.WriteLine($"SCL  name: {drivername_cellValue}  ---> mapping name: {mapping_name} ");
+                                }
+                                else if (drivername_cellValue == "WinPERE Drivers" && Provider_cellValue == "Intel" && Category_cellValue == "Intel Rapid Storage Technology")
+                                {
+                                    //WinRe driver do onthing here ....
+                                    string mapping_name = "Intel Rapid Storage WinPERE Drivers";
+                                    drivers_list_SCL.Add(mapping_name + "," + version_cellValue + "," + Category_cellValue + "," + Provider_cellValue + "," + checkflag);
+                                    Console.WriteLine($"SCL  name: {drivername_cellValue}  ---> mapping name: {mapping_name} ");
 
-            //                         Runnner.WriteLog($"SCL  name: {drivername_cellValue}  ---> mapping name: {mapping_name} ");
-            //                     }
-            //                     else if (Category_cellValue == "Bluetooth_M" && Provider_cellValue == "Killer")
-            //                     {
-            //                         string mapping_name = "";
-            //                         mapping_name = "Intel(R) Wireless Bluetooth";
-            //                         drivers_list_SCL.Add(mapping_name + "," + version_cellValue + "," + Category_cellValue + "," + Provider_cellValue + "," + checkflag);
+                                }
+                                else if (drivername_cellValue == "WinPERE Drivers" && Provider_cellValue == "Intel" && Category_cellValue == "Intel Serial I/O")
+                                {
+                                    //WinRe driver do onthing here ....
+                                    string mapping_name = "Intel Serial I/O WinPERE Drivers";
+                                    drivers_list_SCL.Add(mapping_name + "," + version_cellValue + "," + Category_cellValue + "," + Provider_cellValue + "," + checkflag);
+                                    Console.WriteLine($"SCL  name: {drivername_cellValue}  ---> mapping name: {mapping_name} ");
 
-            //                         Runnner.WriteLog($"SCL  name: {drivername_cellValue}  ---> mapping name: {mapping_name} ");
-            //                     }
-            //                     else if (Category_cellValue == "Wireless LAN_M" && Provider_cellValue == "Killer" && drivername_cellValue == "1675i")
-            //                     {
-            //                         string mapping_name = "Killer(R) Wi-Fi 6E AX1675i 160MHz Wireless Network Adapter";
-            //                         drivers_list_SCL.Add(mapping_name + "," + version_cellValue + "," + Category_cellValue + "," + Provider_cellValue + "," + checkflag);
+                                }
+                                else if (drivername_cellValue == "Killer control center" && Provider_cellValue == "Killer")
+                                {
+                                    string mapping_name = "";
+                                    mapping_name = "KillerControlCenter";
+                                    drivers_list_SCL.Add(mapping_name + "," + version_cellValue + "," + Category_cellValue + "," + Provider_cellValue + "," + checkflag);
+                                    Console.WriteLine($"SCL  name: {drivername_cellValue}  ---> mapping name: {mapping_name} ");
+                                }
+                                else if (drivername_cellValue == "WinRE Drivers" && Category_cellValue == "Wireless LAN_M" && Provider_cellValue == "Killer")
+                                {
+                                    string mapping_name = "Wireless LAN_M WinRE Drivers";
+                                    drivers_list_SCL.Add(mapping_name + "," + version_cellValue + "," + Category_cellValue + "," + Provider_cellValue + "," + checkflag);
+                                    Console.WriteLine($"SCL  name: {drivername_cellValue}  ---> mapping name: {mapping_name} ");
 
-            //                         Runnner.WriteLog($"SCL  name: {drivername_cellValue}  ---> mapping name: {mapping_name} ");
-            //                     }
-            //                     else if (Category_cellValue == "Audio Driver Utility" && Provider_cellValue == "Realtek")
-            //                     {
-            //                         string mapping_name = "";
-            //                         mapping_name = "RealtekAudioControl";
-            //                         drivers_list_SCL.Add(mapping_name + "," + version_cellValue + "," + Category_cellValue + "," + Provider_cellValue + "," + checkflag);
-            //                         //HadcheckTable.Add(mapping_name);
-            //                         Runnner.WriteLog($"SCL  name: {drivername_cellValue}  ---> mapping name: {mapping_name} ");
-            //                     }
-            //                     else if (Category_cellValue == "Intel DPTF" && Provider_cellValue == "Intel")
-            //                     {
-            //                         string mapping_name = "";
-            //                         mapping_name = "Intel(R) Innovation Platform Framework Generic Participant";
-            //                         drivers_list_SCL.Add(mapping_name + "," + version_cellValue + "," + Category_cellValue + "," + Provider_cellValue + "," + checkflag);
-            //                         Runnner.WriteLog($"SCL  name: {drivername_cellValue}  ---> mapping name: {mapping_name} ");
-            //                         mapping_name = "Intel(R) Innovation Platform Framework Manager";
-            //                         drivers_list_SCL.Add(mapping_name + "," + version_cellValue + "," + Category_cellValue + "," + Provider_cellValue + "," + checkflag);
-            //                         Runnner.WriteLog($"SCL  name: {drivername_cellValue}  ---> mapping name: {mapping_name} ");
-            //                         mapping_name = "Intel(R) Innovation Platform Framework Processor Participant";
-            //                         drivers_list_SCL.Add(mapping_name + "," + version_cellValue + "," + Category_cellValue + "," + Provider_cellValue + "," + checkflag);
-            //                         Runnner.WriteLog($"SCL  name: {drivername_cellValue}  ---> mapping name: {mapping_name} ");
-            //                     }
-            //                     else if (Category_cellValue == "Application Base driver" && Provider_cellValue == "Acer")
-            //                     {
-            //                         string mapping_name = "";
-            //                         mapping_name = "Acer Application Base Driver";
-            //                         drivers_list_SCL.Add(mapping_name + "," + version_cellValue + "," + Category_cellValue + "," + Provider_cellValue + "," + checkflag);
-            //                         Runnner.WriteLog($"SCL  name: {drivername_cellValue}  ---> mapping name: {mapping_name} ");
-            //                     }
-            //                     else if (Category_cellValue == "FUB" && Provider_cellValue == "Acer")
-            //                     {
-            //                         string mapping_name = "";
-            //                         mapping_name = "Acer Device Enabling Sevice";
-            //                         drivers_list_SCL.Add(mapping_name + "," + version_cellValue + "," + Category_cellValue + "," + Provider_cellValue + "," + checkflag);
-            //                         Runnner.WriteLog($"SCL  name: {drivername_cellValue}  ---> mapping name: {mapping_name} ");
-            //                     }
-            //                     else if (Category_cellValue == "TouchPad" && Provider_cellValue == "Synaptics")
-            //                     {
-            //                         string mapping_name = "";
-            //                         mapping_name = "Synaptics";
-            //                         drivers_list_SCL.Add(mapping_name + "," + version_cellValue + "," + Category_cellValue + "," + Provider_cellValue + "," + checkflag);
-            //                         Runnner.WriteLog($"SCL  name: {drivername_cellValue}  ---> mapping name: {mapping_name} ");
-            //                     }
-            //                     else if (Category_cellValue == "TouchPad" && Provider_cellValue == "Elantech")
-            //                     {
-            //                         string mapping_name = "";
-            //                         mapping_name = "ELAN";
-            //                         drivers_list_SCL.Add(mapping_name + "," + version_cellValue + "," + Category_cellValue + "," + Provider_cellValue + "," + checkflag);
-            //                         Runnner.WriteLog($"SCL  name: {drivername_cellValue}  ---> mapping name: {mapping_name} ");
-            //                     }
-            //                     else if (Category_cellValue == "Card Reader Chip" && Provider_cellValue == "Realtek")
-            //                     {
-            //                         string mapping_name = "";
-            //                         mapping_name = "Realtek PCIE CardReader";
-            //                         drivers_list_SCL.Add(mapping_name + "," + version_cellValue + "," + Category_cellValue + "," + Provider_cellValue + "," + checkflag);
-            //                         Runnner.WriteLog($"SCL  name: {drivername_cellValue}  ---> mapping name: {mapping_name} ");
-            //                     }
-            //                     else if (drivername_cellValue == "DTSX/Ultra" && Category_cellValue == "DTS")
-            //                     {
-            //                         string mapping_name = "";
-            //                         mapping_name = "DTS APO4x Service";
-            //                         drivers_list_SCL.Add(mapping_name + "," + version_cellValue + "," + Category_cellValue + "," + Provider_cellValue + "," + checkflag);
-            //                         Runnner.WriteLog($"SCL  name: {drivername_cellValue}  ---> mapping name: {mapping_name} ");
-            //                     }
-            //                     else if (drivername_cellValue == "DTS Console UWP" && Category_cellValue == "DTS Utility")
-            //                     {
-            //                         string mapping_name = "";
-            //                         mapping_name = "DTSXUltra";
-            //                         drivers_list_SCL.Add(mapping_name + "," + version_cellValue + "," + Category_cellValue + "," + Provider_cellValue + "," + checkflag);
-            //                         Runnner.WriteLog($"SCL  name: {drivername_cellValue}  ---> mapping name: {mapping_name} ");
-            //                     }
-            //                     else if (drivername_cellValue == "DTS sound UWP" && Category_cellValue == "DTS Utility")
-            //                     {
-            //                         string mapping_name = "";
-            //                         mapping_name = "DTSSoundUnbound";
-            //                         drivers_list_SCL.Add(mapping_name + "," + version_cellValue + "," + Category_cellValue + "," + Provider_cellValue + "," + checkflag);
-            //                         Runnner.WriteLog($"SCL  name: {drivername_cellValue}  ---> mapping name: {mapping_name} ");
-            //                     }
-            //                     else if (Category_cellValue == "Finger Print_M" && Provider_cellValue == "Carewe")
-            //                     {
-            //                         string mapping_name = "";
-            //                         mapping_name = "Fingerprint";
-            //                         drivers_list_SCL.Add(mapping_name + "," + version_cellValue + "," + Category_cellValue + "," + Provider_cellValue + "," + checkflag);
-            //                         Runnner.WriteLog($"SCL  name: {drivername_cellValue}  ---> mapping name: {mapping_name} ");
-            //                     }
-            //                     else if (Category_cellValue == "Intel Gaussian and Neural Accelerator" && Provider_cellValue == "Intel")
-            //                     {
-            //                         string mapping_name = "";
-            //                         mapping_name = "Intel(R) GNA";
-            //                         drivers_list_SCL.Add(mapping_name + "," + version_cellValue + "," + Category_cellValue + "," + Provider_cellValue + "," + checkflag);
-            //                         Runnner.WriteLog($"SCL  name: {drivername_cellValue}  ---> mapping name: {mapping_name} ");
-            //                     }
-            //                     else if (Category_cellValue == "Intel Rapid Storage Technology" && Provider_cellValue == "Intel")
-            //                     {
-            //                         string mapping_name = "";
-            //                         mapping_name = "Intel RST VMD";
-            //                         drivers_list_SCL.Add(mapping_name + "," + version_cellValue + "," + Category_cellValue + "," + Provider_cellValue + "," + checkflag);
-            //                         Runnner.WriteLog($"SCL  name: {drivername_cellValue}  ---> mapping name: {mapping_name} ");
-            //                     }
-            //                     else if (Category_cellValue == "Intel SST" && Provider_cellValue == "Intel")
-            //                     {
-            //                         if (version_cellValue.Contains(".00"))
-            //                         {
-            //                             version_cellValue = version_cellValue.Replace(".00", ".0");
-            //                         }
-            //                         string mapping_name = "";
-            //                         mapping_name = "Smart Sound Technology BUS";
-            //                         drivers_list_SCL.Add(mapping_name + "," + version_cellValue + "," + Category_cellValue + "," + Provider_cellValue + "," + checkflag);
-            //                         Runnner.WriteLog($"SCL  name: {drivername_cellValue}  ---> mapping name: {mapping_name} ");
-            //                         mapping_name = "Smart Sound Technology OED";
-            //                         drivers_list_SCL.Add(mapping_name + "," + version_cellValue + "," + Category_cellValue + "," + Provider_cellValue + "," + checkflag);
-            //                         Runnner.WriteLog($"SCL  name: {drivername_cellValue}  ---> mapping name: {mapping_name} ");
-            //                     }
-            //                     else if (drivername_cellValue == "Serial I/O" && Provider_cellValue == "Intel")
-            //                     {
-            //                         string mapping_name = "";
-            //                         mapping_name = "Intel(R) Serial IO";
-            //                         drivers_list_SCL.Add(mapping_name + "," + version_cellValue + "," + Category_cellValue + "," + Provider_cellValue + "," + checkflag);
-            //                         Runnner.WriteLog($"SCL  name: {drivername_cellValue}  ---> mapping name: {mapping_name} ");
-            //                     }
-            //                     else if (Category_cellValue == "Intel VGA" && Provider_cellValue == "Intel")
-            //                     {
-            //                         string mapping_name = "";
-            //                         mapping_name = "Graphics";
-            //                         drivers_list_SCL.Add(mapping_name + "," + version_cellValue + "," + Category_cellValue + "," + Provider_cellValue + "," + checkflag);
-            //                         Runnner.WriteLog($"SCL  name: {drivername_cellValue}  ---> mapping name: {mapping_name} ");
-            //                     }
-            //                     else if (Category_cellValue == "NB_Chipset_M" && Provider_cellValue == "Intel")
-            //                     {
-            //                         string mapping_name = "";
-            //                         mapping_name = "Intel(R) SMBus";
-            //                         drivers_list_SCL.Add(mapping_name + "," + version_cellValue + "," + Category_cellValue + "," + Provider_cellValue + "," + checkflag);
-            //                         Runnner.WriteLog($"SCL  name: {drivername_cellValue}  ---> mapping name: {mapping_name} ");
-            //                     }
-            //                     else if (drivername_cellValue == "GN20-P0" && Provider_cellValue == "NVIDIA")
-            //                     {
-            //                         string mapping_name = "";
-            //                         mapping_name = "NVIDIA GeForce RTX 3050";
-            //                         drivers_list_SCL.Add(mapping_name + "," + version_cellValue + "," + Category_cellValue + "," + Provider_cellValue + "," + checkflag);
-            //                         Runnner.WriteLog($"SCL  name: {drivername_cellValue}  ---> mapping name: {mapping_name} ");
-            //                     }
-            //                     else if (drivername_cellValue == "GN21-X2" && Provider_cellValue == "NVIDIA")
-            //                     {
-            //                         string mapping_name = "";
-            //                         mapping_name = "NVIDIA GeForce RTX 4050";
-            //                         drivers_list_SCL.Add(mapping_name + "," + version_cellValue + "," + Category_cellValue + "," + Provider_cellValue + "," + checkflag);
-            //                         Runnner.WriteLog($"SCL  name: {drivername_cellValue}  ---> mapping name: {mapping_name} ");
-            //                     }
-            //                     //looking for all NVIDIA apps in control panel
-            //                     else if (Category_cellValue == "NVIDIA VGA Utility" && Provider_cellValue == "NVIDIA")
-            //                     {
-            //                         string mapping_name = "";
-            //                         if (project_name == "Swift")
-            //                         {
-            //                             mapping_name = "NVIDIA Canvas";
-            //                             drivers_list_SCL.Add(mapping_name + "," + version_cellValue + "," + Category_cellValue + "," + Provider_cellValue + "," + checkflag);
-            //                             Runnner.WriteLog($"SCL  name: {drivername_cellValue}  ---> mapping name: {mapping_name} ");
-            //                         }
-            //                         mapping_name = "NVIDIA FrameView SDK";
-            //                         drivers_list_SCL.Add(mapping_name + "," + version_cellValue + "," + Category_cellValue + "," + Provider_cellValue + "," + checkflag);
-            //                         Runnner.WriteLog($"SCL name: {drivername_cellValue}  ---> mapping name: {mapping_name} ");
-            //                         mapping_name = "NVIDIA GeForce Experience";
-            //                         drivers_list_SCL.Add(mapping_name + "," + version_cellValue + "," + Category_cellValue + "," + Provider_cellValue + "," + checkflag);
-            //                         Runnner.WriteLog($"SCL  name: {drivername_cellValue}  ---> mapping name: {mapping_name} ");
-            //                         mapping_name = "NVIDIA Graphics Driver";
-            //                         drivers_list_SCL.Add(mapping_name + "," + version_cellValue + "," + Category_cellValue + "," + Provider_cellValue + "," + checkflag);
-            //                         Runnner.WriteLog($"SCL name: {drivername_cellValue}  ---> mapping name: {mapping_name} ");
-            //                         mapping_name = "NVIDIA HD Audio Driver";
-            //                         drivers_list_SCL.Add(mapping_name + "," + version_cellValue + "," + Category_cellValue + "," + Provider_cellValue + "," + checkflag);
-            //                         Runnner.WriteLog($"SCL  name: {drivername_cellValue}  ---> mapping name: {mapping_name} ");
-            //                         mapping_name = "NVIDIA PhysX System Software";
-            //                         drivers_list_SCL.Add(mapping_name + "," + version_cellValue + "," + Category_cellValue + "," + Provider_cellValue + "," + checkflag);
-            //                         Runnner.WriteLog($"SCL  name: {drivername_cellValue}  ---> mapping name: {mapping_name} ");
-            //                         mapping_name = "NVIDIAControlPanel";
-            //                         drivers_list_SCL.Add(mapping_name + "," + version_cellValue + "," + Category_cellValue + "," + Provider_cellValue + "," + checkflag);
-            //                         Runnner.WriteLog($"SCL  name: {drivername_cellValue}  ---> mapping name: {mapping_name} ");
-            //                     }
-            //                     else if (drivername_cellValue == "Manageability Engine Code" && Provider_cellValue == "Intel")
-            //                     {
-            //                         string mapping_name = "";
-            //                         mapping_name = "Intel(R) Management Engine Interface";
-            //                         drivers_list_SCL.Add(mapping_name + "," + version_cellValue + "," + Category_cellValue + "," + Provider_cellValue + "," + checkflag);
-            //                         Runnner.WriteLog($"SCL  name: {drivername_cellValue}  ---> mapping name: {mapping_name} ");
-            //                     }
-            //                     else if (drivername_cellValue == "WinPERE Drivers" && Provider_cellValue == "Intel" && Category_cellValue == "Intel Rapid Storage Technology")
-            //                     {
-            //                         //WinRe driver do onthing here ....
-            //                         string mapping_name = "Intel Rapid Storage WinPERE Drivers";
-            //                         drivers_list_SCL.Add(mapping_name + "," + version_cellValue + "," + Category_cellValue + "," + Provider_cellValue + "," + checkflag);
-            //                         Runnner.WriteLog($"SCL  name: {drivername_cellValue}  ---> mapping name: {mapping_name} ");
+                                }
+                                else
+                                {
+                                    drivers_list_SCL.Add(drivername_cellValue + "," + version_cellValue + "," + Category_cellValue + "," + Provider_cellValue + "," + checkflag);
+                                }
 
-            //                     }
-            //                     else if (drivername_cellValue == "WinPERE Drivers" && Provider_cellValue == "Intel" && Category_cellValue == "Intel Serial I/O")
-            //                     {
-            //                         //WinRe driver do onthing here ....
-            //                         string mapping_name = "Intel Serial I/O WinPERE Drivers";
-            //                         drivers_list_SCL.Add(mapping_name + "," + version_cellValue + "," + Category_cellValue + "," + Provider_cellValue + "," + checkflag);
-            //                         Runnner.WriteLog($"SCL  name: {drivername_cellValue}  ---> mapping name: {mapping_name} ");
+                                area_row_item_type += 1;
 
-            //                     }
-            //                     else if (drivername_cellValue == "Killer control center" && Provider_cellValue == "Killer")
-            //                     {
-            //                         string mapping_name = "";
-            //                         mapping_name = "KillerControlCenter";
-            //                         drivers_list_SCL.Add(mapping_name + "," + version_cellValue + "," + Category_cellValue + "," + Provider_cellValue + "," + checkflag);
-            //                         Runnner.WriteLog($"SCL  name: {drivername_cellValue}  ---> mapping name: {mapping_name} ");
-            //                     }
-            //                     else if (drivername_cellValue == "WinRE Drivers" && Category_cellValue == "Wireless LAN_M" && Provider_cellValue == "Killer")
-            //                     {
-            //                         string mapping_name = "Wireless LAN_M WinRE Drivers";
-            //                         drivers_list_SCL.Add(mapping_name + "," + version_cellValue + "," + Category_cellValue + "," + Provider_cellValue + "," + checkflag);
-            //                         Runnner.WriteLog($"SCL  name: {drivername_cellValue}  ---> mapping name: {mapping_name} ");
+                            } while (drivername_cellValue != "Killer control center");
 
-            //                     }
-            //                     else
-            //                     {
-            //                         drivers_list_SCL.Add(drivername_cellValue + "," + version_cellValue + "," + Category_cellValue + "," + Provider_cellValue + "," + checkflag);
-            //                     }
+                            Console.WriteLine("Fininshed !!!");
+                        }
+                        else
+                        {
+                            Console.WriteLine($"sub brand name: {sub_brand_name_cellValue} does not match PC namme: {PCInformation[0]}");
+                            Console.WriteLine("Please put correct SCL file, Stop to check installed device driver .....");
+                        }
 
-            //                     area_row_item_type += 1;
+                    }
+                }
+            }
 
-            //                 } while (drivername_cellValue != "Killer control center");
+            // 關閉Excel檔案
+            //workbook.Close();
+            //excelApp.Quit();
 
-            //                 Runnner.WriteLog("Fininshed !!!");
-            //             }
-            //             else
-            //             {
-            //                 Runnner.WriteLog($"sub brand name: {sub_brand_name_cellValue} does not match PC namme: {PCInformation[0]}");
-            //                 Runnner.WriteLog("Please put correct SCL file, Stop to check installed device driver .....");
-            //             }
+            // 釋放資源
+            //System.Runtime.InteropServices.Marshal.ReleaseComObject(worksheet);
+            //System.Runtime.InteropServices.Marshal.ReleaseComObject(workbook);
+            //System.Runtime.InteropServices.Marshal.ReleaseComObject(excelApp);
 
-            //         }
-            //     }
-            // }
+            //Get installed device driver list from registry
+            using (RegistryKey key = Registry.CurrentUser.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall", false))
+            {
+                foreach (String keyName in key.GetSubKeyNames())
+                {
+                    RegistryKey subkey = key.OpenSubKey(keyName);
+                    displayName = subkey.GetValue("DisplayName") as string;
+                    app_version = subkey.GetValue("DisplayVersion") as string;
+                    app_vendor = subkey.GetValue("Publisher") as string;
+                    strSystemComponent = subkey.GetValue("SystemComponent") as string;
+                    //Console.WriteLine(strSystemComponent);
+                    if (string.IsNullOrEmpty(displayName))
+                        continue;
+                    AlldevicesInfoInDM.Add(app_vendor + "," + displayName + "," + app_version + "," + strSystemComponent);
+                }
+            }
 
-            // // 關閉Excel檔案
-            // workbook.Close();
-            // excelApp.Quit();
+            using (var localMachine = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry64))
+            {
+                var key = localMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall", false);
+                foreach (String keyName in key.GetSubKeyNames())
+                {
+                    RegistryKey subkey = key.OpenSubKey(keyName);
+                    displayName = subkey.GetValue("DisplayName") as string;
+                    app_version = subkey.GetValue("DisplayVersion") as string;
+                    app_vendor = subkey.GetValue("Publisher") as string;
+                    strSystemComponent = subkey.GetValue("SystemComponent") as string;
+                    //Console.WriteLine("strSystemComponent: ", strSystemComponent);
+                    if (string.IsNullOrEmpty(displayName))
+                        continue;
+                    AlldevicesInfoInDM.Add(app_vendor + "," + displayName + "," + app_version + "," + strSystemComponent);
+                }
+            }
 
-            // // 釋放資源
-            // System.Runtime.InteropServices.Marshal.ReleaseComObject(worksheet);
-            // System.Runtime.InteropServices.Marshal.ReleaseComObject(workbook);
-            // System.Runtime.InteropServices.Marshal.ReleaseComObject(excelApp);
+            using (RegistryKey key = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall", false))
+            {
+                foreach (String keyName in key.GetSubKeyNames())
+                {
+                    RegistryKey subkey = key.OpenSubKey(keyName);
+                    displayName = subkey.GetValue("DisplayName") as string;
+                    app_version = subkey.GetValue("DisplayVersion") as string;
+                    app_vendor = subkey.GetValue("Publisher") as string;
+                    strSystemComponent = subkey.GetValue("SystemComponent") as string;
+                    //Console.WriteLine("strSystemComponent: {0}", strSystemComponent);
+                    if (string.IsNullOrEmpty(displayName))
+                        continue;
+                    AlldevicesInfoInDM.Add(app_vendor + "," + displayName + "," + app_version + "," + strSystemComponent);
+                }
+            }
 
-            // //Get installed device driver list from registry
-            // using (RegistryKey key = Registry.CurrentUser.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall", false))
-            // {
-            //     foreach (String keyName in key.GetSubKeyNames())
-            //     {
-            //         RegistryKey subkey = key.OpenSubKey(keyName);
-            //         displayName = subkey.GetValue("DisplayName") as string;
-            //         app_version = subkey.GetValue("DisplayVersion") as string;
-            //         app_vendor = subkey.GetValue("Publisher") as string;
-            //         strSystemComponent = subkey.GetValue("SystemComponent") as string;
-            //         //Runnner.WriteLog(strSystemComponent);
-            //         if (string.IsNullOrEmpty(displayName))
-            //             continue;
-            //         AlldevicesInfoInDM.Add(app_vendor + "," + displayName + "," + app_version + "," + strSystemComponent);
-            //     }
-            // }
+            //Get Registry key value for device driver
+            using (RegistryKey registryKey = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\PackageRepository\Packages"))
+            {
+                if (registryKey != null)
+                {
+                    // Get the names of the subkeys
+                    string[] subKeyNames = registryKey.GetSubKeyNames();
+                    // Display the subkey names
+                    foreach (string subKeyName in subKeyNames)
+                    {
+                        AlldevicesInfoInDM.Add(subKeyName);
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("Registry Key not found.");
+                }
+            }
 
-            // using (var localMachine = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry64))
-            // {
-            //     var key = localMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall", false);
-            //     foreach (String keyName in key.GetSubKeyNames())
-            //     {
-            //         RegistryKey subkey = key.OpenSubKey(keyName);
-            //         displayName = subkey.GetValue("DisplayName") as string;
-            //         app_version = subkey.GetValue("DisplayVersion") as string;
-            //         app_vendor = subkey.GetValue("Publisher") as string;
-            //         strSystemComponent = subkey.GetValue("SystemComponent") as string;
-            //         //Runnner.WriteLog("strSystemComponent: ", strSystemComponent);
-            //         if (string.IsNullOrEmpty(displayName))
-            //             continue;
-            //         AlldevicesInfoInDM.Add(app_vendor + "," + displayName + "," + app_version + "," + strSystemComponent);
-            //     }
-            // }
+            //Query all devices in DM
+            Guid guid = Guid.Empty; // List all devices
+            IntPtr deviceInfoSet = SetupDiGetClassDevs(ref guid, null, IntPtr.Zero, DIGCF_PRESENT | DIGCF_ALLCLASSES);
 
-            // using (RegistryKey key = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall", false))
-            // {
-            //     foreach (String keyName in key.GetSubKeyNames())
-            //     {
-            //         RegistryKey subkey = key.OpenSubKey(keyName);
-            //         displayName = subkey.GetValue("DisplayName") as string;
-            //         app_version = subkey.GetValue("DisplayVersion") as string;
-            //         app_vendor = subkey.GetValue("Publisher") as string;
-            //         strSystemComponent = subkey.GetValue("SystemComponent") as string;
-            //         //Runnner.WriteLog("strSystemComponent: {0}", strSystemComponent);
-            //         if (string.IsNullOrEmpty(displayName))
-            //             continue;
-            //         AlldevicesInfoInDM.Add(app_vendor + "," + displayName + "," + app_version + "," + strSystemComponent);
-            //     }
-            // }
+            if (deviceInfoSet != IntPtr.Zero)
+            {
+                SP_DEVINFO_DATA deviceInfoData = new SP_DEVINFO_DATA();
+                deviceInfoData.cbSize = Marshal.SizeOf(typeof(SP_DEVINFO_DATA));
+                int index = 0;
+                while (SetupDiEnumDeviceInfo(deviceInfoSet, index, ref deviceInfoData))
+                {
+                    string deviceName = GetDeviceName(deviceInfoSet, deviceInfoData);
+                    string driverVersion = GetDriverVersion(deviceInfoSet, deviceInfoData);
+                    string hardwareid = GetHardwareID(deviceInfoSet, deviceInfoData);
+                    string devicestatus = GetDevicesStatusAndProblemCode(deviceInfoSet, deviceInfoData);
+                    if (devicestatus != "0")
+                    {
+                        Console.WriteLine($"devicestatus: {devicestatus}");
+                        goto DeviceStatusError;
+                    }
+                    if (deviceName != null && driverVersion != null)
+                    {
+                        string result = deviceName + "," + driverVersion + "," + hardwareid + "," + devicestatus;
+                        AlldevicesInfoInDM.Add(result);
+                    }
 
-            // //Get Registry key value for device driver
-            // using (RegistryKey registryKey = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\PackageRepository\Packages"))
-            // {
-            //     if (registryKey != null)
-            //     {
-            //         // Get the names of the subkeys
-            //         string[] subKeyNames = registryKey.GetSubKeyNames();
-            //         // Display the subkey names
-            //         foreach (string subKeyName in subKeyNames)
-            //         {
-            //             AlldevicesInfoInDM.Add(subKeyName);
-            //         }
-            //     }
-            //     else
-            //     {
-            //         Runnner.WriteLog("Registry Key not found.");
-            //     }
-            // }
+                    index++;
+                }
 
-            // //Query all devices in DM
-            // Guid guid = Guid.Empty; // List all devices
-            // IntPtr deviceInfoSet = SetupDiGetClassDevs(ref guid, null, IntPtr.Zero, DIGCF_PRESENT | DIGCF_ALLCLASSES);
+                // Clean up
+                Marshal.FreeHGlobal(deviceInfoSet);
+            }
 
-            // if (deviceInfoSet != IntPtr.Zero)
-            // {
-            //     SP_DEVINFO_DATA deviceInfoData = new SP_DEVINFO_DATA();
-            //     deviceInfoData.cbSize = Marshal.SizeOf(typeof(SP_DEVINFO_DATA));
-            //     int index = 0;
-            //     while (SetupDiEnumDeviceInfo(deviceInfoSet, index, ref deviceInfoData))
-            //     {
-            //         string deviceName = GetDeviceName(deviceInfoSet, deviceInfoData);
-            //         string driverVersion = GetDriverVersion(deviceInfoSet, deviceInfoData);
-            //         string hardwareid = GetHardwareID(deviceInfoSet, deviceInfoData);
-            //         string devicestatus = GetDevicesStatusAndProblemCode(deviceInfoSet, deviceInfoData);
-            //         if (deviceName != null && driverVersion != null)
-            //         {
-            //             string result = deviceName + "," + driverVersion + "," + hardwareid + "," + devicestatus;
-            //             AlldevicesInfoInDM.Add(result);
-            //         }
+            if (sub_brand_name_cellValue == PCInformation[0])
+            {
+                //WinRe/WinPeRe driver check here: .....
+                Console.WriteLine("WinRe or WinPeRe driver check here .............");
+                string directoryPath = @"C:\Windows\INF"; // Replace with the actual directory path
 
-            //         index++;
-            //     }
+                List<string> infContents = ReadInfFiles(directoryPath);
+                StreamWriter sw = new StreamWriter(root_path + "\\installedDriverlist.txt");
+                foreach (var key in AlldevicesInfoInDM)
+                {
+                    Console.WriteLine(key.ToString());
+                    sw.Write(key.ToString());
+                    sw.Write('\n');
+                }
+                sw.Close();
+                //Try to do comparing between SCL list and all applications list
+                string filePath = "C:\\installedDriverlist.txt"; // Replace with the path to your text file
 
-            //     // Clean up
-            //     Marshal.FreeHGlobal(deviceInfoSet);
-            // }
+                foreach (string drivername in drivers_list_SCL)
+                {
+                    string[] driverInfo_SCL = null;
+                    driverInfo_SCL = drivername.Split(',');
+                    Console.WriteLine(driverInfo_SCL[0] + " " + driverInfo_SCL[1]);
 
-            // if (sub_brand_name_cellValue == PCInformation[0])
-            // {
-            //     //WinRe/WinPeRe driver check here: .....
-            //     Runnner.WriteLog("WinRe or WinPeRe driver check here .............");
-            //     string directoryPath = @"C:\Windows\INF"; // Replace with the actual directory path
+                    if (driverInfo_SCL[0] != " ")
+                    {
+                        try
+                        {
+                            // Read the file line by line
+                            using (StreamReader reader = new StreamReader(filePath))
+                            {
+                                int lineNumber = 1;
+                                string line;
 
-            //     List<string> infContents = ReadInfFiles(directoryPath);
-            //     StreamWriter sw = new StreamWriter(root_path + "\\installedDriverlist.txt");
-            //     foreach (var key in AlldevicesInfoInDM)
-            //     {
-            //         Runnner.WriteLog(key.ToString());
-            //         sw.Write(key.ToString());
-            //         sw.Write('\n');
-            //     }
-            //     sw.Close();
-            //     //Try to do comparing between SCL list and all applications list
-            //     string filePath = "C:\\installedDriverlist.txt"; // Replace with the path to your text file
+                                while ((line = reader.ReadLine()) != null)
+                                {
 
-            //     foreach (string drivername in drivers_list_SCL)
-            //     {
-            //         string[] driverInfo_SCL = null;
-            //         driverInfo_SCL = drivername.Split(',');
-            //         Runnner.WriteLog(driverInfo_SCL[0] + " " + driverInfo_SCL[1]);
-
-            //         if (driverInfo_SCL[0] != " ")
-            //         {
-            //             try
-            //             {
-            //                 // Read the file line by line
-            //                 using (StreamReader reader = new StreamReader(filePath))
-            //                 {
-            //                     int lineNumber = 1;
-            //                     string line;
-
-            //                     while ((line = reader.ReadLine()) != null)
-            //                     {
-
-            //                         if (driverInfo_SCL[0] == "NVIDIA Canvas" ||
-            //                             driverInfo_SCL[0] == "NVIDIA FrameView SDK" ||
-            //                             driverInfo_SCL[0] == "NVIDIA GeForce Experience" ||
-            //                             driverInfo_SCL[0] == "NVIDIA Graphics Driver" ||
-            //                             driverInfo_SCL[0] == "NVIDIA HD Audio Driver" ||
-            //                             driverInfo_SCL[0] == "NVIDIA PhysX System Software" ||
-            //                             driverInfo_SCL[0] == "NVIDIAControlPanel")
-            //                         {
-            //                             if (driverInfo_SCL[0] == "NVIDIA PhysX System Software")
-            //                             {
-            //                                 if (line.IndexOf("PhysX", StringComparison.CurrentCultureIgnoreCase) >= 0)
-            //                                 {
-            //                                     Runnner.WriteLog($"Found '{driverInfo_SCL[0]}' in line {lineNumber}: {line}");
+                                    if (driverInfo_SCL[0] == "NVIDIA Canvas" ||
+                                        driverInfo_SCL[0] == "NVIDIA FrameView SDK" ||
+                                        driverInfo_SCL[0] == "NVIDIA GeForce Experience" ||
+                                        driverInfo_SCL[0] == "NVIDIA Graphics Driver" ||
+                                        driverInfo_SCL[0] == "NVIDIA HD Audio Driver" ||
+                                        driverInfo_SCL[0] == "NVIDIA PhysX System Software" ||
+                                        driverInfo_SCL[0] == "NVIDIAControlPanel")
+                                    {
+                                        if (driverInfo_SCL[0] == "NVIDIA PhysX System Software")
+                                        {
+                                            if (line.IndexOf("PhysX", StringComparison.CurrentCultureIgnoreCase) >= 0)
+                                            {
+                                                Console.WriteLine($"Found '{driverInfo_SCL[0]}' in line {lineNumber}: {line}");
                                                 
-            //                                     Had_NVDIA_Utility_count += 1;
-            //                                 }
+                                                Had_NVDIA_Utility_count += 1;
+                                            }
 
-            //                             }
-            //                             if (driverInfo_SCL[0] == "NVIDIA HD Audio Driver")
-            //                             {
-            //                                 if (line.IndexOf("HDAUDIO", StringComparison.CurrentCultureIgnoreCase) >= 0)
-            //                                 {
-            //                                     Runnner.WriteLog($"Found '{driverInfo_SCL[0]}' in line {lineNumber}: {line}");
+                                        }
+                                        if (driverInfo_SCL[0] == "NVIDIA HD Audio Driver")
+                                        {
+                                            if (line.IndexOf("HDAUDIO", StringComparison.CurrentCultureIgnoreCase) >= 0)
+                                            {
+                                                Console.WriteLine($"Found '{driverInfo_SCL[0]}' in line {lineNumber}: {line}");
                                                 
-            //                                     Had_NVDIA_Utility_count += 1;
-            //                                 }
-            //                             }
-            //                             if (driverInfo_SCL[0] == "NVIDIA Graphics Driver")
-            //                             {
-            //                                 if (line.IndexOf("Laptop GPU", StringComparison.CurrentCultureIgnoreCase) >= 0)
-            //                                 {
-            //                                     Runnner.WriteLog($"Found '{driverInfo_SCL[0]}' in line {lineNumber}: {line}");
+                                                Had_NVDIA_Utility_count += 1;
+                                            }
+                                        }
+                                        if (driverInfo_SCL[0] == "NVIDIA Graphics Driver")
+                                        {
+                                            if (line.IndexOf("Laptop GPU", StringComparison.CurrentCultureIgnoreCase) >= 0)
+                                            {
+                                                Console.WriteLine($"Found '{driverInfo_SCL[0]}' in line {lineNumber}: {line}");
                                                 
-            //                                     Had_NVDIA_Utility_count += 1;
-            //                                 }
+                                                Had_NVDIA_Utility_count += 1;
+                                            }
 
-            //                             }
-            //                             if (line.IndexOf(driverInfo_SCL[0], StringComparison.CurrentCultureIgnoreCase) >= 0)
-            //                             {
-            //                                 Runnner.WriteLog($"Found '{driverInfo_SCL[0]}' in line {lineNumber}: {line}");
+                                        }
+                                        if (line.IndexOf(driverInfo_SCL[0], StringComparison.CurrentCultureIgnoreCase) >= 0)
+                                        {
+                                            Console.WriteLine($"Found '{driverInfo_SCL[0]}' in line {lineNumber}: {line}");
                                             
-            //                                 Had_NVDIA_Utility_count += 1;
-            //                             }
+                                            Had_NVDIA_Utility_count += 1;
+                                        }
 
 
-            //                             if ((Had_NVDIA_Utility_count == 7 && project_name == "Swift") || Had_NVDIA_Utility_count == 6)
-            //                             {
-            //                                 Had_NVIDIA_Utility = "Checked";
-            //                                 int index = checkflaglist.FindIndex(s => s == "Had_NVIDIA_Utility,not check");
-            //                                 if (index != -1)
-            //                                 {
-            //                                     // Modify the value at the found index
-            //                                     checkflaglist[index] = "Had_NVIDIA_Utility,checked";
-            //                                 }
-            //                             }
+                                        if ((Had_NVDIA_Utility_count == 7 && project_name == "Swift") || Had_NVDIA_Utility_count == 6)
+                                        {
+                                            Had_NVIDIA_Utility = "Checked";
+                                            int index = checkflaglist.FindIndex(s => s == "Had_NVIDIA_Utility,not check");
+                                            if (index != -1)
+                                            {
+                                                // Modify the value at the found index
+                                                checkflaglist[index] = "Had_NVIDIA_Utility,checked";
+                                            }
+                                        }
 
-            //                         }
-            //                         else if (driverInfo_SCL[0] == "Synaptics" && Had_touchpad == "not check")
-            //                         {
-            //                             if (line.IndexOf(driverInfo_SCL[0], StringComparison.CurrentCultureIgnoreCase) >= 0)
-            //                             {
-            //                                 if (line.IndexOf(driverInfo_SCL[1]) >= 0)//Check Driver Version
-            //                                 {
-            //                                     Runnner.WriteLog($"Found '{driverInfo_SCL[0]}' in line {lineNumber}: {line}");
-            //                                     Had_touchpad = "checked";
-            //                                     int index = checkflaglist.FindIndex(s => s == "Had_touchpad,not check");
-            //                                     if (index != -1)
-            //                                     {
-            //                                         // Modify the value at the found index
-            //                                         checkflaglist[index] = "Had_touchpad,checked";
-            //                                     }
-            //                                     Runnner.WriteLog($"--------> Had_touchpad {Had_touchpad}");
+                                    }
+                                    else if (driverInfo_SCL[0] == "Synaptics" && Had_touchpad == "not check")
+                                    {
+                                        if (line.IndexOf(driverInfo_SCL[0], StringComparison.CurrentCultureIgnoreCase) >= 0)
+                                        {
+                                            if (line.IndexOf(driverInfo_SCL[1]) >= 0)//Check Driver Version
+                                            {
+                                                Console.WriteLine($"Found '{driverInfo_SCL[0]}' in line {lineNumber}: {line}");
+                                                Had_touchpad = "checked";
+                                                int index = checkflaglist.FindIndex(s => s == "Had_touchpad,not check");
+                                                if (index != -1)
+                                                {
+                                                    // Modify the value at the found index
+                                                    checkflaglist[index] = "Had_touchpad,checked";
+                                                }
+                                                Console.WriteLine($"--------> Had_touchpad {Had_touchpad}");
                                                 
-            //                                 }
+                                            }
 
-            //                             }
-            //                         }
-            //                         else if (driverInfo_SCL[0] == "ELAN" && Had_touchpad == "not check")
-            //                         {
-            //                             if (line.IndexOf(driverInfo_SCL[0], StringComparison.CurrentCultureIgnoreCase) >= 0)
-            //                             {
-            //                                 if (line.IndexOf(driverInfo_SCL[1]) >= 0)//Check Driver Version
-            //                                 {
-            //                                     Runnner.WriteLog($"Found '{driverInfo_SCL[0]}' in line {lineNumber}: {line}");
-            //                                     Had_touchpad = "checked";
-            //                                     int index = checkflaglist.FindIndex(s => s == "Had_touchpad,not check");
-            //                                     if (index != -1)
-            //                                     {
-            //                                         // Modify the value at the found index
-            //                                         checkflaglist[index] = "Had_touchpad,checked";
-            //                                     }
-            //                                     Runnner.WriteLog($"----------> Had_touchpad {Had_touchpad}");
+                                        }
+                                    }
+                                    else if (driverInfo_SCL[0] == "ELAN" && Had_touchpad == "not check")
+                                    {
+                                        if (line.IndexOf(driverInfo_SCL[0], StringComparison.CurrentCultureIgnoreCase) >= 0)
+                                        {
+                                            if (line.IndexOf(driverInfo_SCL[1]) >= 0)//Check Driver Version
+                                            {
+                                                Console.WriteLine($"Found '{driverInfo_SCL[0]}' in line {lineNumber}: {line}");
+                                                Had_touchpad = "checked";
+                                                int index = checkflaglist.FindIndex(s => s == "Had_touchpad,not check");
+                                                if (index != -1)
+                                                {
+                                                    // Modify the value at the found index
+                                                    checkflaglist[index] = "Had_touchpad,checked";
+                                                }
+                                                Console.WriteLine($"----------> Had_touchpad {Had_touchpad}");
                                                 
-            //                                 }
+                                            }
 
-            //                             }
-            //                         }
-            //                         else if (driverInfo_SCL[0] == "Acer Airplane Mode Controller")
-            //                         {
-            //                             if (line.IndexOf(driverInfo_SCL[0], StringComparison.CurrentCultureIgnoreCase) >= 0)
-            //                             {
-            //                                 if (line.IndexOf(driverInfo_SCL[1]) >= 0)//Check Driver Version
-            //                                 {
-            //                                     Runnner.WriteLog($"Found '{driverInfo_SCL[0]}' in line {lineNumber}: {line}");
-            //                                     AcerAirplaneModeController = "checked";
-            //                                     int index = checkflaglist.FindIndex(s => s == "AcerAirplaneModeController,not check");
-            //                                     if (index != -1)
-            //                                     {
+                                        }
+                                    }
+                                    else if (driverInfo_SCL[0] == "Acer Airplane Mode Controller")
+                                    {
+                                        if (line.IndexOf(driverInfo_SCL[0], StringComparison.CurrentCultureIgnoreCase) >= 0)
+                                        {
+                                            if (line.IndexOf(driverInfo_SCL[1]) >= 0)//Check Driver Version
+                                            {
+                                                Console.WriteLine($"Found '{driverInfo_SCL[0]}' in line {lineNumber}: {line}");
+                                                AcerAirplaneModeController = "checked";
+                                                int index = checkflaglist.FindIndex(s => s == "AcerAirplaneModeController,not check");
+                                                if (index != -1)
+                                                {
                                                     
-            //                                         // Modify the value at the found index
-            //                                         checkflaglist[index] = "AcerAirplaneModeController,checked";
-            //                                     }
-            //                                     Runnner.WriteLog($"----------> AcerAirplaneModeController {AcerAirplaneModeController}");
+                                                    // Modify the value at the found index
+                                                    checkflaglist[index] = "AcerAirplaneModeController,checked";
+                                                }
+                                                Console.WriteLine($"----------> AcerAirplaneModeController {AcerAirplaneModeController}");
                                                 
-            //                                 }
+                                            }
 
-            //                             }
-            //                         }
-            //                         else if (driverInfo_SCL[0] == "Acer Application Base Driver")
-            //                         {
-            //                             if (line.IndexOf(driverInfo_SCL[0], StringComparison.CurrentCultureIgnoreCase) >= 0)
-            //                             {
-            //                                 if (line.IndexOf(driverInfo_SCL[1]) >= 0)//Check Driver Version
-            //                                 {
-            //                                     Runnner.WriteLog($"Found '{driverInfo_SCL[0]}' in line {lineNumber}: {line}");
-            //                                     ApplicationBasedriver = "checked";
-            //                                     int index = checkflaglist.FindIndex(s => s == "ApplicationBasedriver,not check");
-            //                                     if (index != -1)
-            //                                     {
+                                        }
+                                    }
+                                    else if (driverInfo_SCL[0] == "Acer Application Base Driver")
+                                    {
+                                        if (line.IndexOf(driverInfo_SCL[0], StringComparison.CurrentCultureIgnoreCase) >= 0)
+                                        {
+                                            if (line.IndexOf(driverInfo_SCL[1]) >= 0)//Check Driver Version
+                                            {
+                                                Console.WriteLine($"Found '{driverInfo_SCL[0]}' in line {lineNumber}: {line}");
+                                                ApplicationBasedriver = "checked";
+                                                int index = checkflaglist.FindIndex(s => s == "ApplicationBasedriver,not check");
+                                                if (index != -1)
+                                                {
                                                     
-            //                                         // Modify the value at the found index
-            //                                         checkflaglist[index] = "ApplicationBasedriver,checked";
-            //                                     }
-            //                                     Runnner.WriteLog($"----------> ApplicationBasedriver {ApplicationBasedriver}");
+                                                    // Modify the value at the found index
+                                                    checkflaglist[index] = "ApplicationBasedriver,checked";
+                                                }
+                                                Console.WriteLine($"----------> ApplicationBasedriver {ApplicationBasedriver}");
                                                 
-            //                                 }
+                                            }
 
-            //                             }
-            //                         }
-            //                         else if (driverInfo_SCL[0] == "Realtek Audio")
-            //                         {
-            //                             if (line.IndexOf(driverInfo_SCL[0], StringComparison.CurrentCultureIgnoreCase) >= 0)
-            //                             {
-            //                                 if (line.IndexOf(driverInfo_SCL[1]) >= 0)//Check Driver Version
-            //                                 {
-            //                                     Runnner.WriteLog($"Found '{driverInfo_SCL[0]}' in line {lineNumber}: {line}");
-            //                                     RealtekAudio = "checked";
-            //                                     int index = checkflaglist.FindIndex(s => s == "RealtekAudio,not check");
-            //                                     if (index != -1)
-            //                                     {
+                                        }
+                                    }
+                                    else if (driverInfo_SCL[0] == "Realtek Audio")
+                                    {
+                                        if (line.IndexOf(driverInfo_SCL[0], StringComparison.CurrentCultureIgnoreCase) >= 0)
+                                        {
+                                            if (line.IndexOf(driverInfo_SCL[1]) >= 0)//Check Driver Version
+                                            {
+                                                Console.WriteLine($"Found '{driverInfo_SCL[0]}' in line {lineNumber}: {line}");
+                                                RealtekAudio = "checked";
+                                                int index = checkflaglist.FindIndex(s => s == "RealtekAudio,not check");
+                                                if (index != -1)
+                                                {
                                                     
-            //                                         // Modify the value at the found index
-            //                                         checkflaglist[index] = "RealtekAudio,checked";
-            //                                     }
-            //                                     Runnner.WriteLog($"---------> RealtekAudio {RealtekAudio}");
+                                                    // Modify the value at the found index
+                                                    checkflaglist[index] = "RealtekAudio,checked";
+                                                }
+                                                Console.WriteLine($"---------> RealtekAudio {RealtekAudio}");
                                                 
-            //                                 }
+                                            }
 
-            //                             }
-            //                         }
-            //                         else if (driverInfo_SCL[0] == "AcerPurifiedVoiceConsole")
-            //                         {
-            //                             if (line.IndexOf(driverInfo_SCL[0], StringComparison.CurrentCultureIgnoreCase) >= 0)
-            //                             {
-            //                                 if (line.IndexOf(driverInfo_SCL[1]) >= 0)//Check Driver Version
-            //                                 {
-            //                                     Runnner.WriteLog($"Found '{driverInfo_SCL[0]}' in line {lineNumber}: {line}");
-            //                                     AcerPurifiedVoiceConsole = "checked";
-            //                                     int index = checkflaglist.FindIndex(s => s == "AcerPurifiedVoiceConsole,not check");
-            //                                     if (index != -1)
-            //                                     {
+                                        }
+                                    }
+                                    else if (driverInfo_SCL[0] == "AcerPurifiedVoiceConsole")
+                                    {
+                                        if (line.IndexOf(driverInfo_SCL[0], StringComparison.CurrentCultureIgnoreCase) >= 0)
+                                        {
+                                            if (line.IndexOf(driverInfo_SCL[1]) >= 0)//Check Driver Version
+                                            {
+                                                Console.WriteLine($"Found '{driverInfo_SCL[0]}' in line {lineNumber}: {line}");
+                                                AcerPurifiedVoiceConsole = "checked";
+                                                int index = checkflaglist.FindIndex(s => s == "AcerPurifiedVoiceConsole,not check");
+                                                if (index != -1)
+                                                {
                                                     
-            //                                         // Modify the value at the found index
-            //                                         checkflaglist[index] = "AcerPurifiedVoiceConsole,checked";
-            //                                     }
-            //                                     Runnner.WriteLog($"-------> AcerPurifiedVoiceConsole {AcerPurifiedVoiceConsole}");
+                                                    // Modify the value at the found index
+                                                    checkflaglist[index] = "AcerPurifiedVoiceConsole,checked";
+                                                }
+                                                Console.WriteLine($"-------> AcerPurifiedVoiceConsole {AcerPurifiedVoiceConsole}");
                                                 
-            //                                 }
+                                            }
 
-            //                             }
-            //                         }
-            //                         else if (driverInfo_SCL[0] == "RealtekAudioControl")
-            //                         {
-            //                             if (line.IndexOf(driverInfo_SCL[0], StringComparison.CurrentCultureIgnoreCase) >= 0)
-            //                             {
-            //                                 if (line.IndexOf(driverInfo_SCL[1]) >= 0)//Check Driver Version
-            //                                 {
-            //                                     Runnner.WriteLog($"Found '{driverInfo_SCL[0]}' in line {lineNumber}: {line}");
-            //                                     RealtekAudioConsoleUWP = "checked";
-            //                                     int index = checkflaglist.FindIndex(s => s == "RealtekAudioConsoleUWP,not check");
-            //                                     if (index != -1)
-            //                                     {
+                                        }
+                                    }
+                                    else if (driverInfo_SCL[0] == "RealtekAudioControl")
+                                    {
+                                        if (line.IndexOf(driverInfo_SCL[0], StringComparison.CurrentCultureIgnoreCase) >= 0)
+                                        {
+                                            if (line.IndexOf(driverInfo_SCL[1]) >= 0)//Check Driver Version
+                                            {
+                                                Console.WriteLine($"Found '{driverInfo_SCL[0]}' in line {lineNumber}: {line}");
+                                                RealtekAudioConsoleUWP = "checked";
+                                                int index = checkflaglist.FindIndex(s => s == "RealtekAudioConsoleUWP,not check");
+                                                if (index != -1)
+                                                {
                                             
-            //                                         // Modify the value at the found index
-            //                                         checkflaglist[index] = "RealtekAudioConsoleUWP,checked";
-            //                                     }
-            //                                     Runnner.WriteLog($"-------> RealtekAudioConsoleUWP {RealtekAudioConsoleUWP}");
+                                                    // Modify the value at the found index
+                                                    checkflaglist[index] = "RealtekAudioConsoleUWP,checked";
+                                                }
+                                                Console.WriteLine($"-------> RealtekAudioConsoleUWP {RealtekAudioConsoleUWP}");
                                                 
-            //                                 }
+                                            }
 
-            //                             }
-            //                         }
-            //                         else if (driverInfo_SCL[0] == "Intel(R) Wireless Bluetooth")
-            //                         {
-            //                             if (line.IndexOf(driverInfo_SCL[0], StringComparison.CurrentCultureIgnoreCase) >= 0)
-            //                             {
-            //                                 if (line.IndexOf(driverInfo_SCL[1]) >= 0)//Check Driver Version
-            //                                 {
-            //                                     Runnner.WriteLog($"Found '{driverInfo_SCL[0]}' in line {lineNumber}: {line}");
-            //                                     IntelWirelessBluetooth = "checked";
-            //                                     int index = checkflaglist.FindIndex(s => s == "IntelWirelessBluetooth,not check");
-            //                                     if (index != -1)
-            //                                     {
+                                        }
+                                    }
+                                    else if (driverInfo_SCL[0] == "Intel(R) Wireless Bluetooth")
+                                    {
+                                        if (line.IndexOf(driverInfo_SCL[0], StringComparison.CurrentCultureIgnoreCase) >= 0)
+                                        {
+                                            if (line.IndexOf(driverInfo_SCL[1]) >= 0)//Check Driver Version
+                                            {
+                                                Console.WriteLine($"Found '{driverInfo_SCL[0]}' in line {lineNumber}: {line}");
+                                                IntelWirelessBluetooth = "checked";
+                                                int index = checkflaglist.FindIndex(s => s == "IntelWirelessBluetooth,not check");
+                                                if (index != -1)
+                                                {
                                                
-            //                                         // Modify the value at the found index
-            //                                         checkflaglist[index] = "IntelWirelessBluetooth,checked";
-            //                                     }
-            //                                     Runnner.WriteLog($"-------> RealtekAudioConsoleUWP {IntelWirelessBluetooth}");
+                                                    // Modify the value at the found index
+                                                    checkflaglist[index] = "IntelWirelessBluetooth,checked";
+                                                }
+                                                Console.WriteLine($"-------> RealtekAudioConsoleUWP {IntelWirelessBluetooth}");
                                                 
-            //                                 }
+                                            }
 
-            //                             }
-            //                         }
-            //                         else if (driverInfo_SCL[0] == "Realtek PCIE CardReader")
-            //                         {
-            //                             if (line.IndexOf(driverInfo_SCL[0], StringComparison.CurrentCultureIgnoreCase) >= 0)
-            //                             {
-            //                                 if (line.IndexOf(driverInfo_SCL[1]) >= 0)//Check Driver Version
-            //                                 {
-            //                                     Runnner.WriteLog($"Found '{driverInfo_SCL[0]}' in line {lineNumber}: {line}");
-            //                                     RealtekPCIECardReader = "checked";
-            //                                     int index = checkflaglist.FindIndex(s => s == "RealtekPCIECardReader,not check");
-            //                                     if (index != -1)
-            //                                     {
+                                        }
+                                    }
+                                    else if (driverInfo_SCL[0] == "Realtek PCIE CardReader")
+                                    {
+                                        if (line.IndexOf(driverInfo_SCL[0], StringComparison.CurrentCultureIgnoreCase) >= 0)
+                                        {
+                                            if (line.IndexOf(driverInfo_SCL[1]) >= 0)//Check Driver Version
+                                            {
+                                                Console.WriteLine($"Found '{driverInfo_SCL[0]}' in line {lineNumber}: {line}");
+                                                RealtekPCIECardReader = "checked";
+                                                int index = checkflaglist.FindIndex(s => s == "RealtekPCIECardReader,not check");
+                                                if (index != -1)
+                                                {
                                                
-            //                                         // Modify the value at the found index
-            //                                         checkflaglist[index] = "RealtekPCIECardReader,checked";
-            //                                     }
-            //                                     Runnner.WriteLog($"-------> RealtekPCIECardReader {RealtekPCIECardReader}");
+                                                    // Modify the value at the found index
+                                                    checkflaglist[index] = "RealtekPCIECardReader,checked";
+                                                }
+                                                Console.WriteLine($"-------> RealtekPCIECardReader {RealtekPCIECardReader}");
                                                 
-            //                                 }
+                                            }
 
-            //                             }
-            //                         }
-            //                         else if (driverInfo_SCL[0] == "DTS APO4x Service")
-            //                         {
-            //                             if (line.IndexOf(driverInfo_SCL[0], StringComparison.CurrentCultureIgnoreCase) >= 0)
-            //                             {
-            //                                 if (line.IndexOf(driverInfo_SCL[1]) >= 0)//Check Driver Version
-            //                                 {
-            //                                     Runnner.WriteLog($"Found '{driverInfo_SCL[0]}' in line {lineNumber}: {line}");
-            //                                     DTSXUltra = "checked";
-            //                                     int index = checkflaglist.FindIndex(s => s == "DTSXUltra,not check");
-            //                                     if (index != -1)
-            //                                     {
+                                        }
+                                    }
+                                    else if (driverInfo_SCL[0] == "DTS APO4x Service")
+                                    {
+                                        if (line.IndexOf(driverInfo_SCL[0], StringComparison.CurrentCultureIgnoreCase) >= 0)
+                                        {
+                                            if (line.IndexOf(driverInfo_SCL[1]) >= 0)//Check Driver Version
+                                            {
+                                                Console.WriteLine($"Found '{driverInfo_SCL[0]}' in line {lineNumber}: {line}");
+                                                DTSXUltra = "checked";
+                                                int index = checkflaglist.FindIndex(s => s == "DTSXUltra,not check");
+                                                if (index != -1)
+                                                {
                                                 
-            //                                         // Modify the value at the found index
-            //                                         checkflaglist[index] = "DTSXUltra,checked";
-            //                                     }
-            //                                     Runnner.WriteLog($"-------> DTSXUltra {DTSXUltra}");
+                                                    // Modify the value at the found index
+                                                    checkflaglist[index] = "DTSXUltra,checked";
+                                                }
+                                                Console.WriteLine($"-------> DTSXUltra {DTSXUltra}");
                                                 
-            //                                 }
+                                            }
 
-            //                             }
-            //                         }
-            //                         else if (driverInfo_SCL[0] == "DTSXUltra")
-            //                         {
-            //                             if (line.IndexOf(driverInfo_SCL[0], StringComparison.CurrentCultureIgnoreCase) >= 0)
-            //                             {
-            //                                 if (line.IndexOf(driverInfo_SCL[1]) >= 0)//Check Driver Version
-            //                                 {
-            //                                     Runnner.WriteLog($"Found '{driverInfo_SCL[0]}' in line {lineNumber}: {line}");
-            //                                     DTSConsoleUWP = "checked";
-            //                                     int index = checkflaglist.FindIndex(s => s == "DTSConsoleUWP,not check");
-            //                                     if (index != -1)
-            //                                     {
+                                        }
+                                    }
+                                    else if (driverInfo_SCL[0] == "DTSXUltra")
+                                    {
+                                        if (line.IndexOf(driverInfo_SCL[0], StringComparison.CurrentCultureIgnoreCase) >= 0)
+                                        {
+                                            if (line.IndexOf(driverInfo_SCL[1]) >= 0)//Check Driver Version
+                                            {
+                                                Console.WriteLine($"Found '{driverInfo_SCL[0]}' in line {lineNumber}: {line}");
+                                                DTSConsoleUWP = "checked";
+                                                int index = checkflaglist.FindIndex(s => s == "DTSConsoleUWP,not check");
+                                                if (index != -1)
+                                                {
                                                    
-            //                                         // Modify the value at the found index
-            //                                         checkflaglist[index] = "DTSConsoleUWP,checked";
-            //                                     }
-            //                                     Runnner.WriteLog($"-------> DTSConsoleUWP {DTSConsoleUWP}");
+                                                    // Modify the value at the found index
+                                                    checkflaglist[index] = "DTSConsoleUWP,checked";
+                                                }
+                                                Console.WriteLine($"-------> DTSConsoleUWP {DTSConsoleUWP}");
                                                 
-            //                                 }
+                                            }
 
-            //                             }
-            //                         }
-            //                         else if (driverInfo_SCL[0] == "DTSSoundUnbound")
-            //                         {
-            //                             if (line.IndexOf(driverInfo_SCL[0], StringComparison.CurrentCultureIgnoreCase) >= 0)
-            //                             {
-            //                                 if (line.IndexOf(driverInfo_SCL[1]) >= 0)//Check Driver Version
-            //                                 {
-            //                                     Runnner.WriteLog($"Found '{driverInfo_SCL[0]}' in line {lineNumber}: {line}");
-            //                                     DTSsoundUWP = "checked";
-            //                                     int index = checkflaglist.FindIndex(s => s == "DTSsoundUWP,not check");
-            //                                     if (index != -1)
-            //                                     {
+                                        }
+                                    }
+                                    else if (driverInfo_SCL[0] == "DTSSoundUnbound")
+                                    {
+                                        if (line.IndexOf(driverInfo_SCL[0], StringComparison.CurrentCultureIgnoreCase) >= 0)
+                                        {
+                                            if (line.IndexOf(driverInfo_SCL[1]) >= 0)//Check Driver Version
+                                            {
+                                                Console.WriteLine($"Found '{driverInfo_SCL[0]}' in line {lineNumber}: {line}");
+                                                DTSsoundUWP = "checked";
+                                                int index = checkflaglist.FindIndex(s => s == "DTSsoundUWP,not check");
+                                                if (index != -1)
+                                                {
                                                   
-            //                                         // Modify the value at the found index
-            //                                         checkflaglist[index] = "DTSsoundUWP,checked";
-            //                                     }
-            //                                     Runnner.WriteLog($"-------> DTSsoundUWP {DTSsoundUWP}");
+                                                    // Modify the value at the found index
+                                                    checkflaglist[index] = "DTSsoundUWP,checked";
+                                                }
+                                                Console.WriteLine($"-------> DTSsoundUWP {DTSsoundUWP}");
                                                 
-            //                                 }
+                                            }
 
-            //                             }
-            //                         }
-            //                         else if (driverInfo_SCL[0] == "Acer Device Enabling Sevice")
-            //                         {
-            //                             if (line.IndexOf(driverInfo_SCL[0], StringComparison.CurrentCultureIgnoreCase) >= 0)
-            //                             {
-            //                                 if (line.IndexOf(driverInfo_SCL[1]) >= 0)//Check Driver Version
-            //                                 {
-            //                                     Runnner.WriteLog($"Found '{driverInfo_SCL[0]}' in line {lineNumber}: {line}");
-            //                                     AcerDeviceEnablingSevice = "checked";
-            //                                     int index = checkflaglist.FindIndex(s => s == "AcerDeviceEnablingSevice,not check");
-            //                                     if (index != -1)
-            //                                     {
+                                        }
+                                    }
+                                    else if (driverInfo_SCL[0] == "Acer Device Enabling Sevice")
+                                    {
+                                        if (line.IndexOf(driverInfo_SCL[0], StringComparison.CurrentCultureIgnoreCase) >= 0)
+                                        {
+                                            if (line.IndexOf(driverInfo_SCL[1]) >= 0)//Check Driver Version
+                                            {
+                                                Console.WriteLine($"Found '{driverInfo_SCL[0]}' in line {lineNumber}: {line}");
+                                                AcerDeviceEnablingSevice = "checked";
+                                                int index = checkflaglist.FindIndex(s => s == "AcerDeviceEnablingSevice,not check");
+                                                if (index != -1)
+                                                {
                                                   
-            //                                         // Modify the value at the found index
-            //                                         checkflaglist[index] = "AcerDeviceEnablingSevice,checked";
-            //                                     }
-            //                                     Runnner.WriteLog($"-------> AcerDeviceEnablingSevice {AcerDeviceEnablingSevice}");
+                                                    // Modify the value at the found index
+                                                    checkflaglist[index] = "AcerDeviceEnablingSevice,checked";
+                                                }
+                                                Console.WriteLine($"-------> AcerDeviceEnablingSevice {AcerDeviceEnablingSevice}");
                                                 
-            //                                 }
+                                            }
 
-            //                             }
-            //                         }
-            //                         else if (driverInfo_SCL[0] == "Fingerprint")
-            //                         {
-            //                             if (line.IndexOf(driverInfo_SCL[0], StringComparison.CurrentCultureIgnoreCase) >= 0)
-            //                             {
-            //                                 if (line.IndexOf(driverInfo_SCL[1]) >= 0)//Check Driver Version
-            //                                 {
-            //                                     Runnner.WriteLog($"Found '{driverInfo_SCL[0]}' in line {lineNumber}: {line}");
-            //                                     FingerPrint = "checked";
-            //                                     int index = checkflaglist.FindIndex(s => s == "FingerPrint,not check");
-            //                                     if (index != -1)
-            //                                     {
+                                        }
+                                    }
+                                    else if (driverInfo_SCL[0] == "Fingerprint")
+                                    {
+                                        if (line.IndexOf(driverInfo_SCL[0], StringComparison.CurrentCultureIgnoreCase) >= 0)
+                                        {
+                                            if (line.IndexOf(driverInfo_SCL[1]) >= 0)//Check Driver Version
+                                            {
+                                                Console.WriteLine($"Found '{driverInfo_SCL[0]}' in line {lineNumber}: {line}");
+                                                FingerPrint = "checked";
+                                                int index = checkflaglist.FindIndex(s => s == "FingerPrint,not check");
+                                                if (index != -1)
+                                                {
                                                     
-            //                                         // Modify the value at the found index
-            //                                         checkflaglist[index] = "FingerPrint,checked";
-            //                                     }
-            //                                     Runnner.WriteLog($"-------> FingerPrint {FingerPrint}");
+                                                    // Modify the value at the found index
+                                                    checkflaglist[index] = "FingerPrint,checked";
+                                                }
+                                                Console.WriteLine($"-------> FingerPrint {FingerPrint}");
                                                 
-            //                                 }
+                                            }
 
-            //                             }
-            //                         }
-            //                         else if (driverInfo_SCL[0] == "Intel(R) Innovation Platform Framework Generic Participant" ||
-            //                             driverInfo_SCL[0] == "Intel(R) Innovation Platform Framework Manager" ||
-            //                             driverInfo_SCL[0] == "Intel(R) Innovation Platform Framework Processor Participant")
-            //                         {
-            //                             if (line.IndexOf(driverInfo_SCL[1]) >= 0)
-            //                             {
-            //                                 IntelDPTF_count += 1;
-            //                             }
+                                        }
+                                    }
+                                    else if (driverInfo_SCL[0] == "Intel(R) Innovation Platform Framework Generic Participant" ||
+                                        driverInfo_SCL[0] == "Intel(R) Innovation Platform Framework Manager" ||
+                                        driverInfo_SCL[0] == "Intel(R) Innovation Platform Framework Processor Participant")
+                                    {
+                                        if (line.IndexOf(driverInfo_SCL[1]) >= 0)
+                                        {
+                                            IntelDPTF_count += 1;
+                                        }
 
-            //                             if (IntelDPTF_count == 3)
-            //                             {
-            //                                 IntelDPTF = "checked";
-            //                                 int index = checkflaglist.FindIndex(s => s == "IntelDPTF,not check");
-            //                                 if (index != -1)
-            //                                 {
+                                        if (IntelDPTF_count == 3)
+                                        {
+                                            IntelDPTF = "checked";
+                                            int index = checkflaglist.FindIndex(s => s == "IntelDPTF,not check");
+                                            if (index != -1)
+                                            {
                                                 
-            //                                     // Modify the value at the found index
-            //                                     checkflaglist[index] = "IntelDPTF,checked";
-            //                                 }
-            //                             }
+                                                // Modify the value at the found index
+                                                checkflaglist[index] = "IntelDPTF,checked";
+                                            }
+                                        }
 
-            //                         }
-            //                         else if (driverInfo_SCL[0] == "Intel(R) GNA")
-            //                         {
-            //                             if (line.IndexOf(driverInfo_SCL[0], StringComparison.CurrentCultureIgnoreCase) >= 0)
-            //                             {
-            //                                 if (line.IndexOf(driverInfo_SCL[1]) >= 0)//Check Driver Version
-            //                                 {
-            //                                     Runnner.WriteLog($"Found '{driverInfo_SCL[0]}' in line {lineNumber}: {line}");
-            //                                     IntelGNA = "checked";
-            //                                     int index = checkflaglist.FindIndex(s => s == "IntelGNA,not check");
-            //                                     if (index != -1)
-            //                                     {
+                                    }
+                                    else if (driverInfo_SCL[0] == "Intel(R) GNA")
+                                    {
+                                        if (line.IndexOf(driverInfo_SCL[0], StringComparison.CurrentCultureIgnoreCase) >= 0)
+                                        {
+                                            if (line.IndexOf(driverInfo_SCL[1]) >= 0)//Check Driver Version
+                                            {
+                                                Console.WriteLine($"Found '{driverInfo_SCL[0]}' in line {lineNumber}: {line}");
+                                                IntelGNA = "checked";
+                                                int index = checkflaglist.FindIndex(s => s == "IntelGNA,not check");
+                                                if (index != -1)
+                                                {
                                                     
-            //                                         // Modify the value at the found index
-            //                                         checkflaglist[index] = "IntelGNA,checked";
-            //                                     }
-            //                                     Runnner.WriteLog($"-------> IntelGNA {IntelGNA}");
+                                                    // Modify the value at the found index
+                                                    checkflaglist[index] = "IntelGNA,checked";
+                                                }
+                                                Console.WriteLine($"-------> IntelGNA {IntelGNA}");
                                                 
-            //                                 }
+                                            }
 
-            //                             }
-            //                         }
-            //                         else if (driverInfo_SCL[0] == "Intel RST VMD")
-            //                         {
-            //                             if (line.IndexOf(driverInfo_SCL[0], StringComparison.CurrentCultureIgnoreCase) >= 0)
-            //                             {
-            //                                 if (line.IndexOf(driverInfo_SCL[1]) >= 0)//Check Driver Version
-            //                                 {
-            //                                     Runnner.WriteLog($"Found '{driverInfo_SCL[0]}' in line {lineNumber}: {line}");
-            //                                     InteliRST = "checked";
-            //                                     int index = checkflaglist.FindIndex(s => s == "InteliRST,not check");
-            //                                     if (index != -1)
-            //                                     {
+                                        }
+                                    }
+                                    else if (driverInfo_SCL[0] == "Intel RST VMD")
+                                    {
+                                        if (line.IndexOf(driverInfo_SCL[0], StringComparison.CurrentCultureIgnoreCase) >= 0)
+                                        {
+                                            if (line.IndexOf(driverInfo_SCL[1]) >= 0)//Check Driver Version
+                                            {
+                                                Console.WriteLine($"Found '{driverInfo_SCL[0]}' in line {lineNumber}: {line}");
+                                                InteliRST = "checked";
+                                                int index = checkflaglist.FindIndex(s => s == "InteliRST,not check");
+                                                if (index != -1)
+                                                {
                                                     
-            //                                         // Modify the value at the found index
-            //                                         checkflaglist[index] = "InteliRST,checked";
-            //                                     }
-            //                                     Runnner.WriteLog($"-------> InteliRST {InteliRST}");
+                                                    // Modify the value at the found index
+                                                    checkflaglist[index] = "InteliRST,checked";
+                                                }
+                                                Console.WriteLine($"-------> InteliRST {InteliRST}");
                                                 
-            //                                 }
+                                            }
 
-            //                             }
-            //                         }
-            //                         else if (driverInfo_SCL[0] == "Smart Sound Technology BUS" ||
-            //                             driverInfo_SCL[0] == "Smart Sound Technology OED")
-            //                         {
-            //                             if (driverInfo_SCL[0] == "Smart Sound Technology OED")
-            //                             {
-            //                                 if (line.IndexOf("OED", StringComparison.CurrentCultureIgnoreCase) >= 0)
-            //                                 {
-            //                                     if (line.IndexOf(driverInfo_SCL[1]) >= 0)//Check Driver Version
-            //                                     {
-            //                                         Runnner.WriteLog($"Found '{driverInfo_SCL[0]}' in line {lineNumber}: {line}");
-            //                                         IntelISST_count += 1;
-            //                                     }
-            //                                 }
-            //                             }
-            //                             if (driverInfo_SCL[0] == "Smart Sound Technology BUS")
-            //                             {
-            //                                 if (line.IndexOf(driverInfo_SCL[0], StringComparison.CurrentCultureIgnoreCase) >= 0)
-            //                                 {
-            //                                     if (line.IndexOf(driverInfo_SCL[1]) >= 0)//Check Driver Version
-            //                                     {
-            //                                         Runnner.WriteLog($"Found '{driverInfo_SCL[0]}' in line {lineNumber}: {line}");
-            //                                         IntelISST_count += 1;
-            //                                     }
-            //                                 }
-            //                             }
-            //                             if (IntelISST_count == 2)
-            //                             {
-            //                                 IntelISST = "checked";
-            //                                 int index = checkflaglist.FindIndex(s => s == "IntelISST,not check");
-            //                                 if (index != -1)
-            //                                 {
+                                        }
+                                    }
+                                    else if (driverInfo_SCL[0] == "Smart Sound Technology BUS" ||
+                                        driverInfo_SCL[0] == "Smart Sound Technology OED")
+                                    {
+                                        if (driverInfo_SCL[0] == "Smart Sound Technology OED")
+                                        {
+                                            if (line.IndexOf("OED", StringComparison.CurrentCultureIgnoreCase) >= 0)
+                                            {
+                                                if (line.IndexOf(driverInfo_SCL[1]) >= 0)//Check Driver Version
+                                                {
+                                                    Console.WriteLine($"Found '{driverInfo_SCL[0]}' in line {lineNumber}: {line}");
+                                                    IntelISST_count += 1;
+                                                }
+                                            }
+                                        }
+                                        if (driverInfo_SCL[0] == "Smart Sound Technology BUS")
+                                        {
+                                            if (line.IndexOf(driverInfo_SCL[0], StringComparison.CurrentCultureIgnoreCase) >= 0)
+                                            {
+                                                if (line.IndexOf(driverInfo_SCL[1]) >= 0)//Check Driver Version
+                                                {
+                                                    Console.WriteLine($"Found '{driverInfo_SCL[0]}' in line {lineNumber}: {line}");
+                                                    IntelISST_count += 1;
+                                                }
+                                            }
+                                        }
+                                        if (IntelISST_count == 2)
+                                        {
+                                            IntelISST = "checked";
+                                            int index = checkflaglist.FindIndex(s => s == "IntelISST,not check");
+                                            if (index != -1)
+                                            {
                                                 
-            //                                     // Modify the value at the found index
-            //                                     checkflaglist[index] = "IntelISST,checked";
-            //                                 }
+                                                // Modify the value at the found index
+                                                checkflaglist[index] = "IntelISST,checked";
+                                            }
 
-            //                             }
-            //                         }
-            //                         else if (driverInfo_SCL[0] == "Intel(R) Serial IO GPIO" ||
-            //                             driverInfo_SCL[0] == "Intel(R) Serial IO I2C")
-            //                         {
-            //                             if (line.IndexOf(driverInfo_SCL[0], StringComparison.CurrentCultureIgnoreCase) >= 0)
-            //                             {
-            //                                 if (line.IndexOf(driverInfo_SCL[1]) >= 0)//Check Driver Version
-            //                                 {
-            //                                     Runnner.WriteLog($"Found '{driverInfo_SCL[0]}' in line {lineNumber}: {line}");
-            //                                     IntelSerialIO_count += 1;
-            //                                 }
+                                        }
+                                    }
+                                    else if (driverInfo_SCL[0] == "Intel(R) Serial IO GPIO" ||
+                                        driverInfo_SCL[0] == "Intel(R) Serial IO I2C")
+                                    {
+                                        if (line.IndexOf(driverInfo_SCL[0], StringComparison.CurrentCultureIgnoreCase) >= 0)
+                                        {
+                                            if (line.IndexOf(driverInfo_SCL[1]) >= 0)//Check Driver Version
+                                            {
+                                                Console.WriteLine($"Found '{driverInfo_SCL[0]}' in line {lineNumber}: {line}");
+                                                IntelSerialIO_count += 1;
+                                            }
 
-            //                                 if (IntelSerialIO_count == 2)
-            //                                 {
-            //                                     IntelSerialIO = "checked";
-            //                                     int index = checkflaglist.FindIndex(s => s == "IntelSerialIO,not check");
-            //                                     if (index != -1)
-            //                                     {
+                                            if (IntelSerialIO_count == 2)
+                                            {
+                                                IntelSerialIO = "checked";
+                                                int index = checkflaglist.FindIndex(s => s == "IntelSerialIO,not check");
+                                                if (index != -1)
+                                                {
                                                     
-            //                                         // Modify the value at the found index
-            //                                         checkflaglist[index] = "IntelSerialIO,checked";
-            //                                     }
-            //                                     Runnner.WriteLog($"-------> IntelSerialIO checked !!");
+                                                    // Modify the value at the found index
+                                                    checkflaglist[index] = "IntelSerialIO,checked";
+                                                }
+                                                Console.WriteLine($"-------> IntelSerialIO checked !!");
                                                 
-            //                                 }
-            //                             }
-            //                         }
-            //                         else if (driverInfo_SCL[0] == "Graphics")
-            //                         {
-            //                             if (line.IndexOf(driverInfo_SCL[0], StringComparison.CurrentCultureIgnoreCase) >= 0)
-            //                             {
-            //                                 if (line.IndexOf(driverInfo_SCL[1]) >= 0)//Check Driver Version
-            //                                 {
-            //                                     Runnner.WriteLog($"Found '{driverInfo_SCL[0]}' in line {lineNumber}: {line}");
-            //                                     UMA = "checked";
-            //                                     int index = checkflaglist.FindIndex(s => s == "UMA,not check");
-            //                                     if (index != -1)
-            //                                     {
+                                            }
+                                        }
+                                    }
+                                    else if (driverInfo_SCL[0] == "Graphics")
+                                    {
+                                        if (line.IndexOf(driverInfo_SCL[0], StringComparison.CurrentCultureIgnoreCase) >= 0)
+                                        {
+                                            if (line.IndexOf(driverInfo_SCL[1]) >= 0)//Check Driver Version
+                                            {
+                                                Console.WriteLine($"Found '{driverInfo_SCL[0]}' in line {lineNumber}: {line}");
+                                                UMA = "checked";
+                                                int index = checkflaglist.FindIndex(s => s == "UMA,not check");
+                                                if (index != -1)
+                                                {
                                                     
-            //                                         // Modify the value at the found index
-            //                                         checkflaglist[index] = "UMA,checked";
-            //                                     }
-            //                                     Runnner.WriteLog($"-------> UMA {UMA}");
+                                                    // Modify the value at the found index
+                                                    checkflaglist[index] = "UMA,checked";
+                                                }
+                                                Console.WriteLine($"-------> UMA {UMA}");
                                                 
-            //                                 }
+                                            }
 
-            //                             }
-            //                         }
-            //                         else if (driverInfo_SCL[0] == "Intel(R) SMBus")
-            //                         {
-            //                             if (line.IndexOf(driverInfo_SCL[0], StringComparison.CurrentCultureIgnoreCase) >= 0)
-            //                             {
-            //                                 if (line.IndexOf(driverInfo_SCL[1]) >= 0)//Check Driver Version
-            //                                 {
-            //                                     Runnner.WriteLog($"Found '{driverInfo_SCL[0]}' in line {lineNumber}: {line}");
-            //                                     IntelSMBus = "checked";
-            //                                     int index = checkflaglist.FindIndex(s => s == "IntelSMBus,not check");
-            //                                     if (index != -1)
-            //                                     {
+                                        }
+                                    }
+                                    else if (driverInfo_SCL[0] == "Intel(R) SMBus")
+                                    {
+                                        if (line.IndexOf(driverInfo_SCL[0], StringComparison.CurrentCultureIgnoreCase) >= 0)
+                                        {
+                                            if (line.IndexOf(driverInfo_SCL[1]) >= 0)//Check Driver Version
+                                            {
+                                                Console.WriteLine($"Found '{driverInfo_SCL[0]}' in line {lineNumber}: {line}");
+                                                IntelSMBus = "checked";
+                                                int index = checkflaglist.FindIndex(s => s == "IntelSMBus,not check");
+                                                if (index != -1)
+                                                {
                                                     
-            //                                         // Modify the value at the found index
-            //                                         checkflaglist[index] = "IntelSMBus,checked";
-            //                                     }
-            //                                     Runnner.WriteLog($"-------> IntelSMBus {IntelSMBus}");
+                                                    // Modify the value at the found index
+                                                    checkflaglist[index] = "IntelSMBus,checked";
+                                                }
+                                                Console.WriteLine($"-------> IntelSMBus {IntelSMBus}");
                                                 
-            //                                 }
+                                            }
 
-            //                             }
-            //                         }
-            //                         else if (driverInfo_SCL[0] == "Intel(R) Management Engine Interface")
-            //                         {
-            //                             if (line.IndexOf(driverInfo_SCL[0], StringComparison.CurrentCultureIgnoreCase) >= 0)
-            //                             {
-            //                                 if (line.IndexOf(driverInfo_SCL[1]) >= 0)//Check Driver Version
-            //                                 {
-            //                                     Runnner.WriteLog($"Found '{driverInfo_SCL[0]}' in line {lineNumber}: {line}");
-            //                                     IntelManagementEngineInterface = "checked";
-            //                                     int index = checkflaglist.FindIndex(s => s == "IntelManagementEngineInterface,not check");
-            //                                     if (index != -1)
-            //                                     {
-            //                                         Runnner.WriteLog($"####{driverInfo_SCL[0]}####");
-            //                                         // Modify the value at the found index
-            //                                         checkflaglist[index] = "IntelManagementEngineInterface,checked";
-            //                                     }
-            //                                     Runnner.WriteLog($"-------> IntelManagementEngineInterface {IntelManagementEngineInterface}");
-            //                                     Runnner.WriteLog("------------------------------------------------------");
-            //                                 }
+                                        }
+                                    }
+                                    else if (driverInfo_SCL[0] == "Intel(R) Management Engine Interface")
+                                    {
+                                        if (line.IndexOf(driverInfo_SCL[0], StringComparison.CurrentCultureIgnoreCase) >= 0)
+                                        {
+                                            if (line.IndexOf(driverInfo_SCL[1]) >= 0)//Check Driver Version
+                                            {
+                                                Console.WriteLine($"Found '{driverInfo_SCL[0]}' in line {lineNumber}: {line}");
+                                                IntelManagementEngineInterface = "checked";
+                                                int index = checkflaglist.FindIndex(s => s == "IntelManagementEngineInterface,not check");
+                                                if (index != -1)
+                                                {
+                                                    Console.WriteLine($"####{driverInfo_SCL[0]}####");
+                                                    // Modify the value at the found index
+                                                    checkflaglist[index] = "IntelManagementEngineInterface,checked";
+                                                }
+                                                Console.WriteLine($"-------> IntelManagementEngineInterface {IntelManagementEngineInterface}");
+                                                Console.WriteLine("------------------------------------------------------");
+                                            }
 
-            //                             }
-            //                         }
-            //                         else if (driverInfo_SCL[0] == "Killer(R) Wi-Fi 6E AX1675i 160MHz Wireless Network Adapter")
-            //                         {
-            //                             if (line.IndexOf(driverInfo_SCL[0], StringComparison.CurrentCultureIgnoreCase) >= 0)
-            //                             {
-            //                                 if (line.IndexOf(driverInfo_SCL[1]) >= 0)//Check Driver Version
-            //                                 {
-            //                                     Runnner.WriteLog($"Found '{driverInfo_SCL[0]}' in line {lineNumber}: {line}");
-            //                                     KillerWiFi6EAX1675i = "checked";
-            //                                     int index = checkflaglist.FindIndex(s => s == "KillerWiFi6EAX1675i,not check");
-            //                                     if (index != -1)
-            //                                     {
+                                        }
+                                    }
+                                    else if (driverInfo_SCL[0] == "Killer(R) Wi-Fi 6E AX1675i 160MHz Wireless Network Adapter")
+                                    {
+                                        if (line.IndexOf(driverInfo_SCL[0], StringComparison.CurrentCultureIgnoreCase) >= 0)
+                                        {
+                                            if (line.IndexOf(driverInfo_SCL[1]) >= 0)//Check Driver Version
+                                            {
+                                                Console.WriteLine($"Found '{driverInfo_SCL[0]}' in line {lineNumber}: {line}");
+                                                KillerWiFi6EAX1675i = "checked";
+                                                int index = checkflaglist.FindIndex(s => s == "KillerWiFi6EAX1675i,not check");
+                                                if (index != -1)
+                                                {
                                                    
-            //                                         // Modify the value at the found index
-            //                                         checkflaglist[index] = "KillerWiFi6EAX1675i,checked";
-            //                                     }
-            //                                     Runnner.WriteLog($"-------> KillerWiFi6EAX1675i {KillerWiFi6EAX1675i}");
-            //                                     Runnner.WriteLog("------------------------------------------------------");
-            //                                 }
+                                                    // Modify the value at the found index
+                                                    checkflaglist[index] = "KillerWiFi6EAX1675i,checked";
+                                                }
+                                                Console.WriteLine($"-------> KillerWiFi6EAX1675i {KillerWiFi6EAX1675i}");
+                                                Console.WriteLine("------------------------------------------------------");
+                                            }
 
-            //                             }
-            //                         }
-            //                         else if (driverInfo_SCL[0] == "KillerControlCenter")
-            //                         {
-            //                             if (line.IndexOf(driverInfo_SCL[0], StringComparison.CurrentCultureIgnoreCase) >= 0)
-            //                             {
-            //                                 if (line.IndexOf(driverInfo_SCL[1]) >= 0)//Check Driver Version
-            //                                 {
-            //                                     Runnner.WriteLog($"Found '{driverInfo_SCL[0]}' in line {lineNumber}: {line}");
-            //                                     KillerControlCenter = "checked";
-            //                                     int index = checkflaglist.FindIndex(s => s == "KillerControlCenter,not check");
-            //                                     if (index != -1)
-            //                                     {
+                                        }
+                                    }
+                                    else if (driverInfo_SCL[0] == "KillerControlCenter")
+                                    {
+                                        if (line.IndexOf(driverInfo_SCL[0], StringComparison.CurrentCultureIgnoreCase) >= 0)
+                                        {
+                                            if (line.IndexOf(driverInfo_SCL[1]) >= 0)//Check Driver Version
+                                            {
+                                                Console.WriteLine($"Found '{driverInfo_SCL[0]}' in line {lineNumber}: {line}");
+                                                KillerControlCenter = "checked";
+                                                int index = checkflaglist.FindIndex(s => s == "KillerControlCenter,not check");
+                                                if (index != -1)
+                                                {
                                                   
-            //                                         // Modify the value at the found index
-            //                                         checkflaglist[index] = "KillerControlCenter,checked";
-            //                                     }
-            //                                     Runnner.WriteLog($"-------> KillerControlCenter {KillerControlCenter}");
-            //                                     Runnner.WriteLog("------------------------------------------------------");
-            //                                 }
+                                                    // Modify the value at the found index
+                                                    checkflaglist[index] = "KillerControlCenter,checked";
+                                                }
+                                                Console.WriteLine($"-------> KillerControlCenter {KillerControlCenter}");
+                                                Console.WriteLine("------------------------------------------------------");
+                                            }
 
-            //                             }
-            //                         }
-            //                         else if (driverInfo_SCL[0] == "NVIDIA GeForce RTX 3050" ||
-            //                             driverInfo_SCL[0] == "NVIDIA GeForce RTX 4050" && Had_external_VGA == "not check")
-            //                         {
+                                        }
+                                    }
+                                    else if (driverInfo_SCL[0] == "NVIDIA GeForce RTX 3050" ||
+                                        driverInfo_SCL[0] == "NVIDIA GeForce RTX 4050" && Had_external_VGA == "not check")
+                                    {
 
-            //                             if (line.IndexOf(driverInfo_SCL[0], StringComparison.CurrentCultureIgnoreCase) >= 0)
-            //                             //found Touchpad device of ELAN, skip check other Touchpad device in list
-            //                             {
-            //                                 if (line.IndexOf(driverInfo_SCL[1]) >= 0)//Check Driver Version
-            //                                 {
-            //                                     Runnner.WriteLog($"Found '{driverInfo_SCL[0]}' in line {lineNumber}: {line}");
-            //                                     Had_external_VGA = "checked";
-            //                                     int index = checkflaglist.FindIndex(s => s == "Had_external_VGA,not check");
-            //                                     if (index != -1)
-            //                                     {
-            //                                         //Runnner.WriteLog($"####{driverInfo_SCL[0]}####");
-            //                                         // Modify the value at the found index
-            //                                         checkflaglist[index] = "Had_external_VGA,checked";
-            //                                     }
-            //                                     Runnner.WriteLog($"------------------> Had_external_VGA {Had_external_VGA}");
-            //                                     Runnner.WriteLog("------------------------------------------------------");
-            //                                 }
+                                        if (line.IndexOf(driverInfo_SCL[0], StringComparison.CurrentCultureIgnoreCase) >= 0)
+                                        //found Touchpad device of ELAN, skip check other Touchpad device in list
+                                        {
+                                            if (line.IndexOf(driverInfo_SCL[1]) >= 0)//Check Driver Version
+                                            {
+                                                Console.WriteLine($"Found '{driverInfo_SCL[0]}' in line {lineNumber}: {line}");
+                                                Had_external_VGA = "checked";
+                                                int index = checkflaglist.FindIndex(s => s == "Had_external_VGA,not check");
+                                                if (index != -1)
+                                                {
+                                                    //Console.WriteLine($"####{driverInfo_SCL[0]}####");
+                                                    // Modify the value at the found index
+                                                    checkflaglist[index] = "Had_external_VGA,checked";
+                                                }
+                                                Console.WriteLine($"------------------> Had_external_VGA {Had_external_VGA}");
+                                                Console.WriteLine("------------------------------------------------------");
+                                            }
 
-            //                             }
-            //                         }
-            //                         else
-            //                         {
-            //                             if (line.IndexOf(driverInfo_SCL[0], StringComparison.CurrentCultureIgnoreCase) >= 0)
-            //                             {
-            //                                 if (line.IndexOf(driverInfo_SCL[1]) >= 0)//Check Driver Version
-            //                                 {
-            //                                     Runnner.WriteLog("Case not include !!!!!!!!!!!!!!!!");
-            //                                     Runnner.WriteLog($"Found '{driverInfo_SCL[0]}' in line {lineNumber}: {line}");
-            //                                     Runnner.WriteLog("------------------------------------------------------");
-            //                                 }
+                                        }
+                                    }
+                                    else
+                                    {
+                                        if (line.IndexOf(driverInfo_SCL[0], StringComparison.CurrentCultureIgnoreCase) >= 0)
+                                        {
+                                            if (line.IndexOf(driverInfo_SCL[1]) >= 0)//Check Driver Version
+                                            {
+                                                Console.WriteLine("Case not include !!!!!!!!!!!!!!!!");
+                                                Console.WriteLine($"Found '{driverInfo_SCL[0]}' in line {lineNumber}: {line}");
+                                                Console.WriteLine("------------------------------------------------------");
+                                            }
 
-            //                             }
-            //                         }
-            //                         lineNumber++;
-            //                     }
-            //                 }
-            //             }
-            //             catch (Exception ex)
-            //             {
-            //                 Runnner.WriteLog($"An error occurred: {ex.Message}");
-            //             }
-            //             //Check WinRe driver
-            //             if (driverInfo_SCL[0] == "Intel Rapid Storage WinPERE Drivers")
-            //             {
-            //                 if (infContents.IndexOf(driverInfo_SCL[1]) >= 0)
-            //                 {
-            //                     IntelRapidStorageWinPeReDriver = "checked";
-            //                     int index = checkflaglist.FindIndex(s => s == "IntelRapidStorageWinPeReDriver,not check");
-            //                     if (index != -1)
-            //                     {
+                                        }
+                                    }
+                                    lineNumber++;
+                                }
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine($"An error occurred: {ex.Message}");
+                        }
+                        //Check WinRe driver
+                        if (driverInfo_SCL[0] == "Intel Rapid Storage WinPERE Drivers")
+                        {
+                            if (infContents.IndexOf(driverInfo_SCL[1]) >= 0)
+                            {
+                                IntelRapidStorageWinPeReDriver = "checked";
+                                int index = checkflaglist.FindIndex(s => s == "IntelRapidStorageWinPeReDriver,not check");
+                                if (index != -1)
+                                {
                               
-            //                         // Modify the value at the found index
-            //                         checkflaglist[index] = "IntelRapidStorageWinPeReDriver,checked";
-            //                     }
-            //                     Runnner.WriteLog($"Found '{driverInfo_SCL[0]}' in infContents list, DriverVer is {driverInfo_SCL[1]}");
-            //                     Runnner.WriteLog("------------------------------------------------------");
-            //                 }
+                                    // Modify the value at the found index
+                                    checkflaglist[index] = "IntelRapidStorageWinPeReDriver,checked";
+                                }
+                                Console.WriteLine($"Found '{driverInfo_SCL[0]}' in infContents list, DriverVer is {driverInfo_SCL[1]}");
+                                Console.WriteLine("------------------------------------------------------");
+                            }
 
-            //             }
-            //             else if (driverInfo_SCL[0] == "Intel Serial I/O WinPERE Drivers")
-            //             {
-            //                 if (infContents.IndexOf(driverInfo_SCL[1]) >= 0)
-            //                 {
-            //                     IntelSerialIOWinPEREDrivers = "checked";
-            //                     int index = checkflaglist.FindIndex(s => s == "IntelSerialIOWinPEREDrivers,not check");
-            //                     if (index != -1)
-            //                     {
+                        }
+                        else if (driverInfo_SCL[0] == "Intel Serial I/O WinPERE Drivers")
+                        {
+                            if (infContents.IndexOf(driverInfo_SCL[1]) >= 0)
+                            {
+                                IntelSerialIOWinPEREDrivers = "checked";
+                                int index = checkflaglist.FindIndex(s => s == "IntelSerialIOWinPEREDrivers,not check");
+                                if (index != -1)
+                                {
                                    
-            //                         // Modify the value at the found index
-            //                         checkflaglist[index] = "IntelSerialIOWinPEREDrivers,checked";
-            //                     }
-            //                     Runnner.WriteLog($"Found '{driverInfo_SCL[0]}' in infContents list, DriverVer is {driverInfo_SCL[1]}");
-            //                     Runnner.WriteLog("------------------------------------------------------");
-            //                 }
+                                    // Modify the value at the found index
+                                    checkflaglist[index] = "IntelSerialIOWinPEREDrivers,checked";
+                                }
+                                Console.WriteLine($"Found '{driverInfo_SCL[0]}' in infContents list, DriverVer is {driverInfo_SCL[1]}");
+                                Console.WriteLine("------------------------------------------------------");
+                            }
 
-            //             }
-            //             else if (driverInfo_SCL[0] == "Wireless LAN_M WinRE Drivers")
-            //             {
-            //                 if (infContents.IndexOf(driverInfo_SCL[1]) >= 0)
-            //                 {
-            //                     WirelessLAN_MWinREDrivers = "checked";
-            //                     int index = checkflaglist.FindIndex(s => s == "WirelessLAN_MWinREDrivers,not check");
-            //                     if (index != -1)
-            //                     {
+                        }
+                        else if (driverInfo_SCL[0] == "Wireless LAN_M WinRE Drivers")
+                        {
+                            if (infContents.IndexOf(driverInfo_SCL[1]) >= 0)
+                            {
+                                WirelessLAN_MWinREDrivers = "checked";
+                                int index = checkflaglist.FindIndex(s => s == "WirelessLAN_MWinREDrivers,not check");
+                                if (index != -1)
+                                {
                                    
-            //                         // Modify the value at the found index
-            //                         checkflaglist[index] = "WirelessLAN_MWinREDrivers,checked";
-            //                     }
-            //                     Runnner.WriteLog($"Found '{driverInfo_SCL[0]}' in infContents list, DriverVer is {driverInfo_SCL[1]}");
-            //                     Runnner.WriteLog("------------------------------------------------------");
-            //                 }
+                                    // Modify the value at the found index
+                                    checkflaglist[index] = "WirelessLAN_MWinREDrivers,checked";
+                                }
+                                Console.WriteLine($"Found '{driverInfo_SCL[0]}' in infContents list, DriverVer is {driverInfo_SCL[1]}");
+                                Console.WriteLine("------------------------------------------------------");
+                            }
 
-            //             }
-            //             else 
-            //             {
-            //                 //else
-            //                 //{
-            //                  //   Runnner.WriteLog("Had searched all Driver list, Finished!!! ---------------------");
-            //                 //}
-            //             }
-            //         }
-            //     }
-            // }
+                        }
+                        else 
+                        {
+                            //else
+                            //{
+                             //   Console.WriteLine("Had searched all Driver list, Finished!!! ---------------------");
+                            //}
+                        }
+                    }
+                }
+            }
 
-            // int fail = 0;
-            // int success = 0;
-            // Runnner.WriteLog("");
-            // Runnner.WriteLog("DUMP Result:(Only show fail items) ");
-            // foreach (string item in checkflaglist)
-            // { 
-            //     string[] checkcell = item.Split(',');
-            //     if (checkcell[1] != "checked")
-            //     {
-            //         Runnner.WriteLog(item);
-            //         fail++;
+            int fail = 0;
+            int success = 0;
+            Console.WriteLine();
+            Console.WriteLine("DUMP Result:(Only show fail items) ");
+            foreach (string item in checkflaglist)
+            { 
+                string[] checkcell = item.Split(',');
+                if (checkcell[1] != "checked")
+                {
+                    Console.WriteLine(item);
+                    fail++;
                     
-            //     }
-            //     else 
-            //     {
-            //         success++;
+                }
+                else 
+                {
+                    success++;
                     
-            //     }
+                }
 
-            // }
+            }
 
-            // string jsonfilePath = @"c:\\TestManager\\TR_Result.json"; // 將路徑替換為你的JSON文件的實際路徑
-            // // 讀取JSON文件內容
-            // string jsonContent = File.ReadAllText(jsonfilePath);
-            // // 將JSON字串解析為JObject
-            // JObject jsonObject = JObject.Parse(jsonContent);
-            // // 讀取"TestStatus"的值
-            // string test_status = (string)jsonObject["TestStatus"];
-            // Runnner.WriteLog("TestStatus is: " + test_status);
+ProcessLog($"success: {success}");                
 
-            // if (success ==28)
-            // {
-            //     Runnner.WriteLog("修改 \"TestStatus\" 內容");
-            //     // 讀取JSON文件內容
-            //     string jsonContent1 = File.ReadAllText(jsonfilePath);
-            //     // 將JSON字串解析為JObject
-            //     JObject jsonObject1 = JObject.Parse(jsonContent1);
-            //     // 修改 "site" 內容
-            //     jsonObject1["TestResult"] = "PASS"; // 在這裡將新的值賦給 "site" 屬性
-            //                                         // 將修改後的JObject轉換回JSON字符串
-            //     string modifiedJson1 = jsonObject1.ToString();
-            //     // 將修改後的JSON字串保存回文件
-            //     File.WriteAllText(jsonfilePath, modifiedJson1);
-            //     Runnner.WriteLog("TestStatus is: " + test_status);
-            //     Runnner.WriteLog("All driver device found in PC, Success");
-            //     return true;
-            // }
-            // if (fail != 0)
-            // {
-            //     Runnner.WriteLog("修改 \"TestStatus\" 內容");
-            //     // 讀取JSON文件內容
-            //     string jsonContent1 = File.ReadAllText(jsonfilePath);
-            //     // 將JSON字串解析為JObject
-            //     JObject jsonObject1 = JObject.Parse(jsonContent1);
-            //     // 修改 "site" 內容
-            //     jsonObject1["TestResult"] = "Fail"; // 在這裡將新的值賦給 "site" 屬性
-            //                                         // 將修改後的JObject轉換回JSON字符串
-            //     string modifiedJson1 = jsonObject1.ToString();
-            //     // 將修改後的JSON字串保存回文件
-            //     File.WriteAllText(jsonfilePath, modifiedJson1);
-            //     Runnner.WriteLog("TestStatus is: " + test_status);
-            //     Runnner.WriteLog("Not all driver device found in PC, Fail");
-            //     return false;
-            // }
+            if (success ==28)
+            {
+
+                Console.WriteLine("修改 \"TestStatus\" 內容");
+                // 讀取JSON文件內容
+                string jsonContentPass = File.ReadAllText(jsonfilePath);
+                // 將JSON字串解析為JObject
+                JObject jsonObjectPass = JObject.Parse(jsonContentPass);
+                // 修改 "site" 內容
+                jsonObjectPass["TestResult"] = "PASS"; // 在這裡將新的值賦給 "site" 屬性
+                                                    // 將修改後的JObject轉換回JSON字符串
+                string modifiedJsonPass = jsonObjectPass.ToString();
+                // 將修改後的JSON字串保存回文件
+                File.WriteAllText(jsonfilePath, modifiedJsonPass);
+                //Console.WriteLine("TestStatus is: " + test_status);
+                Console.WriteLine("All driver device found in PC, Success");
+ProcessLog("Befoer ***** WriteTestLogStatus");                
+                try {
+                    WriteTestLogStatus("TestStatus", "Done");
+                }
+                catch{
+                    ProcessLog("json fail........");
+                    Console.WriteLine("json fail........");
+                    Console.ReadKey();
+                }
+ProcessLog("After ________ WriteTestLogStatus");                
+                return true;
+            }
+
+ProcessLog($"fail: {fail}");                
+
+            if (fail != 0)
+            {
+                Console.WriteLine("修改 \"TestStatus\" 內容");
+                // 讀取JSON文件內容
+                string jsonContentFail = File.ReadAllText(jsonfilePath);
+                // 將JSON字串解析為JObject
+                JObject jsonObjectFail = JObject.Parse(jsonContentFail);
+                // 修改 "site" 內容
+                jsonObjectFail["TestResult"] = "Fail"; // 在這裡將新的值賦給 "site" 屬性
+                                                    // 將修改後的JObject轉換回JSON字符串
+                string modifiedJsonFail = jsonObjectFail.ToString();
+                // 將修改後的JSON字串保存回文件
+                File.WriteAllText(jsonfilePath, modifiedJsonFail);
+                //Console.WriteLine("TestStatus is: " + test_status);
+                Console.WriteLine("Not all driver device found in PC, Fail");
+
+ProcessLog("Befoer ***** WriteTestLogStatus");                
+                try {
+                    WriteTestLogStatus("TestStatus", "Done");
+                }
+                catch{
+                    ProcessLog("json fail........");
+                    Console.WriteLine("json fail........");
+                    Console.ReadKey();
+                }
+ProcessLog("After ________ WriteTestLogStatus");                
+
+                return false;
+            }
+            
             return false;
+        DeviceStatusError:
+            
+            Console.WriteLine("修改 \"TestStatus\" 內容");
+            // 讀取JSON文件內容
+            string jsonContentStatusFail = File.ReadAllText(jsonfilePath);
+            // 將JSON字串解析為JObject
+            JObject jsonObjectStatusFail = JObject.Parse(jsonContentStatusFail);
+            // 修改 "site" 內容
+            jsonObjectStatusFail["TestResult"] = "DeviceStatusError"; // 在這裡將新的值賦給 "site" 屬性
+                                                   // 將修改後的JObject轉換回JSON字符串
+            string modifiedJsonStatusFail = jsonObjectStatusFail.ToString();
+            // 將修改後的JSON字串保存回文件
+            File.WriteAllText(jsonfilePath, modifiedJsonStatusFail);
+            //Console.WriteLine("TestStatus is: " + test_status);
+            Console.WriteLine("one of Device status in DM is fail, Stop process!!!");
+            return false;
+
+            
+        }
+
+       public int Setup()
+        {
+            // common.Setup
+            return 0;
         }
 
         // public int Run()
@@ -1609,11 +1736,11 @@ catch (Exception ex)
 
                 if (value != null)
                 {
-                    //Runnner.WriteLog($"Value of {valueName} in {keyPath}: {value}");
+                    //Console.WriteLine($"Value of {valueName} in {keyPath}: {value}");
                 }
                 else
                 {
-                    Runnner.WriteLog($"Registry value {valueName} not found in {keyPath}");
+                    Console.WriteLine($"Registry value {valueName} not found in {keyPath}");
                 }
 
                 return value.ToString();
@@ -1658,18 +1785,19 @@ catch (Exception ex)
 
                 if (result == 0)
                 {
-                    //Runnner.WriteLog("Device Status: " + status);
-                    //Runnner.WriteLog("Device Problem Code: " + problemNumber);
+                    //Console.WriteLine("Device Status: " + status);
+                    //Console.WriteLine("Device Problem Code: " + problemNumber);
                 }
                 else
                 {
-                    Runnner.WriteLog("Failed to get device status.");
+                    Console.WriteLine("Device Problem Code: " + problemNumber);
+                    Console.WriteLine("Failed to get device status.");
                 }
                 return problemNumber.ToString();
             }
             else
             {
-                Runnner.WriteLog("Device not found or error locating the device node.");
+                Console.WriteLine("Device not found or error locating the device node.");
                 return string.Empty;
             }
         }
@@ -1702,7 +1830,7 @@ catch (Exception ex)
             catch (Exception ex)
             {
                 // Handle any exceptions (e.g., directory not found, permission issues)
-                Runnner.WriteLog($"An error occurred: {ex.Message}");
+                Console.WriteLine($"An error occurred: {ex.Message}");
             }
 
             return infContents;
@@ -1737,7 +1865,7 @@ catch (Exception ex)
             catch (Exception ex)
             {
                 // Handle any exceptions that may occur during registry access
-                Runnner.WriteLog("Error: " + ex.Message);
+                Console.WriteLine("Error: " + ex.Message);
             }
 
             return "Unknown";
