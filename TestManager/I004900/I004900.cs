@@ -18,7 +18,6 @@ using Microsoft.Win32;
 using Excel = Microsoft.Office.Interop.Excel;
 using System.Reflection;
 using System.Runtime.InteropServices;
-using WMPLib; // 引用 Windows Media Player COM 库
 
 namespace I004900 {
     public class MyI004900 {
@@ -37,53 +36,14 @@ namespace I004900 {
                 Console.WriteLine($"Write TR.json error occurred: {ex.Message}");
             }
         }
-
-        private static void Wmp_PlayStateChange(int NewState)
-        {
-            WMPPlayState playState = (WMPPlayState)NewState;
-
-            switch (playState)
-            {
-                case WMPPlayState.wmppsPlaying:
-                    Console.WriteLine("Playing....");
-                    break;
-                case WMPPlayState.wmppsPaused:
-                    Console.WriteLine("Pause");
-                    break;
-                case WMPPlayState.wmppsStopped:
-                    Console.WriteLine("Stop");
-                    break;
-                default:
-                    Console.WriteLine("Other status: " + playState.ToString());
-                    break;
-            }
-        }
-
-        // ******* New Thread to monitor TimeOut *********
-        static void PlayWMP() {
-            // Media Player 
-            WindowsMediaPlayer wmp = new WindowsMediaPlayer();
-            // wmp.URL = @"c:\TestManager\ItemDownload\Soul.mp3";
-            wmp.URL = @"c:\TestManager\ItemDownload\n.mp4";
-            wmp.PlayStateChange += new _WMPOCXEvents_PlayStateChangeEventHandler(Wmp_PlayStateChange);
-            while (ItemWatch.IsRunning) {
-                // wmp.controls.pause();
-                wmp.controls.play();
-                Thread.Sleep(2000);
-                Console.WriteLine($"{ItemWatch.Elapsed.TotalSeconds} sec");
-            };
-            wmp.controls.stop();
-        }
-
-//(EdisonLin-20240131-)>>
         static void PlayMP4() {
 
-            string videoPath = @"m:\20240131_090904.mp4";
+            string videoPath = @"c:\TestManager\ItemDownload\20240131_090904.mp4";
 
             // 使用Process.Start啟動Windows Media Player應用程式
             Process playerProcess = new Process();
             playerProcess.StartInfo.FileName = "wmplayer.exe";
-            playerProcess.StartInfo.Arguments = videoPath; // 設定視頻路徑作為命令行參數
+            playerProcess.StartInfo.Arguments = videoPath;
             playerProcess.Start();
             while (ItemWatch.IsRunning) {
                 Thread.Sleep(1000);
@@ -95,164 +55,161 @@ namespace I004900 {
 
             foreach (Process MyProcess in playerProcesses)
             {
-                MyProcess.CloseMainWindow(); // 嘗試使用主窗口關閉
-                MyProcess.WaitForExit(); // 等待應用程式退出
-                MyProcess.Dispose(); // 釋放資源
+                MyProcess.CloseMainWindow();
+                MyProcess.WaitForExit();
+                MyProcess.Dispose();
             }            
 
-            Console.WriteLine("視頻播放結束。");
+            Console.WriteLine("-- Video playback ends");
         }     
-//(EdisonLin-20240131-)<<
+
+
+        public static void setPreferences() {
+            try
+            {
+                // 设置.reg文件的路径
+                string regFilePath = "c:\\TestManager\\ItemDownload\\Preferences.reg";
+
+                // 创建一个ProcessStartInfo对象
+                ProcessStartInfo processStartInfo = new ProcessStartInfo
+                {
+                    FileName = "regedit.exe",
+                    Arguments = $"/s \"{regFilePath}\"", // /s 参数使regedit在无提示模式下运行
+                    UseShellExecute = true,
+                    Verb = "runas", // 请求管理员权限
+                    CreateNoWindow = true, // 不创建新窗口
+                };
+
+                // 启动进程
+                Process process = Process.Start(processStartInfo);
+
+                // 等待进程结束
+                process.WaitForExit();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"An error occurred: {ex.Message}");
+            }
+        }
 
         public static void Run()
         {
+            bool result = CommonDevicesStatusCheck.CheckDeviceStatus();
+            File.Move(@"c:\TestManager\ItemDownload\DeviceStatusCheck.txt", @"c:\TestManager\ItemDownload\DeviceBefore.txt");
 
-
-
-
-
-
-
-//             string oldFilePath = @"c:\TestManager\ItemDownload\DeviceStatusCheck.txt";
-//             string newFilePath = @"c:\TestManager\ItemDownload\DeviceBefore.txt";
-//             if (System.IO.File.Exists(oldFilePath)) {
-//                  File.Delete(oldFilePath);
-//             }
-//             if (System.IO.File.Exists(newFilePath)) {
-//                  File.Delete(newFilePath);
-//             }
-
-//             bool result = CommonDevicesStatusCheck.CheckDeviceStatus();
-//             if (!result) {
-//                 TestResult("Fail");
-//                 return;
-//             }
-//             try
-//             {
-//                 File.Move(oldFilePath, newFilePath);
-//             }
-//             catch (Exception ex)
-//             {
-//                 Console.WriteLine($"Error: {ex.Message}");
-//             }            
-
-
-// //(EdisonLin-20240129-)>>
-
-
-
-
-
-       WindowsMediaPlayer wmp = new WindowsMediaPlayer();
-
-        // 設定視頻檔案的路徑
-        wmp.URL = @"m:\20240131_090904.mp4";
-
-        // 開始播放
-        wmp.controls.play();
-
-        // 檢查撥放狀態
-        while (true)
-        {
-            Console.WriteLine("撥放狀態: " + wmp.playState.ToString());
-
-            if (wmp.playState == WMPPlayState.wmppsStopped)
-            {
-                Console.WriteLine("播放結束");
-                break;
-            }
-            else if (wmp.playState == WMPPlayState.wmppsPaused)
-            {
-                Console.WriteLine("已暫停");
+            if (!result) {
+                TestResult("Fail");
+                return;
             }
 
-            // 等待一段時間再檢查狀態（可以根據需要調整時間間隔）
-            System.Threading.Thread.Sleep(1000);
-        }
 
-        // 停止播放
-        wmp.controls.stop();
+//(EdisonLin-20240215-)>>
+            string keyPath = @"Software\\Microsoft\\MediaPlayer\\Preferences";
+            string valueName = "AcceptedPrivacyStatement";
+            bool Preferences = false;
+            using (RegistryKey key = Registry.CurrentUser.OpenSubKey(keyPath))
+            {
+                if (key != null)
+                {
+                    object value = key.GetValue(valueName);
+                    // 如果value不为null，则表示找到了值
+                    Preferences = (value != null);
+                }
+                if (!Preferences) {
+                    setPreferences();           
+                }
+            }
+//(EdisonLin-20240215-)<<
 
+            // Start Stopwatch
+            ItemWatch = new Stopwatch();
+            ItemWatch.Start();
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-            // // Start Stopwatch
-            // ItemWatch = new Stopwatch();
-            // ItemWatch.Start();
-
-            // Thread wmpThread = new Thread(PlayMP4);
-            // wmpThread.Start();
+            Thread wmpThread = new Thread(PlayMP4);
+            wmpThread.Start();
 
 
-            // Console.WriteLine($"Wait 5 seconds to enter S4");
-            // Thread.Sleep(5000);
-            // DoSleep.Sleep(3, 1);
+            Console.WriteLine($"Wait 5 seconds to enter S4");
+            Thread.Sleep(5000);
+            // DoSleep.Sleep(4, 1);
 
-            // Console.ReadKey();
-
-            // // Stop Stopwatch
-            // ItemWatch.Stop();
-            // Console.ReadKey();
+            Thread.Sleep(10000);
+            ItemWatch.Stop();
+            Thread.Sleep(2000);
 
 
-        // GetSystemInfo.GetDiskPartition();
-        // GetSystemInfo.MediaType();
+//(EdisonLin-20240215-)>>
+        if( !Preferences ) {
+            // 打开指定的注册表键，需要写权限
+            using (RegistryKey key = Registry.CurrentUser.OpenSubKey(keyPath, writable: true))
+            {
+                if (key == null)
+                {
+                    Console.WriteLine($"Key not found: {keyPath}");
+                    return;
+                }
 
-//(EdisonLin-20240129-)<<
+                try
+                {
+                    // 删除指定的值
+                    key.DeleteValue(valueName);
+                }
+                catch (ArgumentException)
+                {
+                    Console.WriteLine($"Value '{valueName}' does not exist.");
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"An error occurred: {ex.Message}");
+                }
+            }
+        }    
+//(EdisonLin-20240215-)<<
 
+            result = CommonDevicesStatusCheck.CheckDeviceStatus();
+            if (!result) {
+                TestResult("Fail");
+                return;
+            }
 
-            // result = CommonDevicesStatusCheck.CheckDeviceStatus();
-            // if (!result) {
-            //     TestResult("Fail");
-            //     return;
-            // }
+            File.Move(@"c:\TestManager\ItemDownload\DeviceStatusCheck.txt", @"c:\TestManager\ItemDownload\DeviceAfter.txt");
 
-            // try
-            // {
-            //     string content1 = File.ReadAllText(oldFilePath);
-            //     string content2 = File.ReadAllText(newFilePath);
+//(EdisonLin-20240215-)>>
+            // 文件路徑
+            string filePath1 = @"c:\TestManager\ItemDownload\DeviceBefore.txt";
+            string filePath2 = @"c:\TestManager\ItemDownload\DeviceAfter.txt";
 
-            //     bool areEqual = content1.Equals(content2, StringComparison.OrdinalIgnoreCase);
+            string[] file1Lines = File.ReadAllLines(filePath1);
+            string[] file2Lines = File.ReadAllLines(filePath2);
 
-            //     if (areEqual)
-            //     {
-            //         result = true;
-            //     }
-            //     else
-            //     {
-            //         result = false;
-            //     }
-            // }
-            // catch (Exception ex)
-            // {
-            //     Console.WriteLine($"Error: {ex.Message}");
-            //     result = false;
-            // }            
+            // 比較檔案行數
+            result = true;
+            if (file1Lines.Length != file2Lines.Length)
+            {
+                // 文件行數不同，因此文件內容不同。
+                result = false;
+            }
+            else
+            {
+                // 逐行比較
+                for (int i = 0; i < file1Lines.Length; i++)
+                {
+                    if (file1Lines[i] != file2Lines[i])
+                    {
+                        result = false;
+                    }
+                }
+            }
 
-            // if (System.IO.File.Exists(oldFilePath)) {
-            //      File.Delete(oldFilePath);
-            // }
-            // if (System.IO.File.Exists(newFilePath)) {
-            //      File.Delete(newFilePath);
-            // }
+            File.Delete(filePath1);
+            File.Delete(filePath2);            
+//(EdisonLin-20240215-)<<
 
-
-            // if (result) {
-            //     TestResult("Pass");
-            // } else {
-            //     TestResult("Fail");
-            // }
+            if (result) {
+                TestResult("Pass");
+            } else {
+                TestResult("Fail");
+            }
         }
 
         public static void UpdateResults() {

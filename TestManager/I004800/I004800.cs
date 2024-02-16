@@ -15,10 +15,6 @@ using System.Threading;
 using CaptainWin.CommonAPI;
 using Microsoft.Win32;
 
-using Excel = Microsoft.Office.Interop.Excel;
-using System.Reflection;
-using System.Runtime.InteropServices;
-
 namespace I004800 {
     public class MyI004800 {
         private const string TR = "C:\\TestManager\\TR_Result.json";

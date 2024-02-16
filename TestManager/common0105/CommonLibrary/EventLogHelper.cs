@@ -48,8 +48,7 @@ namespace CaptainWin.CommonAPI
                                 TimeGenerated = entry.TimeGenerated.ToString(),
                                 EntryType = entry.EntryType.ToString(),
                                 Source = entry.Source,
-                                Message = entry.Message,
-                                Id = entry.InstanceId.ToString()
+                                Message = entry.Message
                             };
 
                 eventLogEntries = query.ToList();
@@ -94,7 +93,6 @@ namespace CaptainWin.CommonAPI
         public string EntryType { get; set; }
         public string Source { get; set; }
         public string Message { get; set; }
-        public string Id { get; set; }
     }
 
 

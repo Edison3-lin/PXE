@@ -118,7 +118,11 @@
         CreateDir($directoryName)
         $directoryName = "/Test_Log/$UUID/$TCM_ID/$TR_ID"
         CreateDir($directoryName)
-        process_log $TA_Execute_Path        
+        $directoryName = "/Test_Log/$UUID/$TCM_ID/$TR_ID/ScreenShot"
+        CreateDir($directoryName)
+        $directoryName = "/Test_Log/$UUID/$TCM_ID/$TR_ID/Test_Log"
+        CreateDir($directoryName)
+        process_log $TA_Execute_Path
         return $TA_Execute_Path
     }    
 

@@ -1,3 +1,18 @@
+=========================================TestManager 1010========================================================================
+## [Version] - Date
+[1010] - 20240206 
+
+### Modification
+1. Add Test_Log, ScreenShot folder to upload
+<files> DBjob.ps1, FTPUpload.ps1
+
+2. After each item is completed, upload the local log and then clear it.
+<files> TestManager.cs
+
+3. Fix: After installing the image, TestManager will not be executed automatically.
+<files> test.bat
+
+========================================================================================================================
 =========================================TestManager 1009========================================================================
 ## [Version] - Date
 [1009] - 20240126 

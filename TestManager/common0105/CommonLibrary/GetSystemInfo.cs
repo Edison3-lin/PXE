@@ -187,115 +187,31 @@ namespace CaptainWin.CommonAPI {
             ProcessLog(result);
         }
         /// <summary>
-        /// GetPhysicalMemory
+        /// GetDiskMediaType
         /// </summary>
-        /// 
-        public static void GetWindowsUUID() {
-            TitleLog("GetPhysicalMemory");
-            System.Diagnostics.Process process = new System.Diagnostics.Process();
-            process.StartInfo.FileName = "cmd.exe";
-            process.StartInfo.Arguments = $"/c systeminfo";
-            process.StartInfo.UseShellExecute = false;
-            process.StartInfo.RedirectStandardOutput = true;
-            process.Start();
-            string output = process.StandardOutput.ReadToEnd();
-            process.WaitForExit();
-            // ProcessLog(output); 
-            string[] substrings = output.Split('\n');           
-            foreach (string line in substrings)
-            {
-                if( line.Contains("Total Physical Memory:") | line.Contains("Available Physical Memory:") ) {
-                    ProcessLog(line);            
-                }
-            }
-        }
-
-
-
-//(EdisonLin-20240130-)>>
-        public static void MediaType()
-        {
-            ManagementClass mc = new ManagementClass("Win32_DiskDrive");
-            ManagementObjectCollection moc = mc.GetInstances();                   
-            foreach (ManagementObject mo in moc) {
-                Console.WriteLine(">>HDD detail ----------------------------------------------------------");                     
-                Console.WriteLine("Model:  " + Convert.ToString(mo.Properties["Model"].Value));  //name stata 256
-                Console.WriteLine("Description:  " + Convert.ToString(mo.Properties["Description"].Value));  //diskdriver
-                Console.WriteLine("InterfaceType:  " + Convert.ToString(mo.Properties["InterfaceType"].Value));  //scsi
-                Console.WriteLine("MediaType:  " + Convert.ToString(mo.Properties["MediaType"].Value));    //fixed hard disk
-                string strSize=Convert.ToString( mo.Properties["Size"].Value);
-                
-                Console.WriteLine("size:"+Convert.ToString( mo.Properties["Size"].Value)+"KB");
-                var aaa = Convert.ToString( mo.Properties["Size"].Value);
-                UInt64 bbb=UInt64.Parse(aaa);
-                
-                float totalsise = (float)Math.Round(bbb / 1000 / 1000 / 1000.0, 3);
-                float totalsise2 = (float)Math.Round(bbb / 1024 / 1024 / 1024.0, 3);
-                Console.WriteLine("size(除1000):  " + totalsise.ToString()+"GB");
-                Console.WriteLine("size(除1024):  " + totalsise2.ToString() + "GB");
-            }
-        }
-//(EdisonLin-20240130-)<<
-
-		public static void GetDiskMediaType() {
+		public static string GetDiskMediaType() {
             TitleLog("GetDiskPartition");
+            string result="";
             try {
                 ManagementObjectSearcher searcher = new ManagementObjectSearcher("SELECT * FROM Win32_DiskDrive");
                 ManagementObjectCollection queryCollection = searcher.Get();
 
                 foreach (ManagementObject disk in queryCollection)
                 {
-                    // Output hard disk information
-                    Console.WriteLine("HDD name: " + disk["Name"]);
-                    // Console.WriteLine("HDD model: " + disk["Model"]);
-                    // Console.WriteLine("Size (byte): " + disk["Size"]);
-                    // Console.WriteLine("Interface: " + disk["InterfaceType"]);
-                    Console.WriteLine("MediaType: " + disk["MediaType"]);
-
-                    // // Get hard disk partition information
-                    // ManagementObjectSearcher partitionSearcher = new ManagementObjectSearcher("ASSOCIATORS OF {Win32_DiskDrive.DeviceID='" + disk["DeviceID"] + "'} WHERE AssocClass=Win32_DiskDriveToDiskPartition");
-
-                    // ManagementObjectCollection partitionCollection = partitionSearcher.Get();
-
-
-                    // // Get hard disk partition information
-                    // foreach (ManagementObject partition in partitionCollection)
-                    // {
-                    //     // Get partition device ID
-                    //     string partitionDeviceID = partition["DeviceID"].ToString();
-
-                    //     // Query the file system and label of a partition
-                    //     ManagementObjectSearcher fileSystemSearcher = new ManagementObjectSearcher("ASSOCIATORS OF {Win32_DiskPartition.DeviceID='" + partitionDeviceID + "'} WHERE AssocClass=Win32_LogicalDiskToPartition");
-
-                    //     ManagementObjectCollection fileSystemCollection = fileSystemSearcher.Get();
-
-                    //     foreach (ManagementObject fileSystem in fileSystemCollection)
-                    //     {
-                    //         Console.WriteLine("Name: " + fileSystem["Name"]);
-                    //         Console.WriteLine("Size: " + fileSystem["Size"]);
-
-                    //         // Check if partition label is empty
-                    //         string volumeName = fileSystem["VolumeName"] as string;
-                    //         if (!string.IsNullOrEmpty(volumeName))
-                    //         {
-                    //             Console.WriteLine("VolumeName: " + volumeName);
-                    //         }
-                    //         else
-                    //         {
-                    //             Console.WriteLine("VolumeName: (N/A)");
-                    //         }
-                    //     }
-                    // }
-
-                    Console.WriteLine();
+                    string d = disk["Name"].ToString();
+                    if ( d.Contains("PHYSICALDRIVE0") ) {
+                        result = disk["MediaType"].ToString();
+                    }
                 }
             }
-            catch (Exception e)
-            {
+            catch (Exception e) {
                 Console.WriteLine("Error: " + e.Message);
+            }
+            return result;
         }
-        }
-
+        /// <summary>
+        /// GetDiskFormat
+        /// </summary>
 		public static bool GetDiskFormat() {
             TitleLog("GetDiskFormat");
 
@@ -312,7 +228,7 @@ namespace CaptainWin.CommonAPI {
 
                         case "C:\\":
 
-                            if ( (drive.DriveType.ToString() != "Fixed") || (drive.VolumeLabel.ToString() != "OS") ||(drive.DriveFormat.ToString() != "NTFS") ) {
+                            if ( (drive.DriveType.ToString() != "Fixed") || (drive.VolumeLabel.ToString() != "Acer") ||(drive.DriveFormat.ToString() != "NTFS") ) {
                                 ProcessLog(drive.Name + " " +  drive.VolumeLabel + " "  + drive.DriveType + " " + drive.DriveFormat);
                                 result = false;
                             }
@@ -334,7 +250,9 @@ namespace CaptainWin.CommonAPI {
             }
             return result;
         }
-
+        /// <summary>
+        /// GetPhysicalMemory
+        /// </summary>
 		public static void GetPhysicalMemory() {
             TitleLog("GetPhysicalMemory");
             System.Diagnostics.Process process = new System.Diagnostics.Process();

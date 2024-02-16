@@ -65,9 +65,9 @@ namespace I005000 {
             int columns = usedRange.Columns.Count;
             bool result = false;
             for (int i = 3; i < rows; i++) {
-                Console.WriteLine( sh.Cells[i, 6].Text );                
-                Console.WriteLine( sh.Cells[i, 8].Text );                
-                Console.WriteLine( '\n' );                
+                // Console.WriteLine( sh.Cells[i, 6].Text );                
+                // Console.WriteLine( sh.Cells[i, 8].Text );                
+                // Console.WriteLine( '\n' );                
                 if( region == sh.Cells[i, 6].Text ){
                     if( timeZone == sh.Cells[i, 8].Text ) {
                         result = true;
@@ -92,7 +92,7 @@ namespace I005000 {
                 timeZone = "(UTC+08:00) Taipei";
             }
 
-            string path = @"c:\TestManager\ItemDownload\Win11 SV2 OOBE_SPEC_20231108.xlsx";
+            string path = @"c:\TestManager\ItemDownload\Win11_SV2_OOBE_SPEC_20231108.xlsx";
             bool result = readExcel(path, "Lang_Region_Keyboard_Timezone", region, timeZone);
 
             if (result) {

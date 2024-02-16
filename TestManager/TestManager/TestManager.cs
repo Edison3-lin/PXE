@@ -52,41 +52,41 @@ namespace TestManager {
         /// Check TR_Result.json
         /// </summary>
         static void CheckTR() {
-            string json = System.IO.File.ReadAllText(TR);
-            var jsonObj = JObject.Parse(json);
-            if ( jsonObj["TCM_ID"] == null ) {
-                jsonObj["TCM_ID"] = 0;
-            };
-            if ( jsonObj["TR_ID"] == null ) {
-                jsonObj["TR_ID"] = 0;
-            };
-            if ( jsonObj["TestResult"] == null ) {
-                jsonObj["TestResult"] = "";
-            };
-            if ( jsonObj["TestStatus"] == null ) {
-                jsonObj["TestStatus"] = "";
-            };
-            if ( jsonObj["Test_TimeOut"] == null ) {
-                jsonObj["Test_TimeOut"] = 0;
-            };
-            if ( jsonObj["TCM_Done"] == null ) {
-                jsonObj["TCM_Done"] = false;
-            };
-            if( jsonObj["Text_Log_File_Path"] == null ) {
-                JArray paths = new JArray
-                {
-                    "c:\\TestManager\\MyLog\\TestManager.log",
-                    "C:\\TestManager\\MyLog\\DBjob_process.log",
-                    "C:\\TestManager\\MyLog\\DBupdateStatus_process.log",
-                    "C:\\TestManager\\MyLog\\FTPupload_process.log",
-                    "C:\\TestManager\\MyLog\\FTPdownload_process.log",
-                    "C:\\TestManager\\TR_Result.json"
-                };
-                jsonObj["Text_Log_File_Path"] = paths;
-            }    
+            if (System.IO.File.Exists(TR))
+            {
+                File.Delete(TR);
+            }   
 
-            string outputJson = JsonConvert.SerializeObject(jsonObj, Formatting.Indented);
-            File.WriteAllText(TR, outputJson);
+            JArray paths = new JArray
+            {
+                "c:\\TestManager\\MyLog\\TestManager.log",
+                "C:\\TestManager\\MyLog\\DBjob_process.log",
+                "C:\\TestManager\\MyLog\\DBupdateStatus_process.log",
+                "C:\\TestManager\\MyLog\\FTPupload_process.log",
+                "C:\\TestManager\\MyLog\\FTPdownload_process.log",
+                "C:\\TestManager\\TR_Result.json"
+            };
+
+            var person = new
+            {
+                TCM_ID = 0,
+                TR_ID  = 0,
+                TestResult = "",
+                TestStatus = "",
+                Test_TimeOut = 0,
+                TCM_Done = false,
+                Text_Log_File_Path = paths
+            };
+
+            string json = JsonConvert.SerializeObject(person, Formatting.Indented);
+            try
+            {
+                File.WriteAllText(TR, json);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Create JSON file error：" + ex.Message);
+            }
             return;
         }
 
@@ -165,27 +165,27 @@ namespace TestManager {
                 {
                     Directory.CreateDirectory(TMDIRECTORY+"MyLog\\");
                 }                
-                if (!Directory.Exists(TMDIRECTORY+"TestLog\\"))
+                if (!Directory.Exists(TMDIRECTORY+"Test_Log\\"))
                 {
-                    Directory.CreateDirectory(TMDIRECTORY+"TestLog\\");
+                    Directory.CreateDirectory(TMDIRECTORY+"Test_Log\\");
                 }                
-                // if (!Directory.Exists(TMDIRECTORY+"Key\\"))
-                // {
-                //     Directory.CreateDirectory(TMDIRECTORY+"Key\\");
-                // }                
+                if (!Directory.Exists(TMDIRECTORY+"ScreenShot\\"))
+                {
+                    Directory.CreateDirectory(TMDIRECTORY+"ScreenShot\\");
+                }                
 
                 if (!File.Exists(TMLOG))
                 {
                     using (FileStream fs = File.Create(TMLOG));
                 }
-                // else
-                // {
-                //     // Clear TMLOG content
-                //     using (FileStream fs = new FileStream(TMLOG, FileMode.OpenOrCreate, FileAccess.ReadWrite))
-                //     {
-                //         fs.SetLength(0);
-                //     }                    
-                // }
+                else
+                {
+                    // Clear TMLOG content
+                    using (FileStream fs = new FileStream(TMLOG, FileMode.OpenOrCreate, FileAccess.ReadWrite))
+                    {
+                        fs.SetLength(0);
+                    }                    
+                }
             }
             catch (Exception ex) {
                 Console.WriteLine("Error!!! " + ex.Message);
@@ -512,8 +512,8 @@ namespace TestManager {
 
                     CreateDirectoryAndFile();
                     while(!DBtest()) {
-                        ProcessLog("Waiting 3 sec for database connection... ");
-                        Thread.Sleep(3000);
+                        ProcessLog("Waiting for database connection... ");
+                        // Thread.Sleep(3000);
                     };
 
 //(EdisonLin-20240110-1)                     // Read Reboot status    

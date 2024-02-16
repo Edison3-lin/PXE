@@ -27,6 +27,30 @@
         process_log "<$log> upload to $ftpServer$destinationFilePath"
     }
 
+    $TestLogPath = $remoteFilePath+"/Test_Log/"
+    $directoryPath = "c:\TestManager\Test_Log\"
+    $fileList = Get-ChildItem -Path $directoryPath
+    foreach ($file in $fileList) {
+        $destinationFilePath = $TestLogPath+$file
+        FTP "$ftpServer$destinationFilePath" up "$directoryPath$file"
+        # Write-Host "$ftpServer$destinationFilePath up $directoryPath$file"
+    }
+
+    $CreenLogPath = $remoteFilePath+"/ScreenShot/"
+    $directoryPath = "c:\TestManager\ScreenShot\"
+    $fileList = Get-ChildItem -Path $directoryPath
+    foreach ($file in $fileList) {
+        $destinationFilePath = $CreenLogPath+$file
+        FTP "$ftpServer$destinationFilePath" up "$directoryPath$file"
+        # Write-Host "$ftpServer$destinationFilePath up $directoryPath$file"
+    }
+
+
     process_log  "======Upload finished======"
+
+    Remove-Item -Path "C:\TestManager\MyLog" -Recurse
+    Remove-Item -Path "C:\TestManager\Test_Log" -Recurse
+    Remove-Item -Path "C:\TestManager\ScreenShot" -Recurse
+    Remove-Item -Path "C:\TestManager\TR_Result.json"
 
 return $true

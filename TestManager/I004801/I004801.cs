@@ -37,12 +37,16 @@ namespace I004801 {
         }
         public static void Run()
         {
-            CaptainWin.CommonAPI.GetSystemInfo.GetDiskMediaType();
-            // if (result) {
-            //     TestResult("Pass");
-            // } else {
-            //     TestResult("Fail");
-            // }
+            string a = CaptainWin.CommonAPI.GetSystemInfo.GetDiskMediaType();
+            bool result = false;
+            if (a == "Fixed hard disk media") {
+                result = true;
+            }
+            if (result) {
+                TestResult("Pass");
+            } else {
+                TestResult("Fail");
+            }
         }
 
         public static void UpdateResults() {

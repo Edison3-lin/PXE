@@ -140,5 +140,24 @@ namespace CaptainWin.CommonAPI {
             }
             return false.ToString();
         }
+
+        public static void GetDeviceManager() {
+            var searcher = new ManagementObjectSearcher("SELECT * FROM Win32_PnPEntity");
+            
+            int i = 0;
+            foreach (var device in searcher.Get())
+            {
+                i++;
+                ProcessLog($"Name: {device["Name"]}");
+                ProcessLog($"Description: {device["Description"]}");
+                ProcessLog($"Status: {device["Status"]}");
+                ProcessLog($"DeviceID: {device["DeviceID"]}");
+                ProcessLog($"PNPDeviceID: {device["PNPDeviceID"]}");
+                ProcessLog("-----------------------------------------------------");
+            }
+
+            ProcessLog($"===> {i} devices in total");     
+        }
+
     }        
 }
