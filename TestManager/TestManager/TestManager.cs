@@ -52,41 +52,74 @@ namespace TestManager {
         /// Check TR_Result.json
         /// </summary>
         static void CheckTR() {
-            if (System.IO.File.Exists(TR))
-            {
-                File.Delete(TR);
-            }   
-
-            JArray paths = new JArray
-            {
-                "c:\\TestManager\\MyLog\\TestManager.log",
-                "C:\\TestManager\\MyLog\\DBjob_process.log",
-                "C:\\TestManager\\MyLog\\DBupdateStatus_process.log",
-                "C:\\TestManager\\MyLog\\FTPupload_process.log",
-                "C:\\TestManager\\MyLog\\FTPdownload_process.log",
-                "C:\\TestManager\\TR_Result.json"
-            };
-
-            var person = new
-            {
-                TCM_ID = 0,
-                TR_ID  = 0,
-                TestResult = "",
-                TestStatus = "",
-                Test_TimeOut = 0,
-                TCM_Done = false,
-                Text_Log_File_Path = paths
-            };
-
-            string json = JsonConvert.SerializeObject(person, Formatting.Indented);
-            try
-            {
-                File.WriteAllText(TR, json);
+            string outputJson;
+            if (System.IO.File.Exists(TR)) {
+                string json = System.IO.File.ReadAllText(TR);
+                var jsonObj = JObject.Parse(json);
+                if ( jsonObj["TCM_ID"] == null ) {
+                    jsonObj["TCM_ID"] = 0;
+                };
+                if ( jsonObj["TR_ID"] == null ) {
+                    jsonObj["TR_ID"] = 0;
+                };
+                if ( jsonObj["TestResult"] == null ) {
+                    jsonObj["TestResult"] = "";
+                };
+                if ( jsonObj["TestStatus"] == null ) {
+                    jsonObj["TestStatus"] = "";
+                };
+                if ( jsonObj["Test_TimeOut"] == null ) {
+                    jsonObj["Test_TimeOut"] = 0;
+                };
+                if ( jsonObj["TCM_Done"] == null ) {
+                    jsonObj["TCM_Done"] = false;
+                };
+                if( jsonObj["Text_Log_File_Path"] == null ) {
+                    JArray paths = new JArray
+                    {
+                        "c:\\TestManager\\MyLog\\TestManager.log",
+                        "C:\\TestManager\\MyLog\\DBjob_process.log",
+                        "C:\\TestManager\\MyLog\\DBupdateStatus_process.log",
+                        "C:\\TestManager\\MyLog\\FTPupload_process.log",
+                        "C:\\TestManager\\MyLog\\FTPdownload_process.log",
+                        "C:\\TestManager\\TR_Result.json"
+                    };
+                    jsonObj["Text_Log_File_Path"] = paths;
+                }    
+                outputJson = JsonConvert.SerializeObject(jsonObj, Formatting.Indented);
             }
-            catch (Exception ex)
-            {
+            else {   
+                // Json 不存在
+                JArray paths = new JArray
+                {
+                    "c:\\TestManager\\MyLog\\TestManager.log",
+                    "C:\\TestManager\\MyLog\\DBjob_process.log",
+                    "C:\\TestManager\\MyLog\\DBupdateStatus_process.log",
+                    "C:\\TestManager\\MyLog\\FTPupload_process.log",
+                    "C:\\TestManager\\MyLog\\FTPdownload_process.log",
+                    "C:\\TestManager\\TR_Result.json"
+                };
+
+                var jsonObj = new
+                {
+                    TCM_ID = 0,
+                    TR_ID  = 0,
+                    TestResult = "",
+                    TestStatus = "",
+                    Test_TimeOut = 0,
+                    TCM_Done = false,
+                    Text_Log_File_Path = paths
+                };
+                outputJson = JsonConvert.SerializeObject(jsonObj, Formatting.Indented);
+            }
+
+            try {
+                File.WriteAllText(TR, outputJson);
+            }
+            catch (Exception ex) {
                 Console.WriteLine("Create JSON file error：" + ex.Message);
             }
+
             return;
         }
 
